@@ -30,7 +30,10 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+
+// Orders Api Routes
 $routes->post('/Api/Orders/getAll', '\App\Controllers\Api\Orders::getAll');
+$routes->post('/Api/Orders/getOrder', '\App\Controllers\Api\Orders::getOrder');
 
 
 
