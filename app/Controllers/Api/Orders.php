@@ -9,6 +9,11 @@ class Orders extends Controller
 {
     use ResponseTrait;
 
+
+    // Retrive a list of order based on limit & offset
+    // Payload type: JSON
+    // Payload format: 
+    // {"offset": int, "limit": int}
     public function getAll(){
 		
 	$token = $this->request->getHeaderLine('YBO-Token');
@@ -23,10 +28,12 @@ class Orders extends Controller
     $requestDataKeys = array_keys($requestData);
 
     if (count($requestData) !== 2 || !empty(array_diff($expectedKeys, $requestDataKeys))) {
-        // Invalid JSON payload, return an error response
-		
         return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
     }
+    if (!is_int($requestData['limit']) || !is_int($requestData['limit'])) {
+        return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
+    }
+
 
     // Process the valid JSON payload
     // ...
