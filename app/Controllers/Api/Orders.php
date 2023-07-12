@@ -47,7 +47,7 @@ class Orders extends Controller
 
     if (count($requestData) !== 1 || !empty(array_diff($expectedKeys, $requestDataKeys))) {
 		
-        return $this->fail('Payload-ul este invalid, format corect: {\'orderid\': IDComanda}', 400);
+        return $this->fail('Payload-ul este invalid, format corect: {"orderid": IDComanda}', 400);
     }
 
     // END Token authorization & Expected payload & getJSON(get payload)
