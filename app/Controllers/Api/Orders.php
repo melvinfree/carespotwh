@@ -56,7 +56,7 @@ class Orders extends Controller
         return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
     }
 
-    if (!is_int($requestData['orderid'];)) {
+    if (!is_int($requestData['orderid'])) {
         return $this->fail('Invalid orderid. It should be an integer.', 400);
     }
 
