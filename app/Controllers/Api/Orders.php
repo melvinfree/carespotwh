@@ -25,7 +25,7 @@ class Orders extends Controller
     if (count($requestData) !== 2 || !empty(array_diff($expectedKeys, $requestDataKeys))) {
         // Invalid JSON payload, return an error response
 		
-        return $this->fail('Invalid JSON payload', 400);
+        return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
     }
 
     // Process the valid JSON payload
@@ -34,6 +34,12 @@ class Orders extends Controller
     return $this->respond($requestData, 200);
    }
 
+
+
+    // Retrive a specific order based on ID
+    // Payload type: JSON
+    // Payload format: 
+    // {"orderid": int}
    public function getOrder(){
     // Token authorization & Expected payload & getJSON(get payload)
     $token = $this->request->getHeaderLine('YBO-Token');
@@ -47,10 +53,12 @@ class Orders extends Controller
 
     if (count($requestData) !== 1 || !empty(array_diff($expectedKeys, $requestDataKeys))) {
 		
-        return $this->fail('Payload-ul este invalid, format corect: {"orderid": IDComanda}', 400);
+        return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
     }
 
-    // END Token authorization & Expected payload & getJSON(get payload)
+    if (!is_int($requestData['orderid'];)) {
+        return $this->fail('Invalid orderid. It should be an integer.', 400);
+    }
 
     // Send the response if all it's ok
 
