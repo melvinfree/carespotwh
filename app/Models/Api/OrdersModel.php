@@ -86,10 +86,26 @@ class OrdersModel extends Model
 
     // Delete order
     public function deleteOrder($id)
-    {
-        return $this->delete(['id' => $id]);
-        
+{
+    // First, find the order by id
+    $order = $this->find($id);
+    
+    // If the order doesn't exist, return an error message
+    if ($order === null) {
+        return [
+            'error' => true,
+            'message' => 'Order not found'
+        ];
     }
+
+    // If the order does exist, delete it and return a success message
+    $this->delete(['id' => $id]);
+
+    return [
+        'error' => false,
+        'message' => 'Order deleted'
+    ];
+}
 
     
 
