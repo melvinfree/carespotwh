@@ -4,7 +4,7 @@ namespace App\Models\Api;
 
 use CodeIgniter\Model;
 
-class OrderModel extends Model
+class OrdersModel extends Model
 {
     protected $table = 'ci_bl_orders';
     protected $primaryKey = 'id';
