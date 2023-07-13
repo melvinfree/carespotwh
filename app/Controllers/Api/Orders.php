@@ -143,10 +143,12 @@ class Orders extends Controller
         $id = $requestData['id'];
 
         // Delete the order from the database
-        $this->$OrdersModel->deleteOrder($requestData['id']);
+        $results = $OrdersModel->deleteOrder($requestData['id']);
+
+        $jsonRes = json_encode(succesResponse($results),true);
 
         // Return a success message
-        return $this->respondDeleted("Order with id $id has been deleted");
+        return $this->respondDeleted($jsonRes);
     }
 
 
