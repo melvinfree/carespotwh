@@ -44,7 +44,9 @@ class Orders extends Controller
     // ...
     $results = $OrdersModel->getAll($requestData['limit'], $requestData['offset']);
 
-    return $this->respond($results, 200);
+    $jsonRes = json_encode($results,true);
+
+    return $this->respond($jsonRes, 200);
    }
 
 
