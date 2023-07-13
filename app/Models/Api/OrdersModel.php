@@ -12,8 +12,18 @@ class OrdersModel extends Model
     {
         // Perform the query using CodeIgniter's query builder
         $query = $this->table($this->table)
-                      ->limit($limit, $offset)
-                      ->get();
+    ->join('ci_bl_order_products', 'ci_bl_orders.order_id', '=', 'order_products.order_id')
+    ->limit($limit, $offset)
+    ->select([
+        'ci_bl_orders.id',
+        'ci_bl_orders.date_add',
+        'ci_bl_orders.invoice_company',
+        'ci_bl_orders.status',
+        'ci_bl_orders.warehouseStatus',
+        DB::raw('(ci_bl_orders.delivery_price * (100 - ci_bl_order_products.tax) / 100) + SUM(ci_bl_order_products.price_brutto) as totalNoVat')
+    ])
+    ->groupBy('orders.order_id')
+    ->get();
 
         // Check if the query was successful
         if ($query->resultID->num_rows > 0) {
