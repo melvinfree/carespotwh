@@ -126,6 +126,8 @@ class Orders extends Controller
 
     public function deleteOrder()
     {
+        $OrdersModel = new OrdersModel();
+        
         // Validate the provided token against the private token set in your environment variables
         $token = $this->request->getHeaderLine('YBO-Token');
         if ($token !== getenv('PRIVATE_TOKEN')) {
@@ -139,14 +141,9 @@ class Orders extends Controller
         }
 
         $id = $requestData['id'];
-        // Find the order in the database, if the order doesn't exist, return error
-        $order = $this->model->find($id);
-        //if (is_null($order)) {
-        //    return $this->failNotFound("Order with id $id not found");
-        //}
 
         // Delete the order from the database
-        $this->model->delete($id);
+        $this->$OrdersModel->deleteOrder($requestData['id']);
 
         // Return a success message
         return $this->respondDeleted("Order with id $id has been deleted");

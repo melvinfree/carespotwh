@@ -82,7 +82,16 @@ class OrdersModel extends Model
         }
 
         return $orders;
-    }    
+    }
+
+    // Delete order
+    public function deleteOrder($id)
+    {
+        return $this->delete(['id' => $id]);
+        
+    }
+
+    
 
     private function calculateShippingWithoutVat($price, $vatRate)
     {
