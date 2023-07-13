@@ -28,7 +28,7 @@ class Orders extends Controller
 
 		
 	$token = $this->request->getHeaderLine('YBO-Token');
-    if ($token !== 'Token123123') {
+    if ($token !== getenv('PRIVATE_TOKEN')) {
         return $this->failUnauthorized('Invalid token');
     }
 		
@@ -65,7 +65,7 @@ class Orders extends Controller
    public function searchOrder(){
 		
 	$token = $this->request->getHeaderLine('YBO-Token');
-    if ($token !== 'Token123123') {
+    if ($token !== getenv('PRIVATE_TOKEN')) {
         return $this->failUnauthorized('Invalid token');
     }
 		
@@ -96,7 +96,7 @@ class Orders extends Controller
    public function getOrder(){
     // Token authorization & Expected payload & getJSON(get payload)
     $token = $this->request->getHeaderLine('YBO-Token');
-    if ($token !== 'Token123123') {
+    if ($token !== getenv('PRIVATE_TOKEN')) {
         return $this->failUnauthorized('Invalid token');
     }
 
