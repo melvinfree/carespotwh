@@ -4,25 +4,28 @@ namespace App\Models\Api;
 
 use CodeIgniter\Model;
 
-class OrdersModel extends Model
+class OrderModel extends Model
 {
-    protected $table = 'ci_bl_orders'; // Replace with your actual table name
+    protected $table = 'ci_bl_orders';
+    protected $primaryKey = 'id';
 
-    public function getAll($limit, $offset)
+    public function getOrdersWithTotal()
     {
-        // Perform the query using CodeIgniter's query builder
-        $query = $this->table($this->table)
-                      ->limit($limit, $offset)
-                      ->select(['id', 'date_add'])
-                      ->get();
+        $this->select('id, delivery_price, tax_rate');
+        $orders = $this->findAll();
 
-        // Check if the query was successful
-        if ($query->resultID->num_rows > 0) {
-            // Return the fetched results
-            return $query->getResult();
-        } else {
-            // Return an empty array or handle the case when no results are found
-            return [];
+        $orderProductsModel = new \App\Models\Api\OrderProductsModel();
+
+        foreach ($orders as &$order) {
+            $totalProductPrices = $orderProductsModel->getTotalProductPrices($order['id']);
+            $order['total'] = $this->calculatePriceWithoutVAT($order['delivery_price'], $order['vat_rate']) + $totalProductPrices;
         }
+
+        return $orders;
+    }
+
+    private function calculatePriceWithoutVAT($price, $vatRate)
+    {
+        return $price / (1 + $vatRate/100);
     }
 }

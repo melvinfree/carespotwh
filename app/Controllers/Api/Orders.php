@@ -47,7 +47,7 @@ class Orders extends Controller
 
     // Process the valid JSON payload
     // ...
-    $results = $OrdersModel->getAll($requestData['limit'], $requestData['offset']);
+    $results = $OrdersModel->getOrdersWithTotal();
 
     $jsonRes = json_encode(succesResponse($results),true);
 
