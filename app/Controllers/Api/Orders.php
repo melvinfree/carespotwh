@@ -11,6 +11,10 @@ class Orders extends Controller
 {
     use ResponseTrait;
 
+    public function __construct() {
+        helper('api');
+    }
+
 
     // Retrive a list of order based on limit & offset
     // Payload type: JSON
@@ -45,13 +49,7 @@ class Orders extends Controller
     // ...
     $results = $OrdersModel->getAll($requestData['limit'], $requestData['offset']);
 
-    $prepareResult = [
-        "status" => "succes",
-        "code" => 200,
-        "response" => $results
-    ];
-
-    $jsonRes = json_encode($prepareResult,true);
+    $jsonRes = json_encode(succesResponse($results),true);
 
     return $this->respond($jsonRes, 200);
    }
