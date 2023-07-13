@@ -82,12 +82,12 @@ class Orders extends Controller
     }
 
 
-    $results = $OrdersModel->searchOrdersList('' .$requestData['searchterm']. '', $requestData['limit'], $requestData['offset']);
+    $results = $OrdersModel->searchOrdersList($requestData['searchterm'], $requestData['limit'], $requestData['offset']);
 
     $jsonRes = json_encode(succesResponse($results),true);
 
     return $this->respond($jsonRes, 200);
-
+    
    }
 
 
