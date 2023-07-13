@@ -17,7 +17,8 @@ class OrdersModel extends Model
         $this->select('id, invoice_company, delivery_price, tax_rate, status, whStatus, order_notes');
         $this->orderBy('id', 'DESC');
         $this->limit($limit, $offset);
-        $orders = $this->findAll();
+        $query = $this->get(); 
+        $orders = $query->getResultArray(); 
 
         $orderProductsModel = new \App\Models\Api\OrderProductsModel();
 
