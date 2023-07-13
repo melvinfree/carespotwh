@@ -15,6 +15,7 @@ class OrdersModel extends Model
     public function getOrdersList($limit,$offset)
     {
         $this->select('id, invoice_company, delivery_price, tax_rate, status, whStatus, order_notes');
+        $this->orderBy('id', 'DESC');
         $this->limit($limit, $offset);
         $orders = $this->findAll();
 
