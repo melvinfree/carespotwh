@@ -36,7 +36,7 @@ $routes->post('/Api/Orders/getAll', '\App\Controllers\Api\Orders::getAll');
 $routes->post('/Api/Orders/getOrder', '\App\Controllers\Api\Orders::getOrder'); 
 $routes->post('/Api/Orders/searchOrder', '\App\Controllers\Api\Orders::searchOrder'); 
 $routes->post('/Api/Orders/filterOrder', '\App\Controllers\Api\Orders::filterOrder'); 
-
+$routes->post('/Api/Orders/deleteOrder', '\App\Controllers\Api\Orders::deleteOrder'); 
 
 
 
