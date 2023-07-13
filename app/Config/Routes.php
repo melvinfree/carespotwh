@@ -34,6 +34,7 @@ $routes->get('/', 'Home::index');
 // Orders Api Routes - AA
 $routes->post('/Api/Orders/getAll', '\App\Controllers\Api\Orders::getAll');
 $routes->post('/Api/Orders/getOrder', '\App\Controllers\Api\Orders::getOrder'); 
+$routes->post('/Api/Orders/searchOrder', '\App\Controllers\Api\Orders::searchOrder'); 
 
 
 
