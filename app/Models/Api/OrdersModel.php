@@ -14,7 +14,7 @@ class OrdersModel extends Model
     // Used in Orders Controller for Endpoint "getAll"
     public function getOrdersList()
     {
-        $this->select('id, invoice_company, delivery_price');
+        $this->select('id, invoice_company, delivery_price, tax_rate');
         $orders = $this->findAll();
 
         $orderProductsModel = new \App\Models\Api\OrderProductsModel();
