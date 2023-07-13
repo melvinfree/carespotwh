@@ -124,6 +124,34 @@ class Orders extends Controller
         
        }
 
+    public function deleteOrder()
+    {
+        // Validate the provided token against the private token set in your environment variables
+        $token = $this->request->getHeaderLine('YBO-Token');
+        if ($token !== getenv('PRIVATE_TOKEN')) {
+            return $this->failUnauthorized('Invalid token');
+        }
+
+        // Fetch the JSON data from the request and validate the presence of the 'id' field
+        $requestData = $this->request->getJSON(true);
+        if (!isset($requestData['id'])) {
+            return $this->failValidationError('Missing mandatory field: id');
+        }
+
+        $id = $requestData['id'];
+        // Find the order in the database, if the order doesn't exist, return error
+        $order = $this->model->find($id);
+        //if (is_null($order)) {
+        //    return $this->failNotFound("Order with id $id not found");
+        //}
+
+        // Delete the order from the database
+        $this->model->delete($id);
+
+        // Return a success message
+        return $this->respondDeleted("Order with id $id has been deleted");
+    }
+
 
 
 
@@ -162,4 +190,6 @@ class Orders extends Controller
     return $this->respond($requestData, 200);
 
    }
+
+
 }

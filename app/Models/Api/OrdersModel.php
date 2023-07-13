@@ -82,9 +82,7 @@ class OrdersModel extends Model
         }
 
         return $orders;
-    }
-
-    
+    }    
 
     private function calculateShippingWithoutVat($price, $vatRate)
     {
