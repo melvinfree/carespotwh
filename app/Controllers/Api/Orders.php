@@ -77,7 +77,7 @@ class Orders extends Controller
     $expectedKeys = ['searchterm','limit','offset'];
     $requestDataKeys = array_keys($requestData);
 
-    if (count($requestData) !== 1 || !empty(array_diff($expectedKeys, $requestDataKeys))) {
+    if (count($requestData) !== 3 || !empty(array_diff($expectedKeys, $requestDataKeys))) {
         return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
     }
 
