@@ -14,6 +14,7 @@ class Orders extends Controller
 
     // Retrive a list of order based on limit & offset
     // Payload type: JSON
+    // Endpoint: https://whx.ybomedia.ro/Api/Orders/getAll
     // Payload format: 
     // {"offset": int, "limit": int} 
     public function getAll(){
@@ -44,7 +45,13 @@ class Orders extends Controller
     // ...
     $results = $OrdersModel->getAll($requestData['limit'], $requestData['offset']);
 
-    $jsonRes = json_encode($results,true);
+    $prepareResult = [
+        "status" => "succes",
+        "code" => 200,
+        "response" => $results
+    ];
+
+    $jsonRes = json_encode($prepareResult,true);
 
     return $this->respond($jsonRes, 200);
    }
