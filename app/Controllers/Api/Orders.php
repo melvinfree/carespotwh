@@ -4,6 +4,8 @@ namespace App\Controllers\Api;
 
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Controller;
+use App\Models\Api\OrdersModel;
+
 
 class Orders extends Controller
 {
@@ -13,8 +15,11 @@ class Orders extends Controller
     // Retrive a list of order based on limit & offset
     // Payload type: JSON
     // Payload format: 
-    // {"offset": int, "limit": int}
+    // {"offset": int, "limit": int} 
     public function getAll(){
+
+        $OrdersModel = new OrdersModel();
+
 		
 	$token = $this->request->getHeaderLine('YBO-Token');
     if ($token !== 'Token123123') {
@@ -31,6 +36,37 @@ class Orders extends Controller
         return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
     }
     if (!is_int($requestData['limit']) || !is_int($requestData['limit'])) {
+        return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
+    }
+
+
+    // Process the valid JSON payload
+    // ...
+    $results = $OrdersModel->getAll($requestData['limit'], $requestData['offset']);
+
+    return $this->respond($results, 200);
+   }
+
+
+   
+    // Retrive a list of specific orders based on searchterm (useful for orderlist)- , available terms [email/phone/name/orderid]
+    // Payload type: JSON
+    // Payload format: 
+    // {"searchterm": string}
+   public function searchOrder(){
+		
+	$token = $this->request->getHeaderLine('YBO-Token');
+    if ($token !== 'Token123123') {
+        return $this->failUnauthorized('Invalid token');
+    }
+		
+    $requestData = $this->request->getJSON(true); // Retrieve JSON payload as an associative array
+
+    // Validate the JSON payload
+    $expectedKeys = ['searchterm'];
+    $requestDataKeys = array_keys($requestData);
+
+    if (count($requestData) !== 1 || !empty(array_diff($expectedKeys, $requestDataKeys))) {
         return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
     }
 
