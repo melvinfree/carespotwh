@@ -57,10 +57,10 @@ class Orders extends Controller
 
 
    
-    // Retrive a list of specific orders based on searchterm (useful for orderlist)- , available terms [email/phone/name/orderid]
+    // Retrive a list of specific orders based on searchterm (useful for orderlist)- , available terms [invoice_company/orderid/email/phone]
     // Payload type: JSON
     // Payload format: 
-    // {"searchterm": string, "limit": int, "offset": int}
+    // {"searchterm": "string", "limit": int, "offset": int}
     // Response - to be added
    public function searchOrder(){
 
@@ -89,6 +89,43 @@ class Orders extends Controller
     return $this->respond($jsonRes, 200);
     
    }
+
+
+    // Retrive a list of specific orders based on order STATUS (useful for orderlist)
+    // Payload type: JSON
+    // Payload format: 
+    // {"status": "string", "limit": int, "offset": int}
+    // Response - to be added
+    public function filterOrder(){
+
+        $OrdersModel = new OrdersModel();
+            
+        $token = $this->request->getHeaderLine('YBO-Token');
+        if ($token !== getenv('PRIVATE_TOKEN')) {
+            return $this->failUnauthorized('Invalid token');
+        }
+            
+        $requestData = $this->request->getJSON(true); // Retrieve JSON payload as an associative array
+    
+        // Validate the JSON payload
+        $expectedKeys = ['status','limit','offset'];
+        $requestDataKeys = array_keys($requestData);
+    
+        if (count($requestData) !== 3 || !empty(array_diff($expectedKeys, $requestDataKeys))) {
+            return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
+        }
+    
+    
+        $results = $OrdersModel->filterOrderList($requestData['status'], $requestData['limit'], $requestData['offset']);
+    
+        $jsonRes = json_encode(succesResponse($results),true);
+    
+        return $this->respond($jsonRes, 200);
+        
+       }
+
+
+
 
 
 

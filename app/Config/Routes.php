@@ -31,10 +31,12 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
-// Orders Api Routes - AA
+// Orders Api Routes - Endpoints
 $routes->post('/Api/Orders/getAll', '\App\Controllers\Api\Orders::getAll');
 $routes->post('/Api/Orders/getOrder', '\App\Controllers\Api\Orders::getOrder'); 
 $routes->post('/Api/Orders/searchOrder', '\App\Controllers\Api\Orders::searchOrder'); 
+$routes->post('/Api/Orders/filterOrder', '\App\Controllers\Api\Orders::filterOrder'); 
+
 
 
 

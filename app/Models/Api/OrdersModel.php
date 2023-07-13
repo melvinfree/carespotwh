@@ -60,11 +60,30 @@ class OrdersModel extends Model
         return $orders;
     }
 
-    public function test(){
-        $data = ["test" => 1];
+    // Returning order list filtered by status (including total with vat and without)
+    // Used in Orders Controller for Endpoint "filterOrder"
+    public function filterOrderList($status, $limit, $offset)
+    {
+        $this->select('id, invoice_company, delivery_price, tax_rate, status, whStatus, order_notes');
+        $this->like('status', $status);
+        $this->orderBy('id', 'DESC');
+        $this->limit($limit, $offset);
+        $query = $this->get(); 
+        $orders = $query->getResultArray(); 
 
-        return $data;
+        $orderProductsModel = new \App\Models\Api\OrderProductsModel();
+
+        foreach ($orders as &$order) {
+            $totalProductPricesVAT = $orderProductsModel->getTotalWithoutVat($order['id']);
+            $totalProductPricesNOVAT = $orderProductsModel->getTotalWithVat($order['id']);
+
+            $order['totalNoVat'] = round($this->calculateShippingWithoutVat($order['delivery_price'], $order['tax_rate']) + $totalProductPricesVAT, 2);
+            $order['totalWithVat'] = round($order['delivery_price'] + $totalProductPricesNOVAT, 2);
+        }
+
+        return $orders;
     }
+
     
 
     private function calculateShippingWithoutVat($price, $vatRate)
