@@ -12,9 +12,10 @@ class OrdersModel extends Model
 
     // Returning order list (including total with vat and without)
     // Used in Orders Controller for Endpoint "getAll"
-    public function getOrdersList()
+    public function getOrdersList($limit,$offset)
     {
         $this->select('id, invoice_company, delivery_price, tax_rate, status, whStatus, order_notes');
+        $this->limit($limit, $offset);
         $orders = $this->findAll();
 
         $orderProductsModel = new \App\Models\Api\OrderProductsModel();

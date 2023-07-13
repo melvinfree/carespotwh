@@ -21,6 +21,7 @@ class Orders extends Controller
     // Endpoint: https://whx.ybomedia.ro/Api/Orders/getAll
     // Payload format: 
     // {"offset": int, "limit": int} 
+    // Response - to be added
     public function getAll(){
 
         $OrdersModel = new OrdersModel();
@@ -47,7 +48,7 @@ class Orders extends Controller
 
     // Process the valid JSON payload
     // ...
-    $results = $OrdersModel->getOrdersList();
+    $results = $OrdersModel->getOrdersList($requestData['limit'], $requestData['offset']);
 
     $jsonRes = json_encode(succesResponse($results),true);
 
@@ -60,6 +61,7 @@ class Orders extends Controller
     // Payload type: JSON
     // Payload format: 
     // {"searchterm": string}
+    // Response - to be added
    public function searchOrder(){
 		
 	$token = $this->request->getHeaderLine('YBO-Token');
@@ -90,6 +92,7 @@ class Orders extends Controller
     // Payload type: JSON
     // Payload format: 
     // {"orderid": int}
+    // Response - to be added
    public function getOrder(){
     // Token authorization & Expected payload & getJSON(get payload)
     $token = $this->request->getHeaderLine('YBO-Token');
