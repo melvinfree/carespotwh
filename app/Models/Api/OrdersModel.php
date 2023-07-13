@@ -35,7 +35,7 @@ class OrdersModel extends Model
     
     // Returning order list (including total with vat and without)
     // Used in Orders Controller for Endpoint "searchOrder"
-    public function searchOrdersList($searchTerm, $limit, $offset)
+    public function searchOrderList($searchTerm, $limit, $offset)
     {
         $this->select('id, invoice_company, delivery_price, tax_rate, status, whStatus, order_notes');
         $this->like('invoice_company', $searchTerm)
