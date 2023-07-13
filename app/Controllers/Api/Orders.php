@@ -148,7 +148,7 @@ class Orders extends Controller
         $jsonRes = json_encode(succesResponse($results),true);
 
         // Return a success message
-        return $this->respondDeleted($jsonRes);
+        return $this->respond($jsonRes, 200);
     }
 
 
