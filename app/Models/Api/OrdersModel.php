@@ -18,7 +18,7 @@ class OrdersModel extends Model
 
         foreach ($orders as &$order) {
             $totalProductPrices = $orderProductsModel->getTotalProductPrices($order['id']);
-            $order['total'] = $this->calculatePriceWithoutVAT($order['delivery_price'], $order['vat_rate']) + $totalProductPrices;
+            $order['total'] = $this->calculatePriceWithoutVAT($order['delivery_price'], $order['tax_rate']) + $totalProductPrices;
         }
 
         return $orders;
