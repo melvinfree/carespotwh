@@ -9,16 +9,16 @@ class OrdersModel extends Model
     protected $table = 'ci_bl_orders';
     protected $primaryKey = 'id';
 
-    public function getOrdersWithTotal()
+    public function getOrdersList()
     {
-        $this->select('id, delivery_price, tax_rate');
+        $this->select('id, delivery_price');
         $orders = $this->findAll();
 
         $orderProductsModel = new \App\Models\Api\OrderProductsModel();
 
         foreach ($orders as &$order) {
             $totalProductPrices = $orderProductsModel->getTotalProductPrices($order['id']);
-            $order['total'] = $this->calculatePriceWithoutVAT($order['delivery_price'], $order['tax_rate']) + $totalProductPrices;
+            $order['totalNoVat'] = $this->calculatePriceWithoutVAT($order['delivery_price'], $order['tax_rate']) + $totalProductPrices;
         }
 
         return $orders;

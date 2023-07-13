@@ -11,20 +11,20 @@ class OrderProductsModel extends Model
 
     public function getTotalProductPrices($orderId)
     {
-        $this->select('price_brutto, tax_rate');
+        $this->select('price_brutto, tax_rate', 'quantity');
         $this->where('order_id', $orderId);
         $products = $this->findAll();
 
         $total = 0;
         foreach ($products as $product) {
-            $total += $this->calculatePriceWithoutVAT($product['price_brutto'], $product['tax_rate']);
+            $total += $this->calculatePriceWithoutVAT($product['price_brutto'], $product['tax_rate'], $product['quantity']);
         }
 
         return $total;
     }
 
-    private function calculatePriceWithoutVAT($price, $vatRate)
+    private function calculatePriceWithoutVAT($price, $vatRate,$quantity)
     {
-        return $price / (1 + $vatRate/100);
+        return ($price / (1 + $vatRate/100)) * $quantity;
     }
 }
