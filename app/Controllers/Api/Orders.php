@@ -60,9 +60,11 @@ class Orders extends Controller
     // Retrive a list of specific orders based on searchterm (useful for orderlist)- , available terms [email/phone/name/orderid]
     // Payload type: JSON
     // Payload format: 
-    // {"searchterm": string}
+    // {"searchterm": string, "limit": int, "offset": int}
     // Response - to be added
    public function searchOrder(){
+
+    $OrdersModel = new OrdersModel();
 		
 	$token = $this->request->getHeaderLine('YBO-Token');
     if ($token !== getenv('PRIVATE_TOKEN')) {
@@ -72,7 +74,7 @@ class Orders extends Controller
     $requestData = $this->request->getJSON(true); // Retrieve JSON payload as an associative array
 
     // Validate the JSON payload
-    $expectedKeys = ['searchterm'];
+    $expectedKeys = ['searchterm','limit','offset'];
     $requestDataKeys = array_keys($requestData);
 
     if (count($requestData) !== 1 || !empty(array_diff($expectedKeys, $requestDataKeys))) {
@@ -80,10 +82,11 @@ class Orders extends Controller
     }
 
 
-    // Process the valid JSON payload
-    // ...
+    $results = $OrdersModel->searchOrdersList($requestData['searchterm'], $requestData['limit'], $requestData['offset']);
 
-    return $this->respond($requestData, 200);
+    $jsonRes = json_encode(succesResponse($results),true);
+
+    return $this->respond($jsonRes, 200);
    }
 
 
