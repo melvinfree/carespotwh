@@ -22,38 +22,40 @@ class Orders extends Controller
     // Payload format: 
     // {"offset": int, "limit": int} 
     // Response - to be added
-    public function getAll(){
-
+    public function getAll()
+    {
         $OrdersModel = new OrdersModel();
-
-		
-	// Validate token and get the request body
-    try {
-        $requestData = validateTokenAndFetchData();
-    } catch (\Exception $e) {
-        return $this->failUnauthorized($e->getMessage());
+    
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+    
+        // Validate the JSON payload
+        $expectedKeys = ['limit', 'offset'];
+        $requestDataKeys = array_keys($requestData);
+    
+        if (count($requestData) !== 2 || !empty(array_diff($expectedKeys, $requestDataKeys))) {
+            return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
+        }
+        if (!is_int($requestData['limit']) || !is_int($requestData['limit'])) {
+            return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
+        }
+    
+        // Process the valid JSON payload
+        // ...
+        $results = $OrdersModel->getOrdersList($requestData['limit'], $requestData['offset']);
+    
+        $jsonRes = json_encode(successResponse($results), true);
+    
+        $response = $this->response->setHeader('Access-Control-Allow-Origin', '*')
+            ->setBody($jsonRes)
+            ->setStatusCode(200);
+    
+        return $response;
     }
-
-    // Validate the JSON payload
-    $expectedKeys = ['limit', 'offset'];
-    $requestDataKeys = array_keys($requestData);
-
-    if (count($requestData) !== 2 || !empty(array_diff($expectedKeys, $requestDataKeys))) {
-        return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
-    }
-    if (!is_int($requestData['limit']) || !is_int($requestData['limit'])) {
-        return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
-    }
-
-
-    // Process the valid JSON payload
-    // ...
-    $results = $OrdersModel->getOrdersList($requestData['limit'], $requestData['offset']);
-
-    $jsonRes = json_encode(succesResponse($results),true);
-
-    return $this->respond($jsonRes, 200);
-   }
 
 
    
