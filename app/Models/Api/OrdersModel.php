@@ -99,7 +99,7 @@ class OrdersModel extends Model
 
         // Get product details from ci_bl_order_products table
         $orderProductsModel = new OrderProductsModel();
-        $orderProducts = $orderProductsModel->getByOrderId($orderId, ['name', 'sku', 'ean', 'quantity', 'price_brutto']);
+        $orderProducts = $orderProductsModel->getPListExcelFormat($orderId, ['name', 'sku', 'ean', 'quantity', 'price_brutto']);
 
         return [
             'currency' => $currency,
