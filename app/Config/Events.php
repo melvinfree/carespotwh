@@ -33,6 +33,14 @@ Events::on('pre_system', static function () {
         }
 
         ob_start(static fn ($buffer) => $buffer);
+
+        // Headers for CORS
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        header("Access-Control-Allow-Headers: Content-Type, Content-Length, Accept-Encoding");
+    
+    
+    
     }
 
     /*
@@ -45,4 +53,6 @@ Events::on('pre_system', static function () {
         Events::on('DBQuery', 'CodeIgniter\Debug\Toolbar\Collectors\Database::collect');
         Services::toolbar()->respond();
     }
-});
+}
+
+);
