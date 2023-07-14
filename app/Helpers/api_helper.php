@@ -13,7 +13,7 @@ function succesResponse($response)
 }
 }
 
-if (! function_exists('succesResponse')){
+if (! function_exists('validateTokenAndFetchData')){
 function validateTokenAndFetchData()
 {
     // Validate the provided token against the private token set in your environment variables
