@@ -48,8 +48,6 @@ class Orders extends Controller
 
     // Process the valid JSON payload
     // ...
-
-    $this->response->setHeader('Access-Control-Allow-Origin', '*');
     
     $results = $OrdersModel->getOrdersList($requestData['limit'], $requestData['offset']);
 
