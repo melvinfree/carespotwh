@@ -27,12 +27,12 @@ class Orders extends Controller
         $OrdersModel = new OrdersModel();
 
 		
-	$token = $this->request->getHeaderLine('YBO-Token');
-    if ($token !== getenv('PRIVATE_TOKEN')) {
-        return $this->failUnauthorized('Invalid token');
+	// Validate token and get the request body
+    try {
+        $requestData = validateTokenAndFetchData();
+    } catch (\Exception $e) {
+        return $this->failUnauthorized($e->getMessage());
     }
-		
-    $requestData = $this->request->getJSON(true); // Retrieve JSON payload as an associative array
 
     // Validate the JSON payload
     $expectedKeys = ['limit', 'offset'];
@@ -66,12 +66,12 @@ class Orders extends Controller
 
     $OrdersModel = new OrdersModel();
 		
-	$token = $this->request->getHeaderLine('YBO-Token');
-    if ($token !== getenv('PRIVATE_TOKEN')) {
-        return $this->failUnauthorized('Invalid token');
+	// Validate token and get the request body
+    try {
+        $requestData = validateTokenAndFetchData();
+    } catch (\Exception $e) {
+        return $this->failUnauthorized($e->getMessage());
     }
-		
-    $requestData = $this->request->getJSON(true); // Retrieve JSON payload as an associative array
 
     // Validate the JSON payload
     $expectedKeys = ['searchterm','limit','offset'];
@@ -100,12 +100,12 @@ class Orders extends Controller
 
         $OrdersModel = new OrdersModel();
             
-        $token = $this->request->getHeaderLine('YBO-Token');
-        if ($token !== getenv('PRIVATE_TOKEN')) {
-            return $this->failUnauthorized('Invalid token');
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
         }
-            
-        $requestData = $this->request->getJSON(true); // Retrieve JSON payload as an associative array
     
         // Validate the JSON payload
         $expectedKeys = ['status','limit','offset'];
@@ -128,14 +128,13 @@ class Orders extends Controller
     {
         $OrdersModel = new OrdersModel();
         
-        // Validate the provided token against the private token set in your environment variables
-        $token = $this->request->getHeaderLine('YBO-Token');
-        if ($token !== getenv('PRIVATE_TOKEN')) {
-            return $this->failUnauthorized('Invalid token');
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
         }
 
-        // Fetch the JSON data from the request and validate the presence of the 'id' field
-        $requestData = $this->request->getJSON(true);
         if (!isset($requestData['id'])) {
             return $this->failValidationError('Missing mandatory field: id');
         }
