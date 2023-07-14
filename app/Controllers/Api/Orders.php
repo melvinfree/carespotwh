@@ -156,14 +156,10 @@ class Orders extends Controller
     {
         $OrdersModel = new OrdersModel();
         
-        // Validate the provided token against the private token set in your environment variables
-        $token = $this->request->getHeaderLine('YBO-Token');
-        if ($token !== getenv('PRIVATE_TOKEN')) {
-            return $this->failUnauthorized('Invalid token');
-        }
+        // Validate token and get the request body
+        $requestData = validateTokenAndFetchData();
 
-        // Fetch the JSON data from the request and validate the presence of the 'id' field
-        $requestData = $this->request->getJSON(true);
+        
         if (!isset($requestData['id'])) {
             return $this->failValidationError('Missing mandatory field: id');
         }
