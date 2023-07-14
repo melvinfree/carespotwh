@@ -36,7 +36,7 @@ Events::on('pre_system', static function () {
 
         // Headers for CORS
 
-        header('Access-Control-Allow-Origin: http://whf.ybomedia.ro:3000');
+        header('Access-Control-Allow-Origin: http://whf.ybomedia.ro:3000'); // save
         header('Access-Control-Allow-Origin: http://localhost:3000');
         header("Access-Control-Allow-Methods: *");
         header("Access-Control-Allow-Headers: *");
