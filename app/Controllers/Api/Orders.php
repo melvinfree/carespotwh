@@ -173,7 +173,7 @@ class Orders extends Controller
         // Delete the order from the database
         $results = $OrdersModel->getOListExcelFormat($requestData['id']);
 
-        $jsonRes = json_encode($results,true);
+        $jsonRes = json_encode(succesResponse($results),true);
 
         // Return a success message
         return $this->respond($jsonRes, 200);
