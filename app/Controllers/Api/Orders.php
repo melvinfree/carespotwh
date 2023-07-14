@@ -48,8 +48,8 @@ class Orders extends Controller
 
     // Process the valid JSON payload
     // ...
-
-    $testxx = json_encode($requestData,true);
+    $headers = getallheaders();
+    $testxx = json_encode($headers,true);
 
     $now = date('Y-m-d H:i:s');
 
