@@ -90,10 +90,12 @@ class OrdersModel extends Model
     public function getOListExcelFormat($orderId)
     {
         // Get currency from ci_bl_orders table
-        $currency = $this->select('currency')
+        $order = $this->select('currency')
             ->where('id', $orderId)
-            ->first()
-            ->currency;
+            ->first();
+
+        if ($order) {
+        $currency = $order['currency'];
 
         // Get product details from ci_bl_order_products table
         $orderProductsModel = new OrderProductsModel();
@@ -103,6 +105,7 @@ class OrdersModel extends Model
             'currency' => $currency,
             'orderProducts' => $orderProducts
         ];
+        }
     }
 
     // Delete order
