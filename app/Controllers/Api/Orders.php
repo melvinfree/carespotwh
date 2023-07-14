@@ -124,6 +124,13 @@ class Orders extends Controller
         
        }
 
+    // Delete order based on id
+    // Payload type: JSON
+    // Payload format: 
+    // {"id": int}
+    // Good Response {"error":false,"message":"Order deleted"}
+    // Bad Response {"error":true,"message":"Order not found"}
+
     public function deleteOrder()
     {
         $OrdersModel = new OrdersModel();
