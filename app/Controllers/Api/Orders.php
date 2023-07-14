@@ -49,11 +49,7 @@ class Orders extends Controller
     // Process the valid JSON payload
     // ...
 
-    $testxx = json_decode($requestData,true);
-    
-    $results = $OrdersModel->getOrdersList($requestData['limit'], $requestData['offset']);
-
-    $jsonRes = json_encode(succesResponse($results),true);
+    $testxx = json_encode($requestData,true);
 
     $now = date('Y-m-d H:i:s');
 
@@ -61,6 +57,12 @@ class Orders extends Controller
     $txt = ''.$requestData.'';
     var_dump(fwrite($myfile, "\n". $txt));
     var_dump(fclose($myfile));
+    
+    $results = $OrdersModel->getOrdersList($requestData['limit'], $requestData['offset']);
+
+    $jsonRes = json_encode(succesResponse($results),true);
+
+
 
     return $this->respond($jsonRes, 200);
    }
