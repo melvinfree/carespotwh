@@ -84,6 +84,27 @@ class OrdersModel extends Model
         return $orders;
     }
 
+    // Export orders products in excel
+    // Used in orders list
+
+    public function getOListExcelFormat($orderId)
+    {
+        // Get currency from ci_bl_orders table
+        $currency = $this->select('currency')
+            ->where('id', $orderId)
+            ->first()
+            ->currency;
+
+        // Get product details from ci_bl_order_products table
+        $orderProductsModel = new OrderProductsModel();
+        $orderProducts = $orderProductsModel->getByOrderId($orderId, ['name', 'sku', 'ean', 'quantity', 'price_brutto']);
+
+        return [
+            'currency' => $currency,
+            'orderProducts' => $orderProducts
+        ];
+    }
+
     // Delete order
     public function deleteOrder($id)
 {

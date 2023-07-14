@@ -152,6 +152,34 @@ class Orders extends Controller
     }
 
 
+    public function getPlist()
+    {
+        $OrdersModel = new OrdersModel();
+        
+        // Validate the provided token against the private token set in your environment variables
+        $token = $this->request->getHeaderLine('YBO-Token');
+        if ($token !== getenv('PRIVATE_TOKEN')) {
+            return $this->failUnauthorized('Invalid token');
+        }
+
+        // Fetch the JSON data from the request and validate the presence of the 'id' field
+        $requestData = $this->request->getJSON(true);
+        if (!isset($requestData['id'])) {
+            return $this->failValidationError('Missing mandatory field: id');
+        }
+
+        $id = $requestData['id'];
+
+        // Delete the order from the database
+        $results = $OrdersModel->getOListExcelFormat($requestData['id']);
+
+        $jsonRes = json_encode($results,true);
+
+        // Return a success message
+        return $this->respond($jsonRes, 200);
+    }
+
+
 
 
 

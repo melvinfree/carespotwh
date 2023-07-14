@@ -10,6 +10,16 @@ class OrderProductsModel extends Model
     protected $primaryKey = 'id';
 
 
+    
+    public function getPListExcelFormat($orderId, $columns = ['*'])
+    {
+        return $this->select($columns)
+            ->where('order_id', $orderId)
+            ->findAll();
+    }
+    
+    
+    
     // [ORDER PRODUCTS TOTAL WITHOUT VAT] 
     // Calculate product prices (all product prices from a specific order without VAT (net price))
 
