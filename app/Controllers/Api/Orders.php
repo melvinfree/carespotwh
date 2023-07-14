@@ -157,7 +157,11 @@ class Orders extends Controller
         $OrdersModel = new OrdersModel();
         
         // Validate token and get the request body
-        $requestData = validateTokenAndFetchData();
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
 
         
         if (!isset($requestData['id'])) {
