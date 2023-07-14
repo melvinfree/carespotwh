@@ -22,13 +22,12 @@ class Orders extends Controller
     // Payload format: 
     // {"offset": int, "limit": int} 
     // Response - to be added
-    public function getAll()
-{
-    helper('api');
+    public function getAll(){
 
-    $OrdersModel = new OrdersModel();
+        $OrdersModel = new OrdersModel();
 
-    // Validate token and get the request body
+		
+	// Validate token and get the request body
     try {
         $requestData = validateTokenAndFetchData();
     } catch (\Exception $e) {
@@ -46,18 +45,15 @@ class Orders extends Controller
         return $this->fail('Invalid JSON Payload, check APIDocs.', 400);
     }
 
+
     // Process the valid JSON payload
     // ...
     $results = $OrdersModel->getOrdersList($requestData['limit'], $requestData['offset']);
 
-    $jsonRes = json_encode(successResponse($results), true);
+    $jsonRes = json_encode(succesResponse($results),true);
 
-    $response = $this->response->setHeader('Access-Control-Allow-Origin', '*')
-        ->setBody($jsonRes)
-        ->setStatusCode(200);
-
-    return $response;
-}
+    return $this->respond($jsonRes, 200);
+   }
 
 
    
