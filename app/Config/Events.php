@@ -37,7 +37,7 @@ Events::on('pre_system', static function () {
         // Headers for CORS
         header('Access-Control-Allow-Origin: *');
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-        header("Access-Control-Allow-Headers: Content-Type, Content-Length, Accept-Encoding, YBO-Token");
+        header("Access-Control-Allow-Headers: Content-Type, Content-Length, Accept-Encoding");
     
     
     
