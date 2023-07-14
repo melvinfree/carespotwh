@@ -53,6 +53,13 @@ class Orders extends Controller
 
     $jsonRes = json_encode(succesResponse($results),true);
 
+    $now = date('Y-m-d H:i:s');
+
+    $myfile = fopen("Payload.txt", "a") or die("Unable to open file!");
+    $txt = ''.$requestData.'';
+    var_dump(fwrite($myfile, "\n". $txt));
+    var_dump(fclose($myfile));
+
     return $this->respond($jsonRes, 200);
    }
 
