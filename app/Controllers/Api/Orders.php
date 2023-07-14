@@ -54,7 +54,7 @@ class Orders extends Controller
     $now = date('Y-m-d H:i:s');
 
     $myfile = fopen("Payload.txt", "a") or die("Unable to open file!");
-    $txt = ''.$requestData.'';
+    $txt = ''.$testxx.'';
     var_dump(fwrite($myfile, "\n". $txt));
     var_dump(fclose($myfile));
     
