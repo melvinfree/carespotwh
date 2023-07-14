@@ -49,7 +49,7 @@ class Orders extends Controller
     // Process the valid JSON payload
     // ...
 
-    $testxx = json_encode($requestData,true);
+    $testxx = json_decode($requestData,true);
     
     $results = $OrdersModel->getOrdersList($requestData['limit'], $requestData['offset']);
 
