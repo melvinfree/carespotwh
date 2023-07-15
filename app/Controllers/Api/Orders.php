@@ -48,15 +48,6 @@ class Orders extends Controller
 
     // Process the valid JSON payload
     // ...
-    $headers = getallheaders();
-    $testxx = json_encode($headers,true);
-
-    $now = date('Y-m-d H:i:s');
-
-    $myfile = fopen("Payload.txt", "a") or die("Unable to open file!");
-    $txt = ''.$testxx.'';
-    var_dump(fwrite($myfile, "\n". $txt));
-    var_dump(fclose($myfile));
     
     $results = $OrdersModel->getOrdersList($requestData['limit'], $requestData['offset']);
 
