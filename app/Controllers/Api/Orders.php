@@ -4,7 +4,7 @@ namespace App\Controllers\Api;
 
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Controller;
-use App\Models\Api\OrdersModel;
+use App\Models\Api\Orders\OrdersModel;
 
 class Orders extends Controller
 {

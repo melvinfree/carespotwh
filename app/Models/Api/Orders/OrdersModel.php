@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Api;
+namespace App\Models\Api\Orders;
 
 use CodeIgniter\Model;
 
@@ -14,13 +14,14 @@ class OrdersModel extends Model
     // Used in Orders Controller for Endpoint "getAll"
     public function getOrdersList($limit,$offset)
     {
-        $this->select('id, invoice_company, delivery_price, tax_rate, status, whStatus, order_notes');
-        $this->orderBy('id', 'DESC');
+        $this->select('ci_bl_orders.id, ci_customer_invoice_data.invoice_company, ci_bl_orders.delivery_price, ci_bl_orders.tax_rate, ci_bl_orders.status, ci_bl_orders.whStatus, ci_bl_orders.order_notes');
+        $this->join('ci_customer_invoice_data', 'ci_bl_orders.customer_id = ci_customer_invoice_data.customer_id', 'left');
+        $this->orderBy('ci_bl_orders.id', 'DESC');
         $this->limit($limit, $offset);
-        $query = $this->get(); 
-        $orders = $query->getResultArray(); 
+        $query = $this->get();
+        $orders = $query->getResultArray();
 
-        $orderProductsModel = new \App\Models\Api\OrderProductsModel();
+        $orderProductsModel = new \App\Models\Api\Orders\OrderProductsModel();
 
         foreach ($orders as &$order) {
             $totalProductPricesVAT = $orderProductsModel->getTotalWithoutVat($order['id']);
@@ -49,7 +50,7 @@ class OrdersModel extends Model
         $query = $this->get(); 
         $orders = $query->getResultArray(); 
 
-        $orderProductsModel = new \App\Models\Api\OrderProductsModel();
+        $orderProductsModel = new \App\Models\Api\Orders\OrderProductsModel();
 
         foreach ($orders as &$order) {
             $totalProductPricesVAT = $orderProductsModel->getTotalWithoutVat($order['id']);
@@ -73,7 +74,7 @@ class OrdersModel extends Model
         $query = $this->get(); 
         $orders = $query->getResultArray(); 
 
-        $orderProductsModel = new \App\Models\Api\OrderProductsModel();
+        $orderProductsModel = new \App\Models\Api\Orders\OrderProductsModel();
 
         foreach ($orders as &$order) {
             $totalProductPricesVAT = $orderProductsModel->getTotalWithoutVat($order['id']);
@@ -94,10 +95,16 @@ class OrdersModel extends Model
                     ->first();
 
         if ($order) {
+
             $orderProductsModel = new OrderProductsModel();
+            $CInvoiceData = new \App\Models\Api\Customers\CInvoiceDataModel();
+            $CDeliveryData = new \App\Models\Api\Customers\CDeliveryDataModel();
+
             $totalProductPricesVAT = $orderProductsModel->getTotalWithoutVat($order['id']);
             $totalProductPricesNOVAT = $orderProductsModel->getTotalWithVat($order['id']);
 
+            $order['invoice_data'] = $CInvoiceData->getInvoiceData($order['customer_id']);
+            $order['delivery_data'] = $CDeliveryData->getDeliveryData($order['customer_id']);
             $order['totalNoVat'] = round($this->calculateShippingWithoutVat($order['delivery_price'], $order['tax_rate']) + $totalProductPricesVAT, 4);
             $order['totalWithVat'] = round($order['delivery_price'] + $totalProductPricesNOVAT, 4);
             $order['orderProducts'] = $orderProductsModel->getOrderProducts($orderId);
