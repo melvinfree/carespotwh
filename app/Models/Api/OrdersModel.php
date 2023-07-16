@@ -32,6 +32,8 @@ class OrdersModel extends Model
 
         return $orders;
     }
+
+
     
     // Returning order list (including total with vat and without)
     // Used in Orders Controller for Endpoint "searchOrder"
@@ -82,6 +84,21 @@ class OrdersModel extends Model
         }
 
         return $orders;
+    }
+
+
+    public function getOrderWithProducts($orderId)
+    {
+        $order = $this->select('*')
+                    ->where('id', $orderId)
+                    ->first();
+
+        if ($order) {
+            $orderProductsModel = new OrderProductsModel();
+            $order['orderProducts'] = $orderProductsModel->getOrderProducts($orderId);
+        }
+
+        return $order;
     }
 
     // Export orders products in excel

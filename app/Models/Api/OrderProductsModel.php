@@ -17,6 +17,13 @@ class OrderProductsModel extends Model
             ->where('order_id', $orderId)
             ->findAll();
     }
+
+    public function getOrderProducts($orderId)
+    {
+        return $this->select('*') // Add more fields here as required
+                    ->where('order_id', $orderId)
+                    ->findAll();
+    }
     
     
     
