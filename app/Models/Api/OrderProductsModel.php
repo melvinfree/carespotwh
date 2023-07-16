@@ -19,11 +19,24 @@ class OrderProductsModel extends Model
     }
 
     public function getOrderProducts($orderId)
-    {
-        return $this->select('*') // Add more fields here as required
-                    ->where('order_id', $orderId)
-                    ->findAll();
+{
+    $products = $this->select('*') 
+                ->where('order_id', $orderId)
+                ->findAll();
+
+    // Apply VAT calculation for each product
+    $result = [];
+    foreach ($products as $product) {
+        $vatRate = $product['tax_rate'] ?? 0;
+        $grossPrice = $product['price_brutto'] ?? 0;
+        
+        // Net price calculation
+        $product['price_netto'] = $grossPrice / (1 + $vatRate / 100);
+        $result[] = $product;
     }
+
+    return $result;
+}
     
     
     
