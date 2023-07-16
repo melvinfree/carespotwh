@@ -31,7 +31,7 @@ class OrderProductsModel extends Model
         $grossPrice = $product['price_brutto'] ?? 0;
         
         // Net price calculation
-        $product['price_netto'] = $grossPrice / (1 + $vatRate / 100);
+        $product['price_netto'] = round($grossPrice / (1 + $vatRate / 100), 4);
         $result[] = $product;
     }
 
