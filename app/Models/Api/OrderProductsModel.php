@@ -32,6 +32,8 @@ class OrderProductsModel extends Model
         
         // Net price calculation
         $product['price_netto'] = round($grossPrice / (1 + $vatRate / 100), 4);
+        $product['price_total_netto'] = round(calculatePriceWithoutVAT($product['price_brutto'], $product['tax_rate'], $product['quantity']), 4);
+        $product['price_total_brutto'] = round(calculatePriceWithVAT($product['price_brutto'], $product['quantity']), 4);
         $result[] = $product;
     }
 
