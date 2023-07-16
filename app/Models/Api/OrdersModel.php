@@ -79,8 +79,8 @@ class OrdersModel extends Model
             $totalProductPricesVAT = $orderProductsModel->getTotalWithoutVat($order['id']);
             $totalProductPricesNOVAT = $orderProductsModel->getTotalWithVat($order['id']);
 
-            $order['totalNoVat'] = round($this->calculateShippingWithoutVat($order['delivery_price'], $order['tax_rate']) + $totalProductPricesVAT, 2);
-            $order['totalWithVat'] = round($order['delivery_price'] + $totalProductPricesNOVAT, 2);
+            $order['totalNoVat'] = round($this->calculateShippingWithoutVat($order['delivery_price'], $order['tax_rate']) + $totalProductPricesVAT, 4);
+            $order['totalWithVat'] = round($order['delivery_price'] + $totalProductPricesNOVAT, 4);
         }
 
         return $orders;
@@ -95,6 +95,11 @@ class OrdersModel extends Model
 
         if ($order) {
             $orderProductsModel = new OrderProductsModel();
+            $totalProductPricesVAT = $orderProductsModel->getTotalWithoutVat($order['id']);
+            $totalProductPricesNOVAT = $orderProductsModel->getTotalWithVat($order['id']);
+
+            $order['totalNoVat'] = round($this->calculateShippingWithoutVat($order['delivery_price'], $order['tax_rate']) + $totalProductPricesVAT, 4);
+            $order['totalWithVat'] = round($order['delivery_price'] + $totalProductPricesNOVAT, 4);
             $order['orderProducts'] = $orderProductsModel->getOrderProducts($orderId);
         }
 
