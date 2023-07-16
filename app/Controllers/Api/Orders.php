@@ -79,7 +79,7 @@ class Orders extends Controller
         ) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
-        if (!is_int($requestData["limit"]) || !is_int($requestData["limit"])) {
+        if (!is_int($requestData["id"])) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
 
