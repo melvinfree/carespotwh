@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use CodeIgniter\API\ResponseTrait;
+use App\Models\Api\Inventory\ProductsModel;
 use CodeIgniter\Controller;
 use App\Models\Api\PurchaseOrder\PurchaseOrderModel;
 use DateTime;
@@ -124,6 +125,23 @@ class Purchase extends Controller
 
         
         $jsonRes = json_encode(succesResponse(['id_nir' => $insertedId]), true);
+
+        return $this->respond($jsonRes, 200);
+    }
+
+    public function getProductsList()
+    {
+        $PurchaseOrder = new PurchaseOrderModel();
+        $ProductsModel = new ProductsModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+        
+        $jsonRes = json_encode(succesResponse($ProductsModel->getProductsList()), true);
 
         return $this->respond($jsonRes, 200);
     }
