@@ -81,15 +81,13 @@ class Purchase extends Controller
         $expectedKeys = ["supplier_id", "warehouse_id", "invoice_series", "invoice_number", "invoice_date"];
         $requestDataKeys = array_keys($requestData);
 
-        $date = DateTime::createFromFormat('Y-m-d', $requestData['invoice_date']);
-
         if (
             count($requestData) !== 6 ||
             !empty(array_diff($expectedKeys, $requestDataKeys))
         ) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
-        if (!($date && $date->format('Y-m-d') == $requestData['invoice_date']) || !is_int($requestData["supplier_id"]) || !is_string($requestData['invoice_series']) || !is_string($requestData['currency']) || !is_int($requestData["invoice_number"])) {
+        if (!is_string($requestData['currency']) || !is_int($requestData["supplier_id"]) || !is_string($requestData['invoice_series']) || !is_string($requestData['currency']) || !is_int($requestData["invoice_number"])) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
 
