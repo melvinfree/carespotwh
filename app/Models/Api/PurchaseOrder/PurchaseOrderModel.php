@@ -68,8 +68,8 @@ class PurchaseOrderModel extends Model
             $getPurchaseOrderValueWithVat = $PurchaseOrderProduct->getPurchaseOrderValueWithVat($purchase['id'],$purchase['currency_rate']);
             $getPurchaseOrderValueNoVat = $PurchaseOrderProduct->getPurchaseOrderValueNoVat($purchase['id'],$purchase['currency_rate']);
 
-            $order['totalNoVat'] = round($getPurchaseOrderValueNoVat, 4);
-            $order['totalWithVat'] = round($getPurchaseOrderValueWithVat, 4);
+            $purchase['totalNoVat'] = round($getPurchaseOrderValueNoVat, 4);
+            $purchase['totalWithVat'] = round($getPurchaseOrderValueWithVat, 4);
         }
 
         return $purchases;
