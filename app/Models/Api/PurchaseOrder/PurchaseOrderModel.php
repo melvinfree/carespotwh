@@ -34,7 +34,7 @@ class PurchaseOrderModel extends Model
         return $prepareArray;
     }
 
-    public function getPurchaseList(){
+    public function getPurchaseList($limit, $offset){
 
         $this->select('
         invoices_in.id,
@@ -58,6 +58,7 @@ class PurchaseOrderModel extends Model
         $this->join('suppliers', 'suppliers.id = invoices_in.supplier_id', 'left');
         $this->join('transport', 'transport.id = invoices_in.transport', 'left');
         $this->orderBy('invoices_in.reception_date', 'DESC');
+        $this->limit($limit, $offset);
         $query = $this->get();
         $purchases = $query->getResultArray();
 
