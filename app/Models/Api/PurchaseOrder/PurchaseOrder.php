@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Api\PurchaseModels\PurchaseOrder;
+namespace App\Models\Api\PurchaseOrder\PurchaseOrder;
 
 use CodeIgniter\Model;
 
@@ -61,7 +61,7 @@ class PurchaseOrder extends Model
         $query = $this->get();
         $purchases = $query->getResultArray();
 
-        $PurchaseOrderProduct = new \App\Models\Api\PurchaseModels\PurchaseOrderProduct();
+        $PurchaseOrderProduct = new \App\Models\Api\PurchaseOrder\PurchaseOrderProduct();
 
         foreach ($purchases as &$purchase) {
 
