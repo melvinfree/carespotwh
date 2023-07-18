@@ -4,7 +4,7 @@ namespace App\Models\Api\PurchaseOrder;
 
 use CodeIgniter\Model;
 
-class PurchaseOrder extends Model
+class PurchaseOrderModel extends Model
 {
 
     protected $table = 'invoices_in';
@@ -60,6 +60,17 @@ class PurchaseOrder extends Model
         $this->orderBy('invoices_in.reception_date', 'DESC');
         $query = $this->get();
         $purchases = $query->getResultArray();
+
+        $PurchaseOrderProductsModel = new \App\Models\Api\Purchase\PurchaseOrderProductModel();
+
+        foreach ($purchases as &$purchase) {
+
+            $getPurchaseOrderValueWithVat = $PurchaseOrderProductsModel->getPurchaseOrderValueWithVat($purchase['id'],$purchase['currency_rate']);
+            $getPurchaseOrderValueNoVat = $PurchaseOrderProductsModel->getPurchaseOrderValueNoVat($purchase['id'],$purchase['currency_rate']);
+
+            $order['totalNoVat'] = round($getPurchaseOrderValueNoVat, 4);
+            $order['totalWithVat'] = round($getPurchaseOrderValueWithVat, 4);
+        }
 
         return $purchases;
     }

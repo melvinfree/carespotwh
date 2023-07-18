@@ -4,7 +4,7 @@ namespace App\Controllers\Api;
 
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Controller;
-use App\Models\Api\PurchaseOrder\PurchaseOrder;
+use App\Models\Api\PurchaseOrder\PurchaseOrderModel;
 
 class Purchase extends Controller
 {
@@ -18,7 +18,7 @@ class Purchase extends Controller
 
     public function purchaseInit()
     {
-        $PurchaseOrder = new PurchaseOrder();
+        $PurchaseOrder = new PurchaseOrderModel();
 
         // Validate token and get the request body
         try {
@@ -36,7 +36,7 @@ class Purchase extends Controller
 
     public function purchaseList()
     {
-        $PurchaseOrder = new PurchaseOrder();
+        $PurchaseOrder = new PurchaseOrderModel();
 
         // Validate token and get the request body
         try {
