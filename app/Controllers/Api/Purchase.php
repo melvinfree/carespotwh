@@ -78,7 +78,7 @@ class Purchase extends Controller
         }
 
         // Validate the JSON payload
-        $expectedKeys = ["supplier_id", "warehouse_id", "invoice_series", "invoice_number", "invoice_date"];
+        $expectedKeys = ["supplier_id", "invoice_series", "invoice_number", "invoice_date", "currency"];
         $requestDataKeys = array_keys($requestData);
 
         if (
