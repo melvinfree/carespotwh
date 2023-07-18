@@ -51,7 +51,9 @@ class PurchaseOrder extends Model
         invoices_in.locked,
         invoices_in.currency_rate,
         invoices_in.invoice_value,
-        invoices_in.reception_date');
+        invoices_in.currency,
+        invoices_in.reception_date'
+    );
 
         $this->join('suppliers', 'suppliers.id = invoices_in.supplier_id', 'left');
         $this->join('transport', 'transport.id = invoices_in.transport', 'left');
