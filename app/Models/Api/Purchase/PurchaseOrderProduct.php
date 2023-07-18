@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Api\PurchaseOrder\PurchaseOrderProduct;
+namespace App\Models\Api\Purchase\PurchaseOrderProduct;
 
 use CodeIgniter\Model;
 
