@@ -83,12 +83,12 @@ class Purchase extends Controller
         $date = DateTime::createFromFormat('Y-m-d', $requestData['date']);
 
         if (
-            count($requestData) !== 5 ||
+            count($requestData) !== 6 ||
             !empty(array_diff($expectedKeys, $requestDataKeys))
         ) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
-        if (!($date && $date->format('Y-m-d') == $requestData['invoice_date']) || !is_int($requestData["supplier_id"]) || !is_int($requestData["warehouse_id"]) || !is_string($requestData['invoice_series']) || !is_int($requestData["invoice_number"])) {
+        if (!($date && $date->format('Y-m-d') == $requestData['invoice_date']) || !is_int($requestData["supplier_id"]) || !is_int($requestData["warehouse_id"]) || !is_string($requestData['invoice_series']) || !is_string($requestData['currency']) || !is_int($requestData["invoice_number"])) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
 
@@ -97,7 +97,9 @@ class Purchase extends Controller
             "warehouse_id" => $requestData["warehouse_id"],
             "invoice_series" => $requestData["invoice_series"],
             "invoice_number" => $requestData["invoice_number"],
-            "invoice_date" => $requestData["invoice_date"]
+            "invoice_date" => $requestData["invoice_date"],
+            "transport" => 1, // Courier / just one option
+            "currency" => $requestData["invoice_date"]
         ];
 
         $insertedId = $PurchaseOrder->insertData($insertdata);
