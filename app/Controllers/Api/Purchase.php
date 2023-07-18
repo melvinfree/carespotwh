@@ -15,6 +15,7 @@ class Purchase extends Controller
     public function __construct()
     {
         helper("api");
+        helper("currency");
     }
 
     public function purchaseInit()
@@ -78,27 +79,46 @@ class Purchase extends Controller
         }
 
         // Validate the JSON payload
-        $expectedKeys = ["supplier_id", "invoice_series", "invoice_number", "invoice_date", "currency"];
+        $expectedKeys = ["supplier_id", "invoice_series", "invoice_number", "invoice_date", "currency", "supplier_name"];
         $requestDataKeys = array_keys($requestData);
 
         if (
-            count($requestData) !== 5 ||
+            count($requestData) !== 6 ||
             !empty(array_diff($expectedKeys, $requestDataKeys))
         ) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
-        if (!is_string($requestData['currency']) || !is_int($requestData["supplier_id"]) || !is_string($requestData['invoice_series']) || !is_string($requestData['currency']) || !is_int($requestData["invoice_number"])) {
+        if (!is_string($requestData['currency']) || !is_string($requestData['supplier_name']) || !is_int($requestData["supplier_id"]) || !is_string($requestData['invoice_series']) || !is_string($requestData['currency']) || !is_int($requestData["invoice_number"])) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
 
-        $insertdata = [
-            "supplier_id" => $requestData["supplier_id"],
-            "invoice_series" => $requestData["invoice_series"],
-            "number" => $requestData["invoice_number"],
-            "invoice_date" => $requestData["invoice_date"],
-            "transport" => 1, // Courier / just one option
-            "currency" => $requestData["invoice_date"]
-        ];
+        if($requestData['currency'] == "RON"){
+        
+            $insertdata = [
+                "supplier_id" => $requestData["supplier_id"],
+                "supplier_name" => $requestData["supplier_name"],
+                "invoice_series" => $requestData["invoice_series"],
+                "number" => $requestData["invoice_number"],
+                "invoice_date" => $requestData["invoice_date"],
+                "transport" => 1, // Courier / just one option
+                "currency" => $requestData["currency"],
+                "currency_rate" => 1
+            ];
+        }
+
+        elseif($requestData['currency'] != "RON"){
+        
+            $insertdata = [
+                "supplier_id" => $requestData["supplier_id"],
+                "supplier_name" => $requestData["supplier_name"],
+                "invoice_series" => $requestData["invoice_series"],
+                "number" => $requestData["invoice_number"],
+                "invoice_date" => $requestData["invoice_date"],
+                "transport" => 1, // Courier / just one option
+                "currency" => $requestData["currency"],
+                "currency_rate" => getCurrencyRate($requestData["currency"])
+            ];
+        }
 
         $insertedId = $PurchaseOrder->createPurchase($insertdata);
 
