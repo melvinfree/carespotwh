@@ -4,7 +4,7 @@ namespace App\Controllers\Api;
 
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Controller;
-use App\Models\Api\Purchase\PurchaseOrder;
+use App\Models\Api\PurchaseModels\PurchaseOrder;
 
 class Purchase extends Controller
 {
