@@ -58,6 +58,8 @@ class PurchaseOrder extends Model
         $this->orderBy('invoices_in.reception_date', 'DESC');
         $query = $this->get();
         $purchases = $query->getResultArray();
+
+        return $purchases;
     }
 
 }
