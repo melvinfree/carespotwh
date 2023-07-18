@@ -61,7 +61,7 @@ class PurchaseOrderModel extends Model
         $query = $this->get();
         $purchases = $query->getResultArray();
 
-        $PurchaseOrderProductsModel = new \App\Models\Api\Purchase\PurchaseOrderProductModel();
+        $PurchaseOrderProductsModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderProductModel();
 
         foreach ($purchases as &$purchase) {
 
