@@ -4,7 +4,7 @@ namespace App\Models\Api\Suppliers;
 
 use CodeIgniter\Model;
 
-class SuppliersModel extends Model
+class SupplierModel extends Model
 {
 
     protected $table = 'suppliers';
