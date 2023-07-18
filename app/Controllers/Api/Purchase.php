@@ -82,7 +82,7 @@ class Purchase extends Controller
         $requestDataKeys = array_keys($requestData);
 
         if (
-            count($requestData) !== 6 ||
+            count($requestData) !== 5 ||
             !empty(array_diff($expectedKeys, $requestDataKeys))
         ) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
