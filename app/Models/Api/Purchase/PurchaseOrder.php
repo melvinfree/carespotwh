@@ -61,12 +61,12 @@ class PurchaseOrder extends Model
         $query = $this->get();
         $purchases = $query->getResultArray();
 
-        $PurchaseOrderProductsModel = new \App\Models\Api\Purchase\PurchaseOrderProduct();
+        $PurchaseOrderProduct = new \App\Models\Api\Purchase\PurchaseOrderProduct();
 
         foreach ($purchases as &$purchase) {
 
-            $getPurchaseOrderValueWithVat = $PurchaseOrderProductsModel->getPurchaseOrderValueWithVat($purchase['id'],$purchase['currency_rate']);
-            $getPurchaseOrderValueNoVat = $PurchaseOrderProductsModel->getPurchaseOrderValueNoVat($purchase['id'],$purchase['currency_rate']);
+            $getPurchaseOrderValueWithVat = $PurchaseOrderProduct->getPurchaseOrderValueWithVat($purchase['id'],$purchase['currency_rate']);
+            $getPurchaseOrderValueNoVat = $PurchaseOrderProduct->getPurchaseOrderValueNoVat($purchase['id'],$purchase['currency_rate']);
 
             $order['totalNoVat'] = round($getPurchaseOrderValueNoVat, 4);
             $order['totalWithVat'] = round($getPurchaseOrderValueWithVat, 4);
