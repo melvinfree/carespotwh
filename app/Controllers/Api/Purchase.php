@@ -81,7 +81,7 @@ class Purchase extends Controller
         $expectedKeys = ["supplier_id", "warehouse_id", "invoice_series", "invoice_number", "invoice_date"];
         $requestDataKeys = array_keys($requestData);
 
-        $date = DateTime::createFromFormat('Y-m-d', $requestData['date']);
+        $date = DateTime::createFromFormat('Y-m-d', $requestData['invoice_date']);
 
         if (
             count($requestData) !== 6 ||
