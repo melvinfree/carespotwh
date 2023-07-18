@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Api\PurchaseOrder\PurchaseOrderModel;
+namespace App\Models\Api\PurchaseOrder\PurchaseOrder;
 
 use CodeIgniter\Model;
 
-class PurchaseOrderModel extends Model
+class PurchaseOrder extends Model
 {
 
     protected $table = 'invoices_in';
@@ -61,7 +61,7 @@ class PurchaseOrderModel extends Model
         $query = $this->get();
         $purchases = $query->getResultArray();
 
-        $PurchaseOrderProductsModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderProductModel();
+        $PurchaseOrderProductsModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderProduct();
 
         foreach ($purchases as &$purchase) {
 
