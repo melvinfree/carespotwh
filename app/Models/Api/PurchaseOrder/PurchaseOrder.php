@@ -18,7 +18,7 @@ class PurchaseOrder extends Model
 
 
         $WarehouseModel = new \App\Models\Api\Inventory\WarehouseModel();
-        $SupplierModel = new \App\Models\Api\Suppliers\SuppliersModel();
+        $SupplierModel = new \App\Models\Api\Suppliers\SupplierModel();
 
         $warehouses = $WarehouseModel->getWarehouseList(); // Fetching warehouse list from database
         $suppliers = $SupplierModel->getSuppliersList(); // Fetching suppliers list from database
