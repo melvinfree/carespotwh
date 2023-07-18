@@ -34,4 +34,30 @@ class PurchaseOrder extends Model
         return $prepareArray;
     }
 
+    public function getPurchaseList(){
+
+        $this->select('
+        invoices_in.id,
+        invoices_in.invoice_date,
+        invoices_in.due_date,
+        invoices_in.supplier_id,
+        invoices_in.invoice_series,
+        invoices_in.number AS invoice_number,
+        suppliers.name AS supplier_name,
+        suppliers.code AS supplier_code,
+        transport.driver,
+        transport.number AS nr_auto,
+        invoices_in.image,
+        invoices_in.locked,
+        invoices_in.currency_rate,
+        invoices_in.invoice_value,
+        invoices_in.reception_date');
+
+        $this->join('suppliers', 'suppliers.id = invoices_in.supplier_id', 'left');
+        $this->join('transport', 'transport.id = invoices_in.transport', 'left');
+        $this->orderBy('invoices_in.reception_date', 'DESC');
+        $query = $this->get();
+        $purchases = $query->getResultArray();
+    }
+
 }

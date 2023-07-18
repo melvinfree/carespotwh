@@ -34,5 +34,22 @@ class Purchase extends Controller
         return $this->respond($jsonRes, 200);
     }
 
+    public function purchaseList()
+    {
+        $PurchaseOrder = new PurchaseOrder();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        
+        $jsonRes = json_encode(succesResponse($PurchaseOrder->getPurchaseList()), true);
+
+        return $this->respond($jsonRes, 200);
+    }
+
 
 }
