@@ -9,6 +9,13 @@ use App\Models\Api\PurchaseOrder\PurchaseOrder;
 class Purchase extends Controller
 {
 
+    use ResponseTrait;
+
+    public function __construct()
+    {
+        helper("api");
+    }
+
     public function purchaseInit()
     {
         $PurchaseOrder = new PurchaseOrder();
