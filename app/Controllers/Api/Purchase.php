@@ -94,7 +94,7 @@ class Purchase extends Controller
         $insertdata = [
             "supplier_id" => $requestData["supplier_id"],
             "invoice_series" => $requestData["invoice_series"],
-            "invoice_number" => $requestData["invoice_number"],
+            "number" => $requestData["invoice_number"],
             "invoice_date" => $requestData["invoice_date"],
             "transport" => 1, // Courier / just one option
             "currency" => $requestData["invoice_date"]
