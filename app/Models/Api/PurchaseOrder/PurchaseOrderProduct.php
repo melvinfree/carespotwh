@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Api\PurchaseOrder\PurchaseOrderProduct;
+namespace App\Models\Api\PurchaseOrder\PurchaseOrderProductModel;
 
 use CodeIgniter\Model;
 
-class PurchaseOrderProduct extends Model
+class PurchaseOrderProductModel extends Model
 {
 
     protected $table = 'invoices_in_products';
