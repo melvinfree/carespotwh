@@ -93,6 +93,6 @@ class Autoload extends AutoloadConfig
      * @var string[]
      * @phpstan-var list<string>
      */
-    public $helpers = ['api'];
+    public $helpers = ['api', 'currency'];
     
 }
