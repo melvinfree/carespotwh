@@ -1,7 +1,7 @@
 <?php
 
 
-if (! function_exists('succesResponse')){
+if (! function_exists('getCurrencyRate')){
 function getCurrencyRate($currencyCode)
 {
     $xml = simplexml_load_file('https://www.bnr.ro/nbrfxrates.xml');
