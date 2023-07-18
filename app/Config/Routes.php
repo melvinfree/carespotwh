@@ -43,6 +43,7 @@ $routes->post('/Api/Orders/getPlist', '\App\Controllers\Api\Orders::getPlist');
 
 $routes->post('/Api/Purchase/purchaseInit', '\App\Controllers\Api\Purchase::purchaseInit'); 
 $routes->post('/Api/Purchase/purchaseList', '\App\Controllers\Api\Purchase::purchaseList'); 
+$routes->post('/Api/Purchase/createPurchase', '\App\Controllers\Api\Purchase::createPurchase'); 
 
 
 

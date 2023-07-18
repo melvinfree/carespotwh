@@ -76,4 +76,10 @@ class PurchaseOrderModel extends Model
         return $purchases;
     }
 
+    public function createPurchase($data)
+    {
+        $this->db->table($this->table)->insert($data);
+        return $this->db->insertID(); // returns the ID of the inserted record
+    }
+
 }

@@ -65,5 +65,48 @@ class Purchase extends Controller
         return $this->respond($jsonRes, 200);
     }
 
+    public function createPurchase()
+    {
+        $PurchaseOrder = new PurchaseOrderModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        // Validate the JSON payload
+        $expectedKeys = ["supplier_id", "warehouse_id", "invoice_series", "invoice_number", "invoice_date"];
+        $requestDataKeys = array_keys($requestData);
+
+        $date = DateTime::createFromFormat('Y-m-d', $requestData['date']);
+
+        if (
+            count($requestData) !== 5 ||
+            !empty(array_diff($expectedKeys, $requestDataKeys))
+        ) {
+            return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
+        }
+        if (!($date && $date->format('Y-m-d') == $requestData['invoice_date']) || !is_int($requestData["supplier_id"]) || !is_int($requestData["warehouse_id"]) || !is_string($requestData['invoice_series']) || !is_int($requestData["invoice_number"])) {
+            return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
+        }
+
+        $insertdata = [
+            "supplier_id" => $requestData["supplier_id"],
+            "warehouse_id" => $requestData["warehouse_id"],
+            "invoice_series" => $requestData["invoice_series"],
+            "invoice_number" => $requestData["invoice_number"],
+            "invoice_date" => $requestData["invoice_date"]
+        ];
+
+        $insertedId = $PurchaseOrder->insertData($insertdata);
+
+        
+        $jsonRes = json_encode(succesResponse(['id_nir' => $insertedId]), true);
+
+        return $this->respond($jsonRes, 200);
+    }
+
 
 }
