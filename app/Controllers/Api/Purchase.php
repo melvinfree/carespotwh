@@ -88,13 +88,12 @@ class Purchase extends Controller
         ) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
-        if (!($date && $date->format('Y-m-d') == $requestData['invoice_date']) || !is_int($requestData["supplier_id"]) || !is_int($requestData["warehouse_id"]) || !is_string($requestData['invoice_series']) || !is_string($requestData['currency']) || !is_int($requestData["invoice_number"])) {
+        if (!($date && $date->format('Y-m-d') == $requestData['invoice_date']) || !is_int($requestData["supplier_id"]) || !is_string($requestData['invoice_series']) || !is_string($requestData['currency']) || !is_int($requestData["invoice_number"])) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
 
         $insertdata = [
             "supplier_id" => $requestData["supplier_id"],
-            "warehouse_id" => $requestData["warehouse_id"],
             "invoice_series" => $requestData["invoice_series"],
             "invoice_number" => $requestData["invoice_number"],
             "invoice_date" => $requestData["invoice_date"],
