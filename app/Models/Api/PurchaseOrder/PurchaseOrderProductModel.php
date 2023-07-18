@@ -12,7 +12,7 @@ class PurchaseOrderProductModel extends Model
 
     public function getPurchaseOrderValueNoVat($purchaseOrderId,$currency_rate){
 
-        $query = $this->selectSumselectSum('(quantity * acquisition_price * ' . $currency_rate . ')', 'total_without_vat')
+        $query = $this->selectSum('(quantity * acquisition_price * ' . $currency_rate . ')', 'total_without_vat')
             ->where('invoice_id', $purchaseOrderId)
             ->get();
 
