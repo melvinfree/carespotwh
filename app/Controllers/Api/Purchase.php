@@ -100,7 +100,7 @@ class Purchase extends Controller
             "currency" => $requestData["invoice_date"]
         ];
 
-        $insertedId = $PurchaseOrder->insertData($insertdata);
+        $insertedId = $PurchaseOrder->createPurchase($insertdata);
 
         
         $jsonRes = json_encode(succesResponse(['id_nir' => $insertedId]), true);
