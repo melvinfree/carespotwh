@@ -21,17 +21,29 @@ class ProductsModel extends Model
     }
 
     public function searchProducts($searchTerm)
-    {
-        $this->select('id, name');
-        $this->where('status', 'active');
-        $this->like('id', $searchTerm)
-         ->orLike('model', $searchTerm)
-         ->orLike('name', $searchTerm);
-        $this->orderBy('id', 'DESC');
-        $query = $this->get(); 
-        $products = $query->getResultArray(); 
+{
+    $searchTerm = "%{$searchTerm}%";  // Add wildcard characters for LIKE
 
-        return $products;
-    }
+    $query = $this->db->query("
+        SELECT id, name
+        FROM " . $this->table . "
+        WHERE status = 'active' AND
+            (id LIKE ?
+            OR model LIKE ?
+            OR name LIKE ?)
+        ORDER BY 
+            CASE 
+                WHEN id LIKE ? THEN 1
+                WHEN model LIKE ? THEN 2
+                WHEN name LIKE ? THEN 3
+                ELSE 4
+            END, id DESC
+        ", [$searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm]
+    );  // Pass search term into query multiple times
+
+    $products = $query->getResultArray(); 
+
+    return $products;
+}
 
 }
