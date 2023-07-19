@@ -22,6 +22,9 @@ class StockModel extends Model
         'acquisition_price_invoice'
     ];
 
+    
+    
+    
     public function addToStock($data)
     {
         
