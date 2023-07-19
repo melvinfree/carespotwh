@@ -47,7 +47,7 @@ $routes->post('/Api/Purchase/createPurchase', '\App\Controllers\Api\Purchase::cr
 $routes->post('/Api/Purchase/getProductsList', '\App\Controllers\Api\Purchase::getProductsList');
 $routes->post('/Api/Purchase/searchProduct', '\App\Controllers\Api\Purchase::searchProduct');
 $routes->post('/Api/Purchase/addProduct', '\App\Controllers\Api\Purchase::addProduct');
-
+$routes->post('/Api/Purchase/addToStock', '\App\Controllers\Api\Purchase::addToStock');
 
 
 /*

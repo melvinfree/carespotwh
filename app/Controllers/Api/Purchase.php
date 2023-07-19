@@ -203,4 +203,23 @@ class Purchase extends Controller
     }
 
 
+    public function addToStock()
+    {
+    $PurchaseOrderProductModel = new PurchaseOrderProductModel();
+
+    // Validate token and get the request body
+    try {
+        $requestData = validateTokenAndFetchData();
+    } catch (\Exception $e) {
+        return $this->failUnauthorized($e->getMessage());
+    }
+
+    $responses = $PurchaseOrderProductModel->addInvoiceProductsToStock($requestData['invoice_id'], $requestData['warehouse_id']);
+
+    $jsonRes = json_encode(succesResponse($responses), true);
+
+    return $this->respond($jsonRes, 200);
+    }
+
+
 }

@@ -135,6 +135,8 @@ class PurchaseOrderProductModel extends Model
 
             $stockModel->addToStock($data);
         }
+
+        return "success";
     }
 
 }
