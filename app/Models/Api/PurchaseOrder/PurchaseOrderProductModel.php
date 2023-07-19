@@ -93,7 +93,7 @@ class PurchaseOrderProductModel extends Model
                 'tax' => $product['tax']
             ];
             
-            $this->db->table('products')->insert($products);
+            $this->db->table($this->table)->insert($products);
             $responses[] = ['record_id' => $this->db->insertID()];
         }
     }
