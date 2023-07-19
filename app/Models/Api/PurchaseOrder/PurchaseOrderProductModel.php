@@ -38,5 +38,68 @@ class PurchaseOrderProductModel extends Model
         }
     }
 
+    // Adaugare produse pe nir
+    // Daca produsul deja exista se actualizeaza valorile / daca nu, se adauga linie noua.
+    public function insertProducts($data)
+    {
+    $responses = [];
+
+    $invoice_id = $data['response']['invoice_id'];
+
+    foreach($data['products'] as $product) {
+        $dbRecord = $this->db->table('products')
+             ->where('invoice_id', $invoice_id)
+             ->where('product_id', $product['product_id'])
+             ->get()
+             ->getRow();
+
+        if($dbRecord) {
+
+            $product = [
+                'acquisition_price' => $product['acquisition_price'],
+                'quantity' => $product['quantity'],
+                'tax' => $product['tax']
+            ];
+
+            // Perform update operation and add the result to $responses
+            $this->db->table('products')
+                ->where('invoice_id', $invoice_id)
+                ->where('product_id', $product['product_id'])
+                ->update($product);
+
+                if ($this->db->affectedRows() > 0) {
+                    $updatedRecord = $this->db->table('products')
+                                       ->where('invoice_id', $invoice_id)
+                                       ->where('product_id', $product['product_id'])
+                                       ->get()
+                                       ->getRow();
+                
+                    $responses[] = ['record_id' => $updatedRecord->id];
+                } else {
+                    $responses[] = ['record_id' => "false"];
+                }
+        }
+        else {
+
+
+            // Perform insert operation and add the result to $responses
+            
+            $product = [
+                'invoice_id' => $product['invoice_id'],
+                'product_id' => $product['product_id'],
+                'product_name' => $product['product_name'],
+                'acquisition_price' => $product['acquisition_price'],
+                'quantity' => $product['quantity'],
+                'tax' => $product['tax']
+            ];
+            
+            $this->db->table('products')->insert($product);
+            $responses[] = ['record_id' => $this->db->insertID()];
+        }
+    }
+
+    return $responses;
+    }
+
     }
 

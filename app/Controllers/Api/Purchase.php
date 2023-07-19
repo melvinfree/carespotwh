@@ -6,6 +6,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\Api\Inventory\ProductsModel;
 use CodeIgniter\Controller;
 use App\Models\Api\PurchaseOrder\PurchaseOrderModel;
+use App\Models\Api\PurchaseOrder\PurchaseOrderProductModel;
 use DateTime;
 
 class Purchase extends Controller
@@ -129,6 +130,7 @@ class Purchase extends Controller
         return $this->respond($jsonRes, 200);
     }
 
+
     public function getProductsList()
     {
         $PurchaseOrder = new PurchaseOrderModel();
@@ -180,6 +182,24 @@ class Purchase extends Controller
         $jsonRes = json_encode(succesResponse($results), true);
 
         return $this->respond($jsonRes, 200);
+    }
+
+    public function addProduct()
+    {
+    $PurchaseOrderProductModel = new PurchaseOrderProductModel();
+
+    // Validate token and get the request body
+    try {
+        $requestData = validateTokenAndFetchData();
+    } catch (\Exception $e) {
+        return $this->failUnauthorized($e->getMessage());
+    }
+
+    $responses = $PurchaseOrderProductModel->insertProducts($requestData);
+
+    $jsonRes = json_encode(successResponse($responses), true);
+
+    return $this->respond($jsonRes, 200);
     }
 
 
