@@ -110,7 +110,7 @@ class PurchaseOrderProductModel extends Model
         $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel();
 
         $invoice = $purchaseOrderModel->where('id', $invoiceId)->first();
-        $supplierId = $invoice['supplier'];
+        $supplierId = $invoice['supplier_id'];
 
 
 
