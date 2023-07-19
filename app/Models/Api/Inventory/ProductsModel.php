@@ -20,4 +20,18 @@ class ProductsModel extends Model
     return $products;
     }
 
+    public function searchProducts($searchTerm)
+    {
+        $this->select('id, name');
+        $this->where('status', 'active');
+        $this->like('id', $searchTerm)
+         ->orLike('model', $searchTerm)
+         ->orLike('name', $searchTerm);
+        $this->orderBy('id', 'DESC');
+        $query = $this->get(); 
+        $products = $query->getResultArray(); 
+
+        return $products;
+    }
+
 }

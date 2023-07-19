@@ -146,5 +146,41 @@ class Purchase extends Controller
         return $this->respond($jsonRes, 200);
     }
 
+    // Retrive a list of specific orders based on searchterm (useful for orderlist)- , available terms [invoice_company/orderid/email/phone]
+    // Payload type: JSON
+    // Payload format:
+    // {"searchterm": "string", "limit": int, "offset": int}
+    // Response - to be added
+    public function searchProduct()
+    {
+        $ProductsModel = new ProductsModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        // Validate the JSON payload
+        $expectedKeys = ["searchterm"];
+        $requestDataKeys = array_keys($requestData);
+
+        if (
+            count($requestData) !== 1 ||
+            !empty(array_diff($expectedKeys, $requestDataKeys))
+        ) {
+            return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
+        }
+
+        $results = $ProductsModel->searchProducts(
+            $requestData["searchterm"]
+        );
+
+        $jsonRes = json_encode(succesResponse($results), true);
+
+        return $this->respond($jsonRes, 200);
+    }
+
 
 }
