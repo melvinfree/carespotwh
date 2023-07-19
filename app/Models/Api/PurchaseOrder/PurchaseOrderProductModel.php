@@ -85,7 +85,7 @@ class PurchaseOrderProductModel extends Model
             // Perform insert operation and add the result to $responses
             
             $product = [
-                'invoice_id' => $product['invoice_id'],
+                'invoice_id' => $invoice_id,
                 'product_id' => $product['product_id'],
                 'product_name' => $product['product_name'],
                 'acquisition_price' => $product['acquisition_price'],
