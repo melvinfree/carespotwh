@@ -44,12 +44,10 @@ class PurchaseOrderProductModel extends Model
     {
     $responses = [];
 
-    $decodedData = json_decode($data, true);
-
-    $invoice_id = $decodedData['invoice_id'];
+    $invoice_id = $data['invoice_id'];
 
     foreach($data['products'] as $product) {
-        $dbRecord = $this->db->table('products')
+        $dbRecord = $this->db->table($this->table)
              ->where('invoice_id', $invoice_id)
              ->where('product_id', $product['product_id'])
              ->get()
@@ -64,13 +62,13 @@ class PurchaseOrderProductModel extends Model
             ];
 
             // Perform update operation and add the result to $responses
-            $this->db->table('products')
+            $this->db->table($this->table)
                 ->where('invoice_id', $invoice_id)
                 ->where('product_id', $product['product_id'])
                 ->update($products);
 
                 if ($this->db->affectedRows() > 0) {
-                    $updatedRecord = $this->db->table('products')
+                    $updatedRecord = $this->db->table($this->table)
                                        ->where('invoice_id', $invoice_id)
                                        ->where('product_id', $product['product_id'])
                                        ->get()
