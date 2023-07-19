@@ -76,7 +76,7 @@ class PurchaseOrderProductModel extends Model
                 
                     $responses[] = ['record_id' => $updatedRecord->id];
                 } else {
-                    $responses[] = ['record_id' => "false"];
+                    $responses[] = ['record_id' => $this->db->getLastQuery()];
                 }
         }
         else {
