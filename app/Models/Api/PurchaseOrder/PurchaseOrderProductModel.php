@@ -102,5 +102,40 @@ class PurchaseOrderProductModel extends Model
     return $responses;
     }
 
+    public function addInvoiceProductsToStock($invoiceId, $warehouseId)
+    {
+        $invoiceProducts = $this->where('invoice_id', $invoiceId)->findAll();
+
+        $stockModel = new \App\Models\Api\Inventory\StockModel();
+        $purchaseOrderModel = new \App\Models\PurchaseOrderModel();
+
+        $invoice = $purchaseOrderModel->find($invoiceId);
+        $supplierId = $invoice['supplier'];
+
+
+
+        foreach ($invoiceProducts as $product) {
+
+            // Prepare data to be added into stock table (as stock unit)
+
+            $data = [
+                'product_id' => $product['product_id'],
+                'supplier' => $supplierId,
+                'quantity' => $product['quantity'],
+                'invoice_in_id' => $product['invoice_id'],
+                'invoice_product_id' => $product['id'],
+                'warehouse' => $warehouseId,
+                'discount' => $product['discount'],   // need to add discount to production database table (invoices_in_products)
+                'status' => 'instock',
+                'acquisition_price' => $product['acquisition_price'],
+                'acquisition_price_invoice' => $product['acquisition_price'],
+            ];
+
+
+
+            $stockModel->addToStock($data);
+        }
     }
+
+}
 
