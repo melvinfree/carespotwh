@@ -53,7 +53,6 @@ class PurchaseOrderProductModel extends Model
              ->get()
              ->getRow();
 
-             var_dump($dbRecord);
 
         if($dbRecord) {
 
@@ -78,7 +77,7 @@ class PurchaseOrderProductModel extends Model
                 
                     $responses[] = ['record_id' => $updatedRecord->id];
                 } else {
-                    $responses[] = ['record_id' => 1];
+                    $responses[] = ['record_id' => "false"];
                 }
         }
         else {
