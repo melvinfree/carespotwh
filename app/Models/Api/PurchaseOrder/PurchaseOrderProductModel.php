@@ -109,7 +109,7 @@ class PurchaseOrderProductModel extends Model
         $stockModel = new \App\Models\Api\Inventory\StockModel();
         $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel();
 
-        $invoice = $purchaseOrderModel->find($invoiceId);
+        $invoice = $purchaseOrderModel->where('invoice_id', $invoiceId)->first();
         $supplierId = $invoice['supplier'];
 
 
