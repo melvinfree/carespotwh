@@ -10,6 +10,19 @@ class StockModel extends Model
     protected $table = 'stock_copy1';
     protected $primaryKey = 'id';
 
+    protected $allowedFields = [
+        'product_id',
+        'supplier',
+        'quantity',
+        'invoice_in_id',
+        'invoice_product_id',
+        'warehouse',
+        'discount',
+        'status',
+        'acquisition_price',
+        'acquisition_price_invoice'
+    ];
+
     public function addToStock($data)
     {
         
