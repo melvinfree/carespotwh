@@ -13,7 +13,6 @@ class StockModel extends Model
     protected $allowedFields = [
         'product_id',
         'supplier',
-        'quantity',
         'invoice_in_id',
         'invoice_product_id',
         'warehouse',
@@ -30,7 +29,6 @@ class StockModel extends Model
             $this->insert([
                 'product_id' => $data['product_id'],
                 'supplier' => $data['supplier'],
-                'quantity' => $data['quantity'],
                 'invoice_in_id' => $data['invoice_in_id'],
                 'invoice_product_id' => $data['invoice_product_id'],
                 'warehouse' => $data['warehouse'],
