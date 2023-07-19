@@ -44,7 +44,9 @@ class PurchaseOrderProductModel extends Model
     {
     $responses = [];
 
-    $invoice_id = $data['invoice_id'];
+    $decodedData = json_decode($data, true);
+
+    $invoice_id = $decodedData['invoice_id'];
 
     foreach($data['products'] as $product) {
         $dbRecord = $this->db->table('products')
