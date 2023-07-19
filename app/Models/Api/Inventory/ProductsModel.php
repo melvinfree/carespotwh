@@ -25,7 +25,7 @@ class ProductsModel extends Model
     $searchTerm = "%{$searchTerm}%";  // Add wildcard characters for LIKE
 
     $query = $this->db->query("
-        SELECT id, name
+        SELECT id, name, model
         FROM " . $this->table . "
         WHERE status = 'active' AND
             (id LIKE ?
