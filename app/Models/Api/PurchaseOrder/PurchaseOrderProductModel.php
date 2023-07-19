@@ -107,7 +107,7 @@ class PurchaseOrderProductModel extends Model
         $invoiceProducts = $this->where('invoice_id', $invoiceId)->findAll();
 
         $stockModel = new \App\Models\Api\Inventory\StockModel();
-        $purchaseOrderModel = new \App\Models\PurchaseOrderModel();
+        $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel();
 
         $invoice = $purchaseOrderModel->find($invoiceId);
         $supplierId = $invoice['supplier'];
