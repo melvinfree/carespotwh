@@ -197,7 +197,7 @@ class Purchase extends Controller
 
     $responses = $PurchaseOrderProductModel->insertProducts($requestData);
 
-    $jsonRes = json_encode(successResponse($responses), true);
+    $jsonRes = json_encode(succesResponse($responses), true);
 
     return $this->respond($jsonRes, 200);
     }
