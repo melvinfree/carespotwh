@@ -121,6 +121,7 @@ class PurchaseOrderProductModel extends Model
             $data = [
                 'product_id' => $product['product_id'],
                 'supplier' => $supplierId,
+                'quantity' => $product['quantity'],
                 'invoice_in_id' => $product['invoice_id'],
                 'invoice_product_id' => $product['id'],
                 'warehouse' => $warehouseId,
