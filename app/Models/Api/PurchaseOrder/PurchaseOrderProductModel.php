@@ -44,7 +44,7 @@ class PurchaseOrderProductModel extends Model
     {
     $responses = [];
 
-    $invoice_id = $data['response']['invoice_id'];
+    $invoice_id = $data['invoice_id'];
 
     foreach($data['products'] as $product) {
         $dbRecord = $this->db->table('products')
@@ -55,7 +55,7 @@ class PurchaseOrderProductModel extends Model
 
         if($dbRecord) {
 
-            $product = [
+            $products = [
                 'acquisition_price' => $product['acquisition_price'],
                 'quantity' => $product['quantity'],
                 'tax' => $product['tax']
@@ -65,7 +65,7 @@ class PurchaseOrderProductModel extends Model
             $this->db->table('products')
                 ->where('invoice_id', $invoice_id)
                 ->where('product_id', $product['product_id'])
-                ->update($product);
+                ->update($products);
 
                 if ($this->db->affectedRows() > 0) {
                     $updatedRecord = $this->db->table('products')
@@ -84,7 +84,7 @@ class PurchaseOrderProductModel extends Model
 
             // Perform insert operation and add the result to $responses
             
-            $product = [
+            $products = [
                 'invoice_id' => $invoice_id,
                 'product_id' => $product['product_id'],
                 'product_name' => $product['product_name'],
@@ -93,7 +93,7 @@ class PurchaseOrderProductModel extends Model
                 'tax' => $product['tax']
             ];
             
-            $this->db->table('products')->insert($product);
+            $this->db->table('products')->insert($products);
             $responses[] = ['record_id' => $this->db->insertID()];
         }
     }
