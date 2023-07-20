@@ -6,7 +6,12 @@ use CodeIgniter\Model;
 
 class PurchaseOrderProductModel extends Model
 {
-    
+
+
+
+    protected $allowedFields = [
+        'invoice_id'
+    ];
 
     protected $table = 'invoices_in_products';
     protected $primaryKey = 'id';
