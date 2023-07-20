@@ -105,35 +105,33 @@ class PurchaseOrderModel extends Model
 
         
         
-        if (isset($requestData['invoice_number'])){
+        $response = ['invoice_id' => $requestData['invoice_id']];
 
-            $this->set('number', $requestData['invoice_number'])
-                 ->where('id', $requestData['invoice_id'])
-                 ->update();
+if (isset($requestData['invoice_number'])){
+    $this->set('number', $requestData['invoice_number'])
+         ->where('id', $requestData['invoice_id'])
+         ->update();
 
-             return ['invoice_id' => $requestData['invoice_id'], 'status' => 'succes'];
+    $response['invoice_number_status'] = 'success';
+}
 
-        }
+if (isset($requestData['invoice_series'])){
+    $this->set('invoice_series', $requestData['invoice_series'])
+         ->where('id', $requestData['invoice_id'])
+         ->update();
 
-        elseif (isset($requestData['invoice_series'])){
+    $response['invoice_series_status'] = 'success';
+}
 
-            $this->set('invoice_series', $requestData['invoice_series'])
-                 ->where('id', $requestData['invoice_id'])
-                 ->update();
+if (isset($requestData['invoice_date'])){
+    $this->set('invoice_date', $requestData['invoice_date'])
+         ->where('id', $requestData['invoice_id'])
+         ->update();
 
-             return ['invoice_id' => $requestData['invoice_id'], 'status' => 'succes'];
+    $response['invoice_date_status'] = 'success';
+}
 
-        }
-
-        elseif (isset($requestData['invoice_date'])){
-
-            $this->set('invoice_date', $requestData['invoice_date'])
-                 ->where('id', $requestData['invoice_id'])
-                 ->update();
-
-             return ['invoice_id' => $requestData['invoice_id'], 'status' => 'succes'];
-
-        } 
+return $response;
 
 
 
