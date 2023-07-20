@@ -218,7 +218,7 @@ class PurchaseOrderProductModel extends Model
         $stockModel = new \App\Models\Api\Inventory\StockModel();
         $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel(); 
 
-       /* $row = $this->find($rowId);
+        $row = $this->find($rowId);
 
         $productId = $row['product_id'];
         
@@ -254,8 +254,7 @@ class PurchaseOrderProductModel extends Model
         $stockModel->where('invoice_in_id', $InvoiceId)
                      ->delete();
     
-        return 'Produsul '.$row['product_name'].' a fost sters din nir-ul '. $InvoiceId .''; */
-        return var_dump($rowId);
+        return 'Produsul '.$row['product_name'].' a fost sters din nir-ul '. $InvoiceId .'';
     }
 
 }
