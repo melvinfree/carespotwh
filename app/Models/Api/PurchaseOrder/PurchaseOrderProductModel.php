@@ -110,7 +110,7 @@ class PurchaseOrderProductModel extends Model
     //This function is used to fetch data from invoices_in & invoices_in_products and then those data are pushed to stock table
     //as a unit lines (e.g. if was ordered 30 pcs of a product, in stock it will go 30 different rows)
     
-    public function addInvoiceProductsToStock($invoiceId, $warehouseId)
+    public function addInvoiceProductsToStock($invoiceId)
     {
         $invoiceProducts = $this->where('invoice_id', $invoiceId)->findAll();
 
@@ -120,6 +120,7 @@ class PurchaseOrderProductModel extends Model
         $invoice = $purchaseOrderModel->where('id', $invoiceId)->first();
         $supplierId = $invoice['supplier_id'];
         $currency_rate = $invoice['currency_rate'];
+        $warehouse_id = $invoice['warehouse_id'];
 
 
 
@@ -133,7 +134,7 @@ class PurchaseOrderProductModel extends Model
                 'quantity' => $product['quantity'],
                 'invoice_in_id' => $product['invoice_id'],
                 'invoice_product_id' => $product['id'],
-                'warehouse' => $warehouseId,
+                'warehouse' => $warehouse_id,
                 'discount' => $product['discount'],   // need to add discount to production database table (invoices_in_products)
                 'status' => 'instock',
                 'acquisition_price' => $product['acquisition_price'] * $currency_rate,

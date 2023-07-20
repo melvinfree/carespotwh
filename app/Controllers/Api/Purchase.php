@@ -81,7 +81,7 @@ class Purchase extends Controller
         }
 
         // Validate the JSON payload
-        $expectedKeys = ["supplier_id", "supplier_name", "invoice_series", "invoice_number", "invoice_date", "currency"];
+        $expectedKeys = ["supplier_id", "supplier_name", "invoice_series", "invoice_number", "invoice_date", "currency" , "warehouse_id", "warehouse_name"];
         $requestDataKeys = array_keys($requestData);
 
         if (
@@ -90,7 +90,7 @@ class Purchase extends Controller
         ) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
-        if (!is_string($requestData['currency']) || !is_string($requestData['supplier_name']) || !is_int($requestData["supplier_id"]) || !is_string($requestData['invoice_series']) || !is_string($requestData['currency']) || !is_int($requestData["invoice_number"])) {
+        if (!is_string($requestData['currency']) || !is_string($requestData['supplier_name']) || !is_string($requestData['warehouse_name']) || !is_int($requestData["supplier_id"]) || !is_string($requestData['invoice_series']) || !is_string($requestData['currency']) || !is_int($requestData["invoice_number"]) || !is_int($requestData["warehouse_id"])) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
 
@@ -104,6 +104,8 @@ class Purchase extends Controller
                 "invoice_date" => $requestData["invoice_date"],
                 "transport" => 1, // Courier / just one option
                 "currency" => $requestData["currency"],
+                "warehouse_id" => $requestData['warehouse_id'],
+                "warehouse_name" => $requestData['warehouse_name'],
                 "currency_rate" => 1
             ];
         }
@@ -118,6 +120,8 @@ class Purchase extends Controller
                 "invoice_date" => $requestData["invoice_date"],
                 "transport" => 1, // Courier / just one option
                 "currency" => $requestData["currency"],
+                "warehouse_id" => $requestData['warehouse_id'],
+                "warehouse_name" => $requestData['warehouse_name'],
                 "currency_rate" => getCurrencyRate($requestData["currency"])
             ];
         }
@@ -214,7 +218,7 @@ class Purchase extends Controller
         return $this->failUnauthorized($e->getMessage());
     }
 
-    $responses = $PurchaseOrderProductModel->addInvoiceProductsToStock($requestData['invoice_id'], $requestData['warehouse_id']);
+    $responses = $PurchaseOrderProductModel->addInvoiceProductsToStock($requestData['invoice_id']);
 
     $jsonRes = json_encode(succesResponse($responses), true);
 
