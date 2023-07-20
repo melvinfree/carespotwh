@@ -249,7 +249,7 @@ class Purchase extends Controller
     } catch (\Exception $e) {
         return $this->failUnauthorized($e->getMessage());
     }
-    $responses = $PurchaseOrderProductModel->deleteProduct($requestData['row_id'], $requestData['current_invoice_id']);
+    $responses = $PurchaseOrderProductModel->deleteProduct($requestData['row_id'], $requestData['invoice_id']);
 
     $jsonRes = json_encode(succesResponse($responses), true);
 

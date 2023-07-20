@@ -174,7 +174,7 @@ class PurchaseOrderProductModel extends Model
         $pData = $this->find($rowId);
 
 
-            if ($product['status'] != 'instock' && $product['status'] = 'allocated'  && $product['order_id'] == null) {
+            if ($product['status'] != 'instock' && $product['status'] == 'allocated'  && $product['order_id'] == null) {
                 // One of the products is not 'instock', store its order_id in the array
                 $nonInstockOrders[] = ["order_id" => $product['order_id'],
                                        "product_name" => $pData['product_name'],
@@ -205,7 +205,9 @@ class PurchaseOrderProductModel extends Model
                    ->where('product_id', $productId)
                    ->update();
     
-        return 'Produsul '.$pData['product_name'].' a fost mutat in nir-ul '. $newInvoice['id'] .'';
+                   $returnArr = ["product_id" => $row['product_id'], "status" => 'moved', 'invoice_id' => $currentInvoiceId, 'new_invoice_id' => $newInvoiceId];
+    
+                   return $returnArr;
     }
 
 
@@ -253,8 +255,10 @@ class PurchaseOrderProductModel extends Model
         // Also delete product records from stock table.
         $stockModel->where('invoice_in_id', $InvoiceId)
                      ->delete();
+
+                     $returnArr = ["product_id" => $row['product_id'], "status" => 'deleted', 'invoice_id' => $InvoiceId];
     
-        return 'Produsul '.$row['product_name'].' a fost sters din nir-ul '. $InvoiceId .'';
+        return $returnArr;
     }
 
 }
