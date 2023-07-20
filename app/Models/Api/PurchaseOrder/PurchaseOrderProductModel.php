@@ -7,8 +7,6 @@ use CodeIgniter\Model;
 class PurchaseOrderProductModel extends Model
 {
 
-
-
     protected $allowedFields = [
         'invoice_id'
     ];
@@ -159,11 +157,10 @@ class PurchaseOrderProductModel extends Model
         $stockModel = new \App\Models\Api\Inventory\StockModel();
         $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel(); 
 
-
         $row = $this->find($rowId);
+
         $productId = $row['product_id'];
         
-
         $products = $stockModel->where('invoice_in_id', $currentInvoiceId)
                            ->where('product_id', $productId)
                            ->findAll();
@@ -209,6 +206,55 @@ class PurchaseOrderProductModel extends Model
                    ->update();
     
         return 'Produsul '.$pData['product_name'].' a fost mutat in nir-ul '. $newInvoice['id'] .'';
+    }
+
+
+
+
+    
+    public function deleteProduct($rowId,$InvoiceId)
+    {
+        // Get all products associated with the current invoice from the stock table
+        $stockModel = new \App\Models\Api\Inventory\StockModel();
+        $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel(); 
+
+        $row = $this->find($rowId);
+
+        $productId = $row['product_id'];
+        
+        $products = $stockModel->where('invoice_in_id', $InvoiceId)
+                               ->where('product_id', $productId)
+                               ->findAll();
+    
+        // Prepare an array to hold order ids of products that are not 'instock'
+        $nonInstockOrders = [];
+    
+        // Check if any product has a status other than 'instock'
+        foreach ($products as $product) {
+
+        $pData = $this->find($rowId);
+
+
+            if ($product['status'] != 'instock' && $product['status'] = 'allocated'  && $product['order_id'] == null) {
+                $nonInstockOrders[] = ["order_id" => $product['order_id'],
+                                       "product_name" => $pData['product_name'],
+                                    ];
+            }
+        }
+    
+        // If there are any products not 'instock', return the error messages
+        if (!empty($nonInstockOrders)) {
+            return $nonInstockOrders;
+        }
+
+        // Delete product from current NIR.
+        $this->delete(['id' => $rowId]);
+
+        // Also delete product records from stock table.
+        $stockModel->where('invoice_in_id', $InvoiceId)
+                     ->delete();
+    
+        return 'Produsul '.$pData['product_name'].' a fost sters din nir-ul '. $InvoiceId .'';
     }
 
 }
