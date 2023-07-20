@@ -10,6 +10,12 @@ class PurchaseOrderModel extends Model
     protected $table = 'invoices_in';
     protected $primaryKey = 'id';
 
+    protected $allowedFields = [
+        'number',
+        'invoice_date',
+        'invoice_series'
+    ];
+
 
     // Returning order list (including total with vat and without)
     // Used in Orders Controller for Endpoint "getAll"
