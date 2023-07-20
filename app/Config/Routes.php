@@ -49,6 +49,9 @@ $routes->post('/Api/Purchase/searchProduct', '\App\Controllers\Api\Purchase::sea
 $routes->post('/Api/Purchase/addProduct', '\App\Controllers\Api\Purchase::addProduct');
 $routes->post('/Api/Purchase/addToStock', '\App\Controllers\Api\Purchase::addToStock');
 $routes->post('/Api/Purchase/changeProductInvoice', '\App\Controllers\Api\Purchase::changeProductInvoice');
+$routes->post('/Api/Purchase/deleteProduct', '\App\Controllers\Api\Purchase::deleteProduct');
+
+
 
 /*
  * --------------------------------------------------------------------
