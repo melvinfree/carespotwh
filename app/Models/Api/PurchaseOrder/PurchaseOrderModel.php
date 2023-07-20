@@ -84,9 +84,11 @@ class PurchaseOrderModel extends Model
 
     public function modifyInvoice($requestData){
         
-        $invoice = $this->find($requestData['invoice_id']);
+       // $invoice = $this->find($requestData['invoice_id']);
 
-        if($invoice === null) {
+       return $requestData['invoice_id'];
+
+       /* if($invoice === null) {
             // The invoice does not exist
             return ['invoice_id' => $requestData['invoice_id'], 'status' => 'missing'];
 
@@ -126,7 +128,7 @@ class PurchaseOrderModel extends Model
 
              return ['invoice_id' => $requestData['invoice_id'], 'status' => 'succes'];
 
-        }
+        } */
 
 
 
