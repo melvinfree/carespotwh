@@ -152,10 +152,12 @@ class PurchaseOrderProductModel extends Model
     {
         // Get all products associated with the current invoice from the stock table
         $stockModel = new \App\Models\Api\Inventory\StockModel();
+        $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel(); 
 
 
         $row = $this->find($rowId);
         $productId = $row['product_id'];
+        
 
         $products = $stockModel->where('invoice_in_id', $currentInvoiceId)
                            ->where('product_id', $productId)
@@ -182,6 +184,26 @@ class PurchaseOrderProductModel extends Model
         if (!empty($nonInstockOrders)) {
             return $nonInstockOrders;
         }
+
+        // Check if the new invoice is locked
+        $newInvoice = $purchaseOrderModel->find($newInvoiceId);
+        if ($newInvoice['locked'] == 1) {
+            return 'Nir-ul este inchis '. $newInvoice['id'] .'. Nu poti muta produsul in acel nir.';
+        }
+
+        // All products are 'instock' or 'allocated', and the new invoice is not locked. So, update the invoice_id in the invoices_in_products table for the specific product.
+        $this->set('invoice_id', $newInvoiceId)
+             ->where('invoice_id', $currentInvoiceId)
+             ->where('product_id', $productId)
+             ->update();
+
+        // Also update the invoice_in_id in the stock table for the specific product
+        $stockModel->set('invoice_in_id', $newInvoiceId)
+                   ->where('invoice_in_id', $currentInvoiceId)
+                   ->where('product_id', $productId)
+                   ->update();
+    
+        return 'Produsul '.$pData['product_name'].' a fost mutat in nir-ul '. $newInvoice['id'] .'';
     }
 
 }
