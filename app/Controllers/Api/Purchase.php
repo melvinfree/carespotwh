@@ -222,4 +222,22 @@ class Purchase extends Controller
     }
 
 
+    public function changeProductInvoice()
+    {
+    $PurchaseOrderProductModel = new PurchaseOrderProductModel();
+
+    // Validate token and get the request body
+    try {
+        $requestData = validateTokenAndFetchData();
+    } catch (\Exception $e) {
+        return $this->failUnauthorized($e->getMessage());
+    }
+    $responses = $PurchaseOrderProductModel->updateInvoiceId($requestData['current_invoice_id'], $requestData['new_invoice_id'], $requestData['row_id']);
+
+    $jsonRes = json_encode(succesResponse($responses), true);
+
+    return $this->respond($jsonRes, 200);
+    }
+
+
 }

@@ -144,5 +144,35 @@ class PurchaseOrderProductModel extends Model
         return "success";
     }
 
+    public function updateInvoiceId($currentInvoiceId, $newInvoiceId, $rowId)
+    {
+        // Get all products associated with the current invoice from the stock table
+        $stockModel = new \App\Models\Api\Inventory\StockModel();
+
+
+        $row = $this->find($rowId);
+        $productId = $row['product_id'];
+
+        $products = $stockModel->where('invoice_in_id', $currentInvoiceId)
+                           ->where('product_id', $productId)
+                           ->findAll();
+    
+        // Prepare an array to hold order ids of products that are not 'instock'
+        $nonInstockOrders = [];
+    
+        // Check if any product has a status other than 'instock'
+        foreach ($products as $product) {
+            if ($product['status'] != 'instock' && $product['status'] != 'allocated') {
+                // One of the products is not 'instock', store its order_id in the array
+                $nonInstockOrders[] = 'Line ' . $product['product_id'] . ' is in order ' . $product['order_id'];
+            }
+        }
+    
+        // If there are any products not 'instock', return the error messages
+        if (!empty($nonInstockOrders)) {
+            return $nonInstockOrders;
+        }
+    }
+
 }
 
