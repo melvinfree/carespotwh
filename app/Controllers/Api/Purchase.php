@@ -256,5 +256,22 @@ class Purchase extends Controller
     return $this->respond($jsonRes, 200);
     }
 
+    public function setInvoiceValues()
+    {
+    $PurchaseOrderProductModel = new PurchaseOrderProductModel();
+
+    // Validate token and get the request body
+    try {
+        $requestData = validateTokenAndFetchData();
+    } catch (\Exception $e) {
+        return $this->failUnauthorized($e->getMessage());
+    }
+    $responses = $PurchaseOrderProductModel->modifyInvoice($requestData);
+
+    $jsonRes = json_encode(succesResponse($responses), true);
+
+    return $this->respond($jsonRes, 200);
+    }
+
 
 }
