@@ -156,8 +156,8 @@ class PurchaseOrderProductModel extends Model
         // Get all products associated with the current invoice from the stock table
         $stockModel = new \App\Models\Api\Inventory\StockModel();
         $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel(); 
-        var_dump($rowId); // This will print out the value of $rowId
-        $row = $this->find($rowId);
+   //     $row = $this->find($rowId);
+        /*
         $productId = $row['product_id'];
         
         $products = $stockModel->where('invoice_in_id', $currentInvoiceId)
@@ -203,8 +203,10 @@ class PurchaseOrderProductModel extends Model
                    ->where('invoice_in_id', $currentInvoiceId)
                    ->where('product_id', $productId)
                    ->update();
-    
-        return 'Produsul '.$pData['product_name'].' a fost mutat in nir-ul '. $newInvoice['id'] .'';
+    */
+      //  return 'Produsul '.$pData['product_name'].' a fost mutat in nir-ul '. $newInvoice['id'] .'';
+
+      return var_dump($rowId);
     }
 
 
