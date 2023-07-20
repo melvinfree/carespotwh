@@ -254,7 +254,7 @@ class PurchaseOrderProductModel extends Model
         $stockModel->where('invoice_in_id', $InvoiceId)
                      ->delete();
     
-        return 'Produsul '.$pData['product_name'].' a fost sters din nir-ul '. $InvoiceId .'';
+        return 'Produsul '.$row['product_name'].' a fost sters din nir-ul '. $InvoiceId .'';
     }
 
 }
