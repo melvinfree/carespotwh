@@ -165,9 +165,15 @@ class PurchaseOrderProductModel extends Model
     
         // Check if any product has a status other than 'instock'
         foreach ($products as $product) {
+
+        $pData = $this->find($rowId);
+
+
             if ($product['status'] != 'instock' && $product['status'] = 'allocated' && $product['invoice_out_id'] == null) {
                 // One of the products is not 'instock', store its order_id in the array
-                $nonInstockOrders[] = 'Line ' . $product['product_id'] . ' is in order ' . $product['order_id'];
+                $nonInstockOrders[] = ["order_id" => $product['order_id'],
+                                       "product_name" => $pData['product_name'],
+                                    ];
             }
         }
     

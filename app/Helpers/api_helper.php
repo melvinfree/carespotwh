@@ -13,6 +13,18 @@ function succesResponse($response)
 }
 }
 
+if (! function_exists('failResponse'))
+{
+function failResponse($response)
+{
+    return [
+        'status' => 200,
+        'code' => "error",
+        'response' => $response
+    ];
+}
+}
+
 if (! function_exists('validateTokenAndFetchData')){
 function validateTokenAndFetchData()
 {
