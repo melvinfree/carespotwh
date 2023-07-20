@@ -234,7 +234,7 @@ class Purchase extends Controller
     }
     $responses = $PurchaseOrderProductModel->updateInvoiceId($requestData['current_invoice_id'], $requestData['new_invoice_id'], $requestData['row_id']);
 
-    $jsonRes = json_encode(failResponse($responses), true);
+    $jsonRes = json_encode(succesResponse($responses), true);
 
     return $this->respond($jsonRes, 200);
     }

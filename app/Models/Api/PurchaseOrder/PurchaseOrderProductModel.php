@@ -6,12 +6,7 @@ use CodeIgniter\Model;
 
 class PurchaseOrderProductModel extends Model
 {
-
-    public function __construct()
-    {
-        helper("api");
-        helper("currency");
-    }
+    
 
     protected $table = 'invoices_in_products';
     protected $primaryKey = 'id';
@@ -185,10 +180,8 @@ class PurchaseOrderProductModel extends Model
     
         // If there are any products not 'instock', return the error messages
         if (!empty($nonInstockOrders)) {
-            return failResponse($nonInstockOrders);
+            return $nonInstockOrders;
         }
-
-        
     }
 
 }
