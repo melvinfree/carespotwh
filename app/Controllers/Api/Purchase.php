@@ -258,7 +258,7 @@ class Purchase extends Controller
 
     public function setInvoiceValues()
     {
-    $PurchaseOrderProductModel = new PurchaseOrderProductModel();
+    $PurchaseOrderModel = new PurchaseOrderModel();
 
     // Validate token and get the request body
     try {
@@ -266,7 +266,7 @@ class Purchase extends Controller
     } catch (\Exception $e) {
         return $this->failUnauthorized($e->getMessage());
     }
-    $responses = $PurchaseOrderProductModel->modifyInvoice($requestData);
+    $responses = $PurchaseOrderModel->modifyInvoice($requestData);
 
     $jsonRes = json_encode(succesResponse($responses), true);
 
