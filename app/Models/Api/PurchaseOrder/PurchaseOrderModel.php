@@ -117,7 +117,7 @@ class PurchaseOrderModel extends Model
 
         if (isset($requestData['invoice_series'])){
 
-            $this->set('number', $requestData['invoice_series'])
+            $this->set('invoice_series', $requestData['invoice_series'])
                  ->where('id', $requestData['invoice_id'])
                  ->update();
 
@@ -127,7 +127,7 @@ class PurchaseOrderModel extends Model
 
         if (isset($requestData['invoice_date'])){
 
-            $this->set('number', $requestData['invoice_date'])
+            $this->set('invoice_date', $requestData['invoice_date'])
                  ->where('id', $requestData['invoice_id'])
                  ->update();
 
