@@ -6,42 +6,31 @@ use CodeIgniter\Model;
 
 class PurchaseOrderModel extends Model
 {
+    protected $table = "invoices_in";
+    protected $primaryKey = "id";
 
-    protected $table = 'invoices_in';
-    protected $primaryKey = 'id';
-
-    protected $allowedFields = [
-        'number',
-        'invoice_date',
-        'invoice_series'
-    ];
-
+    protected $allowedFields = ["number", "invoice_date", "invoice_series"];
 
     // Returning order list (including total with vat and without)
     // Used in Orders Controller for Endpoint "getAll"
     public function getInfo()
     {
-
-
         $WarehouseModel = new \App\Models\Api\Inventory\WarehouseModel();
         $SupplierModel = new \App\Models\Api\Suppliers\SupplierModel();
-
-
 
         $warehouses = $WarehouseModel->getWarehouseList(); // Fetching warehouse list from database
         $suppliers = $SupplierModel->getSuppliersList(); // Fetching suppliers list from database
 
-        
         $prepareArray = [
             "suppliers" => $suppliers,
-            "warehouses" => $warehouses
+            "warehouses" => $warehouses,
         ];
 
         return $prepareArray;
     }
 
-    public function getPurchaseList($limit, $offset){
-
+    public function getPurchaseList($limit, $offset)
+    {
         $this->select('
         invoices_in.id,
         invoices_in.invoice_date,
@@ -58,12 +47,19 @@ class PurchaseOrderModel extends Model
         invoices_in.currency_rate,
         invoices_in.invoice_value,
         invoices_in.currency,
-        invoices_in.reception_date'
-    );
+        invoices_in.reception_date');
 
-        $this->join('suppliers', 'suppliers.id = invoices_in.supplier_id', 'left');
-        $this->join('transport', 'transport.id = invoices_in.transport', 'left');
-        $this->orderBy('invoices_in.reception_date', 'DESC');
+        $this->join(
+            "suppliers",
+            "suppliers.id = invoices_in.supplier_id",
+            "left"
+        );
+        $this->join(
+            "transport",
+            "transport.id = invoices_in.transport",
+            "left"
+        );
+        $this->orderBy("invoices_in.reception_date", "DESC");
         $this->limit($limit, $offset);
         $query = $this->get();
         $purchases = $query->getResultArray();
@@ -71,12 +67,17 @@ class PurchaseOrderModel extends Model
         $PurchaseOrderProduct = new \App\Models\Api\PurchaseOrder\PurchaseOrderProductModel();
 
         foreach ($purchases as &$purchase) {
+            $getPurchaseOrderValueWithVat = $PurchaseOrderProduct->getPurchaseOrderValueWithVat(
+                $purchase["id"],
+                $purchase["currency_rate"]
+            );
+            $getPurchaseOrderValueNoVat = $PurchaseOrderProduct->getPurchaseOrderValueNoVat(
+                $purchase["id"],
+                $purchase["currency_rate"]
+            );
 
-            $getPurchaseOrderValueWithVat = $PurchaseOrderProduct->getPurchaseOrderValueWithVat($purchase['id'],$purchase['currency_rate']);
-            $getPurchaseOrderValueNoVat = $PurchaseOrderProduct->getPurchaseOrderValueNoVat($purchase['id'],$purchase['currency_rate']);
-
-            $purchase['totalNoVat'] = round($getPurchaseOrderValueNoVat, 4);
-            $purchase['totalWithVat'] = round($getPurchaseOrderValueWithVat, 4);
+            $purchase["totalNoVat"] = round($getPurchaseOrderValueNoVat, 4);
+            $purchase["totalWithVat"] = round($getPurchaseOrderValueWithVat, 4);
         }
 
         return $purchases;
@@ -88,53 +89,51 @@ class PurchaseOrderModel extends Model
         return $this->db->insertID(); // returns the ID of the inserted record
     }
 
-    public function modifyInvoice($requestData){
-        
-        $invoice = $this->find($requestData['invoice_id']);
+    public function modifyInvoice($requestData)
+    {
+        $invoice = $this->find($requestData["invoice_id"]);
 
-
-        if($invoice === null) {
+        if ($invoice === null) {
             // The invoice does not exist
-            return ['invoice_id' => $requestData['invoice_id'], 'status' => 'missing'];
-
+            return [
+                "invoice_id" => $requestData["invoice_id"],
+                "status" => "missing",
+            ];
         }
 
-        if ($invoice['locked'] == 1) {
-            return ['status' => 'locked', 'invoice_id' => $requestData['invoice_id']];
+        if ($invoice["locked"] == 1) {
+            return [
+                "status" => "locked",
+                "invoice_id" => $requestData["invoice_id"],
+            ];
         }
 
-        
-        
-        $response = ['invoice_id' => $requestData['invoice_id']];
+        $response = ["invoice_id" => $requestData["invoice_id"]];
 
-if (isset($requestData['invoice_number'])){
-    $this->set('number', $requestData['invoice_number'])
-         ->where('id', $requestData['invoice_id'])
-         ->update();
+        if (isset($requestData["invoice_number"])) {
+            $this->set("number", $requestData["invoice_number"])
+                ->where("id", $requestData["invoice_id"])
+                ->update();
 
-    $response['invoice_number_status'] = 'success';
-}
+            $response["invoice_number_status"] = "success";
+        }
 
-if (isset($requestData['invoice_series'])){
-    $this->set('invoice_series', $requestData['invoice_series'])
-         ->where('id', $requestData['invoice_id'])
-         ->update();
+        if (isset($requestData["invoice_series"])) {
+            $this->set("invoice_series", $requestData["invoice_series"])
+                ->where("id", $requestData["invoice_id"])
+                ->update();
 
-    $response['invoice_series_status'] = 'success';
-}
+            $response["invoice_series_status"] = "success";
+        }
 
-if (isset($requestData['invoice_date'])){
-    $this->set('invoice_date', $requestData['invoice_date'])
-         ->where('id', $requestData['invoice_id'])
-         ->update();
+        if (isset($requestData["invoice_date"])) {
+            $this->set("invoice_date", $requestData["invoice_date"])
+                ->where("id", $requestData["invoice_id"])
+                ->update();
 
-    $response['invoice_date_status'] = 'success';
-}
+            $response["invoice_date_status"] = "success";
+        }
 
-return $response;
-
-
-
+        return $response;
     }
-
 }
