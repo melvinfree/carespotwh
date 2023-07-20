@@ -82,4 +82,54 @@ class PurchaseOrderModel extends Model
         return $this->db->insertID(); // returns the ID of the inserted record
     }
 
+    public function modifyInvoice($requestData){
+        
+        $invoice = find($requestData['invoice_id']);
+
+        if($invoice === null) {
+            // The invoice does not exist
+            return ['invoice_id' => $requestData['invoice_id'], 'status' => 'missing'];
+
+        }
+
+        if ($invoice['locked'] == 1) {
+            return ['status' => 'locked', 'invoice_id' => $requestData['invoice_id']];
+        }
+
+        
+        
+        if (isset($requestData['invoice_number'])){
+
+            $this->set('number', $requestData['invoice_number'])
+                 ->where('invoice_id', $requestData['invoice_id'])
+                 ->update();
+
+             return ['invoice_id' => $requestData['invoice_id'], 'status' => 'succes'];
+
+        }
+
+        if (isset($requestData['invoice_series'])){
+
+            $this->set('number', $requestData['invoice_series'])
+                 ->where('invoice_id', $requestData['invoice_id'])
+                 ->update();
+
+             return ['invoice_id' => $requestData['invoice_id'], 'status' => 'succes'];
+
+        }
+
+        if (isset($requestData['invoice_date'])){
+
+            $this->set('number', $requestData['invoice_date'])
+                 ->where('invoice_id', $requestData['invoice_id'])
+                 ->update();
+
+             return ['invoice_id' => $requestData['invoice_id'], 'status' => 'succes'];
+
+        }
+
+
+
+    }
+
 }

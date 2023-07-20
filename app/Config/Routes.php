@@ -50,6 +50,7 @@ $routes->post('/Api/Purchase/addProduct', '\App\Controllers\Api\Purchase::addPro
 $routes->post('/Api/Purchase/addToStock', '\App\Controllers\Api\Purchase::addToStock');
 $routes->post('/Api/Purchase/changeProductInvoice', '\App\Controllers\Api\Purchase::changeProductInvoice');
 $routes->post('/Api/Purchase/deleteProduct', '\App\Controllers\Api\Purchase::deleteProduct');
+$routes->post('/Api/Purchase/modifyInvoice', '\App\Controllers\Api\Purchase::modifyInvoice');
 
 
 
