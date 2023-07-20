@@ -83,17 +83,19 @@ class PurchaseOrderModel extends Model
     }
 
     public function modifyInvoice($requestData){
+
+        $invoiceId = $requestData['invoice_id'];
         
-        $invoice = $this->find($requestData['invoice_id']);
+        $invoice = $this->find($invoiceId);
 
         if($invoice === null) {
             // The invoice does not exist
-            return ['invoice_id' => $requestData['invoice_id'], 'status' => 'missing'];
+            return ['invoice_id' => $invoiceId, 'status' => 'missing'];
 
         }
 
         if ($invoice['locked'] == 1) {
-            return ['status' => 'locked', 'invoice_id' => $requestData['invoice_id']];
+            return ['status' => 'locked', 'invoice_id' => $invoiceId];
         }
 
         
@@ -101,10 +103,10 @@ class PurchaseOrderModel extends Model
         if (isset($requestData['invoice_number'])){
 
             $this->set('number', $requestData['invoice_number'])
-                 ->where('invoice_id', $requestData['invoice_id'])
+                 ->where('invoice_id', $invoiceId)
                  ->update();
 
-             return ['invoice_id' => $requestData['invoice_id'], 'status' => 'succes'];
+             return ['invoice_id' => $invoiceId, 'status' => 'succes'];
 
         }
 
@@ -114,17 +116,17 @@ class PurchaseOrderModel extends Model
                  ->where('invoice_id', $requestData['invoice_id'])
                  ->update();
 
-             return ['invoice_id' => $requestData['invoice_id'], 'status' => 'succes'];
+             return ['invoice_id' => $invoiceId, 'status' => 'succes'];
 
         }
 
         if (isset($requestData['invoice_date'])){
 
             $this->set('number', $requestData['invoice_date'])
-                 ->where('invoice_id', $requestData['invoice_id'])
+                 ->where('invoice_id', $invoiceId)
                  ->update();
 
-             return ['invoice_id' => $requestData['invoice_id'], 'status' => 'succes'];
+             return ['invoice_id' => $invoiceId, 'status' => 'succes'];
 
         }
 
