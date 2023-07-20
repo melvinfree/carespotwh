@@ -86,7 +86,7 @@ class PurchaseOrderModel extends Model
         
        // $invoice = $this->find($requestData['invoice_id']);
 
-       return $requestData['invoice_id'];
+       return var_dump($requestData['invoice_id']);
 
        /* if($invoice === null) {
             // The invoice does not exist
