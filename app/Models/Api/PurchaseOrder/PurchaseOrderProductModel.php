@@ -172,7 +172,7 @@ class PurchaseOrderProductModel extends Model
         $pData = $this->find($rowId);
 
 
-            if ($product['status'] != 'instock' && $product['status'] = 'allocated' && $product['invoice_out_id'] == null) {
+            if ($product['status'] != 'instock' && $product['status'] = 'allocated'  && $product['order_id'] == null) {
                 // One of the products is not 'instock', store its order_id in the array
                 $nonInstockOrders[] = ["order_id" => $product['order_id'],
                                        "product_name" => $pData['product_name'],
