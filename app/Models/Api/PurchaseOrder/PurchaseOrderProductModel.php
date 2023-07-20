@@ -144,6 +144,9 @@ class PurchaseOrderProductModel extends Model
         return "success";
     }
 
+    
+    
+    // Need to improve conditions to fit better (it works perfect in tests)
     public function updateInvoiceId($currentInvoiceId, $newInvoiceId, $rowId)
     {
         // Get all products associated with the current invoice from the stock table
@@ -162,7 +165,7 @@ class PurchaseOrderProductModel extends Model
     
         // Check if any product has a status other than 'instock'
         foreach ($products as $product) {
-            if ($product['status'] != 'instock') {
+            if ($product['status'] != 'instock' && $product['status'] = 'allocated' && $product['invoice_out_id'] == null) {
                 // One of the products is not 'instock', store its order_id in the array
                 $nonInstockOrders[] = 'Line ' . $product['product_id'] . ' is in order ' . $product['order_id'];
             }
