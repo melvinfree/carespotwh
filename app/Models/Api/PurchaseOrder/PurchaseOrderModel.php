@@ -59,7 +59,7 @@ class PurchaseOrderModel extends Model
             "transport.id = invoices_in.transport",
             "left"
         );
-        $this->orderBy("invoices_in.reception_date", "DESC");
+        $this->orderBy("invoices_in.id", "DESC");
         $this->limit($limit, $offset);
         $query = $this->get();
         $purchases = $query->getResultArray();
