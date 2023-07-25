@@ -51,6 +51,7 @@ $routes->post('/Api/Purchase/addToStock', '\App\Controllers\Api\Purchase::addToS
 $routes->post('/Api/Purchase/changeProductInvoice', '\App\Controllers\Api\Purchase::changeProductInvoice');
 $routes->post('/Api/Purchase/deleteProduct', '\App\Controllers\Api\Purchase::deleteProduct');
 $routes->post('/Api/Purchase/setInvoiceValues', '\App\Controllers\Api\Purchase::setInvoiceValues');
+$routes->post('/Api/Purchase/getInvoicePList', '\App\Controllers\Api\Purchase::getInvoicePList');
 
 
 
