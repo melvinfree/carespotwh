@@ -27,6 +27,7 @@ class PurchaseOrderProductModel extends Model
             invoices_in_products.acquisition_price * invoices_in.currency_rate as price_ron,
             invoices_in_products.acquisition_price,
             invoices_in.currency,
+            invoices_in.quantity,
             invoices_in_products.acquisition_price * invoices_in.currency_rate * invoices_in_products.quantity as total_no_vat
         FROM 
             invoices_in_products
