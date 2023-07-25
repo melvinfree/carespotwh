@@ -19,6 +19,7 @@ class PurchaseOrderProductModel extends Model
 
         $query = $this->db->query("
         SELECT 
+            invoices_in_products.id AS row_id,
             invoices_in_products.product_id,
             invoices_in_products.product_name,
             invoices_in.warehouse_name,
