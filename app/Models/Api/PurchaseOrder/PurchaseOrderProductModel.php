@@ -14,6 +14,30 @@ class PurchaseOrderProductModel extends Model
     protected $table = 'invoices_in_products';
     protected $primaryKey = 'id';
 
+    public function get_invoice_products($invoice_id)
+    {
+
+        $builder =  $this->db->table($this->table);
+        $builder->select('
+            invoices_in_products.product_id,
+            invoices_in_products.product_name,
+            invoices_in.warehouse_name,
+            invoices_in_products.tax,
+            invoices_in_products.discount,
+            invoices_in_products.acquisition_price * invoices_in.currency_rate as price_ron,
+            invoices_in_products.acquisition_price,
+            invoices_in.currency,
+            invoices_in_products.acquisition_price * invoices_in.currency_rate * invoices_in_products.quantity as total_no_vat
+        ');
+        $builder->join('invoices_in', 'invoices_in.id = invoices_in_products.invoice_id');
+        $builder->where('invoices_in_products.invoice_id', $invoice_id);
+
+        $query = $builder->get();
+
+        return $query->getResult();
+    }
+
+
     public function getPurchaseOrderValueNoVat($purchaseOrderId,$currency_rate){
 
         $query = $this->selectSum('(quantity * acquisition_price * ' . $currency_rate . ')', 'total_without_vat')

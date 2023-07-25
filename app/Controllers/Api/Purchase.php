@@ -278,4 +278,22 @@ class Purchase extends Controller
     }
 
 
+    public function getInvoicePList()
+    {
+    $PurchaseOrderProductModel = new PurchaseOrderProductModel();
+
+    // Validate token and get the request body
+    try {
+        $requestData = validateTokenAndFetchData();
+    } catch (\Exception $e) {
+        return $this->failUnauthorized($e->getMessage());
+    }
+    $responses = $PurchaseOrderProductModel->get_invoice_products($requestData['invoice_id']);
+
+    $jsonRes = json_encode(succesResponse($responses), true);
+
+    return $this->respond($jsonRes, 200);
+    }
+
+
 }
