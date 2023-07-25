@@ -17,8 +17,8 @@ class PurchaseOrderProductModel extends Model
     public function get_invoice_products($invoice_id)
     {
 
-        $builder =  $this->db->table($this->table);
-        $builder->select('
+        $query = $this->db->query("
+        SELECT 
             invoices_in_products.product_id,
             invoices_in_products.product_name,
             invoices_in.warehouse_name,
@@ -28,13 +28,14 @@ class PurchaseOrderProductModel extends Model
             invoices_in_products.acquisition_price,
             invoices_in.currency,
             invoices_in_products.acquisition_price * invoices_in.currency_rate * invoices_in_products.quantity as total_no_vat
-        ');
-        $builder->join('invoices_in', 'invoices_in.id = invoices_in_products.invoice_id');
-        $builder->where('invoices_in_products.invoice_id', $invoice_id);
+        FROM 
+            invoices_in_products
+        JOIN 
+            invoices_in ON invoices_in.id = invoices_in_products.invoice_id
+        WHERE 
+            invoices_in_products.invoice_id = ?", [$invoice_id]);
 
-        $query = $builder->get();
-
-        return $query->getResult();
+    return $query->getResult();
     }
 
 
