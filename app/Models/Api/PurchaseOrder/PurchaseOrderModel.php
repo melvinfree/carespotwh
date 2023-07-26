@@ -114,7 +114,7 @@ class PurchaseOrderModel extends Model
             "left"
         );
         $this->orderBy("invoices_in.id", "DESC");
-        $this->where('id', $nirId);
+        $this->where('invoices_in.id', $nirId);
         $query = $this->get();
         $purchases = $query->getResultArray();
 
