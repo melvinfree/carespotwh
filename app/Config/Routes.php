@@ -52,7 +52,7 @@ $routes->post('/Api/Purchase/changeProductInvoice', '\App\Controllers\Api\Purcha
 $routes->post('/Api/Purchase/deleteProduct', '\App\Controllers\Api\Purchase::deleteProduct');
 $routes->post('/Api/Purchase/setInvoiceValues', '\App\Controllers\Api\Purchase::setInvoiceValues');
 $routes->post('/Api/Purchase/getInvoicePList', '\App\Controllers\Api\Purchase::getInvoicePList');
-
+$routes->post('/Api/Purchase/getPurchase', '\App\Controllers\Api\Purchase::getPurchase');
 
 
 /*
