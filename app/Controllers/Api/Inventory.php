@@ -111,7 +111,7 @@ class Inventory extends Controller
 
        // return $this->respond($jsonRes, 200);
 
-       return $requestData;
+       return $requestData['ean_code'];
 
     }
     
