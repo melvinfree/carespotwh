@@ -107,9 +107,11 @@ class Inventory extends Controller
             return $this->failUnauthorized($e->getMessage());
         }
         
-       $jsonRes = json_encode(succesResponse($Receptions->processProduct($requestData['product_id'],$requestData['ean_code'],$requestData['row_id'],$requestData['ean_exist'])), true);
+       //$jsonRes = json_encode(succesResponse($Receptions->processProduct($requestData['product_id'],$requestData['ean_code'],$requestData['row_id'],$requestData['ean_exist'])), true);
 
-       return $this->respond($jsonRes, 200);
+       //return $this->respond($jsonRes, 200);
+
+       return json_encode($requestData, true);
 
     }
     
