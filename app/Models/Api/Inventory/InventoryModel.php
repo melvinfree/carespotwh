@@ -46,6 +46,7 @@ class InventoryModel extends Model
     );
     $this->where('invoices_in.reception_date', null);
     $this->where('invoices_in.locked', 1);
+    $this->where('invoices_in.id', 5546);
     $this->groupBy("invoices_in.id");
     $this->orderBy("invoices_in.id", "DESC");
     $query = $this->get();
