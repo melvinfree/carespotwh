@@ -162,7 +162,15 @@ class ReceptionsModel extends Model
 
     public function processProduct($product_id, $ean_code, $row_id, $ean_exist)
     {    
-        // Check for the EAN in the products_eans table
+        $stock_row = $this->db->table('stock_copy1')
+        ->where('id', $row_id)
+        ->get()
+        ->getRow();
+        
+        if($stock_row->reception_date !== null) {
+        return ['already_receptioned' => 1, 'message' => 'This product was already marked as receptioned'];
+        }
+       
         $query = $this->db->table('ci_product_eans')
             ->where('product_id', $product_id)
             ->get();
