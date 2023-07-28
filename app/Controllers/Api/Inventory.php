@@ -7,6 +7,7 @@ use App\Models\Api\Inventory\ProductsModel;
 use CodeIgniter\Controller;
 use App\Models\Api\PurchaseOrder\PurchaseOrderModel;
 use App\Models\Api\PurchaseOrder\PurchaseOrderProductModel;
+use App\Models\Api\Inventory\InventoryModel;
 use DateTime;
 
 class Inventory extends Controller
