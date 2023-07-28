@@ -72,8 +72,9 @@ class Inventory extends Controller
         } catch (\Exception $e) {
             return $this->failUnauthorized($e->getMessage());
         }
+
         
-        $jsonRes = json_encode(succesResponse($Receptions->notConfirmedProductPcs($requestData['product_id'])), true);
+        $jsonRes = json_encode(succesResponse($Receptions->notConfirmedProductPcs($requestData['invoice_product_row_id'])), true);
 
         return $this->respond($jsonRes, 200);
     }
