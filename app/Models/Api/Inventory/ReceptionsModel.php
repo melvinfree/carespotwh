@@ -208,12 +208,12 @@ class ReceptionsModel extends Model
                     ->insert(['product_id' => $product_id, 'ean' => $ean_code]);
             }
             
-            $return = ['error' => 0];
+            $return = ['ean_exist' => 1, 'message' => 'Product succesfully marked as receptioned'];
             return $return;
         }
         else
         {
-            $return = ['error' => 1];
+            $return = ['ean_exist' => 0, 'message' => 'This ean does not exist, retry the call with publish_ean 1'];
             return $return;
         }
     }
