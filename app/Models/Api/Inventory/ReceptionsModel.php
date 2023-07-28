@@ -87,6 +87,10 @@ class ReceptionsModel extends Model
             invoices_in ON invoices_in.id = invoices_in_products.invoice_id
         JOIN
             stock_copy1 ON stock_copy1.invoice_product_id = invoices_in_products.id    
+        GROUP BY 
+            invoices_in_products.id,
+            invoices_in_products.product_id,
+            invoices_in_products.product_name 
         WHERE 
             invoices_in_products.invoice_id = ?", [$invoice_id]);
 
