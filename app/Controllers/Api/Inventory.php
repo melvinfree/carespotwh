@@ -62,6 +62,24 @@ class Inventory extends Controller
         return $this->respond($jsonRes, 200);
     }
 
+    public function getNotConfirmedProductPcs()
+    {
+        $Receptions = new ReceptionsModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+        if (!isset($requestData['product_id'])) {
+            return $this->failBadRequest('Missing parameter.');
+        }
+        
+        $jsonRes = json_encode(succesResponse($Receptions->notConfirmedProductPcs($requestData['product_id'])), true);
+
+        return $this->respond($jsonRes, 200);
+    }
     
 
 

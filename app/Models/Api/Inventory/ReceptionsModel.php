@@ -106,4 +106,29 @@ class ReceptionsModel extends Model
 
     }
 
+    public function notConfirmedProductPcs($rowId){
+
+        $this->select('
+         stock_copy1.id,
+         invoices_in_products.product_name,
+         invoices_in_products.product_id
+       ');
+        $this->from('stock_copy1');
+        $this->join(
+            "invoices_in_products",
+            "invoices_in_products.id = stock_copy1.invoice_product_id",
+            "left"
+        );
+
+        $this->where('stock_copy1.reception_date', null);
+        $this->groupBy("stock_copy1.id");
+        $query = $this->get();
+        $result = $query->getResultArray();
+
+        return $result;
+
+        
+
+    }
+
 }

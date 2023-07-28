@@ -58,6 +58,8 @@ $routes->post('/Api/Purchase/getPurchase', '\App\Controllers\Api\Purchase::getPu
 
 $routes->post('/Api/Inventory/getReceptionsList', '\App\Controllers\Api\Inventory::getReceptionsList');
 $routes->post('/Api/Inventory/getProductsList', '\App\Controllers\Api\Inventory::getProductsList');
+$routes->post('/Api/Inventory/getNotConfirmedProductPcs', '\App\Controllers\Api\Inventory::getNotConfirmedProductPcs');
+
 
 
 /*
