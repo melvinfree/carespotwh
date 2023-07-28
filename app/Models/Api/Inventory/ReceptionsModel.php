@@ -96,7 +96,14 @@ class ReceptionsModel extends Model
         [$invoice_id]
     );
 
-    return $query->getResult();
+    $products = $query->getResultArray();
+
+    foreach($products as $product){
+        $product['not_confirmed_quantity'] = $product['total_quantity'] - $product['receptioned_quantity'];
+    }
+
+    return $products;
+
     }
 
 }
