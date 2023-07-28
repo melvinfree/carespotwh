@@ -53,8 +53,11 @@ class Inventory extends Controller
         } catch (\Exception $e) {
             return $this->failUnauthorized($e->getMessage());
         }
+        if (!isset($requestData['invoice_id'])) {
+            return $this->failBadRequest('Missing parameter.');
+        }
         
-        $jsonRes = json_encode(succesResponse($Receptions->receptionsProductsList()), true);
+        $jsonRes = json_encode(succesResponse($Receptions->receptionsProductsList($requestData['invoice_id'])), true);
 
         return $this->respond($jsonRes, 200);
     }
