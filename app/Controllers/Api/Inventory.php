@@ -72,9 +72,6 @@ class Inventory extends Controller
         } catch (\Exception $e) {
             return $this->failUnauthorized($e->getMessage());
         }
-        if (!isset($requestData['product_id'])) {
-            return $this->failBadRequest('Missing parameter.');
-        }
         
         $jsonRes = json_encode(succesResponse($Receptions->notConfirmedProductPcs($requestData['product_id'])), true);
 
