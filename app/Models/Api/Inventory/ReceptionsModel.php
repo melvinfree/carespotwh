@@ -121,6 +121,8 @@ class ReceptionsModel extends Model
         );
 
         $this->where('stock_copy1.reception_date', null);
+        $this->where('invoices_in_products.id', $rowId);
+        $this->where('stock_copy1.invoice_product_id', $rowId);
         $this->groupBy("stock_copy1.id");
         $query = $this->get();
         $result = $query->getResultArray();
