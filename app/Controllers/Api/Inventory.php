@@ -96,7 +96,8 @@ class Inventory extends Controller
         return $this->respond($jsonRes, 200);
     }
 
-    public function addProduct()
+
+    public function addProductInventory()
     {
         $Receptions = new ReceptionsModel();
 
@@ -106,12 +107,8 @@ class Inventory extends Controller
         } catch (\Exception $e) {
             return $this->failUnauthorized($e->getMessage());
         }
-        
-       // $jsonRes = json_encode(succesResponse($Receptions->processProduct($requestData['product_id'],$requestData['ean_code'],$requestData['row_id'],$requestData['ean_exist'])), true);
 
-       // return $this->respond($jsonRes, 200);
-
-       return $requestData['ean_code'];
+        return $this->respond(succesResponse($requestData['row_id']), 200);
 
     }
     
