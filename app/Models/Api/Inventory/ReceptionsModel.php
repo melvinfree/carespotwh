@@ -133,4 +133,81 @@ class ReceptionsModel extends Model
 
     }
 
+    public function ConfirmedProductPcs($rowId){
+
+        $this->select('
+         stock_copy1.id,
+         invoices_in_products.product_name,
+         invoices_in_products.product_id
+       ');
+        $this->from('stock_copy1');
+        $this->join(
+            "invoices_in_products",
+            "invoices_in_products.id = stock_copy1.invoice_product_id",
+            "left"
+        );
+
+        $this->where('stock_copy1.reception_date IS NOT NULL');
+        $this->where('invoices_in_products.id', $rowId);
+        $this->where('stock_copy1.invoice_product_id', $rowId);
+        $this->groupBy("stock_copy1.id");
+        $query = $this->get();
+        $result = $query->getResultArray();
+
+        return $result;
+
+        
+
+    }
+
+    public function processProduct($product_id, $ean_code, $row_id, $ean_exist)
+    {    
+        // Check for the EAN in the products_eans table
+        $query = $this->db->table('products_eans')
+            ->where('product_id', $product_id)
+            ->get();
+
+        $eans = $query->getResult();
+
+        $ean_found = false;
+        foreach($eans as $ean){
+            if($ean->ean_code == $ean_code){
+                $ean_found = true;
+                break;
+            }
+        }
+
+        // If the EAN code is found in the database for the product, or ean_exist is 1
+        if ($ean_found || $ean_exist == 1)
+        {
+            
+            
+            $insert_data_stock = [
+                'ean' => $ean_code,
+                'reception_date' => date('Y-m-d H:i:s'),
+                'warehouse' => '1'
+            ];
+
+            $this->db->table('stock_copy1')
+                ->set($insert_data_stock)
+                ->where('id', $row_id)
+                ->update();
+
+            
+            if ($ean_exist == 1 && !$ean_found)
+            {
+                $this->db->table('products_eans')
+                    ->insert(['product_id' => $product_id, 'ean' => $ean_code]);
+            }
+            
+            $return = ['error' => 0];
+            return $return;
+        }
+        else
+        {
+            $return = ['error' => 1];
+            return $return;
+        }
+    }
+
 }

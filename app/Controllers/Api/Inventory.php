@@ -78,6 +78,39 @@ class Inventory extends Controller
 
         return $this->respond($jsonRes, 200);
     }
+
+    public function getConfirmedProductPcs()
+    {
+        $Receptions = new ReceptionsModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        
+        $jsonRes = json_encode(succesResponse($Receptions->ConfirmedProductPcs($requestData['invoice_product_row_id'])), true);
+
+        return $this->respond($jsonRes, 200);
+    }
+
+    public function addProduct()
+    {
+        $Receptions = new ReceptionsModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+        
+        $jsonRes = json_encode(succesResponse($Receptions->processProduct($requestData['product_id'],$requestData['ean_code'],$requestData['row_id'],$requestData['ean_exist'])), true);
+
+        return $this->respond($jsonRes, 200);
+    }
     
 
 

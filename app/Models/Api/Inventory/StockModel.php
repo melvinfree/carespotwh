@@ -19,7 +19,9 @@ class StockModel extends Model
         'discount',
         'status',
         'acquisition_price',
-        'acquisition_price_invoice'
+        'acquisition_price_invoice',
+        'ean',
+        'reception_date'
     ];
 
     
