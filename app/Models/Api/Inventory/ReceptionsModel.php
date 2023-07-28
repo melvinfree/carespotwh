@@ -171,7 +171,7 @@ class ReceptionsModel extends Model
 
         $ean_found = false;
         foreach($eans as $ean){
-            if($ean->ean_code == $ean_code){
+            if($ean->ean == $ean_code){
                 $ean_found = true;
                 break;
             }
