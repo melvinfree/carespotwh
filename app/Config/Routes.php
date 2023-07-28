@@ -57,7 +57,7 @@ $routes->post('/Api/Purchase/getPurchase', '\App\Controllers\Api\Purchase::getPu
 // Inventory Api Routes - Endpoints
 
 $routes->post('/Api/Inventory/getReceptionsList', '\App\Controllers\Api\Inventory::getReceptionsList');
-
+$routes->post('/Api/Inventory/getProductsList', '\App\Controllers\Api\Inventory::getProductsList');
 
 
 /*

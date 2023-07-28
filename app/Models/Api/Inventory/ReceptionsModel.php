@@ -4,13 +4,17 @@ namespace App\Models\Api\Inventory;
 
 use CodeIgniter\Model;
 
-class InventoryModel extends Model
+class Receptions extends Model
 {
 
     protected $table = 'invoices_in'; // need to change the table here.
     protected $primaryKey = 'id';
 
 
+    // This function it will be used to display receptions list inside Inventory Controller.
+    // This function it will return all receptions which wasn't confirmed(receptioned in warehouse) and which are locked(nir was closed)
+    // limit and offset used for pagination
+    
     public function receptionsList($limit, $offset)
     {
         $this->select('
@@ -66,6 +70,27 @@ class InventoryModel extends Model
         }
     
         return $filteredReceptions;
+    }
+
+    public function receptionsProductsList($invoice_id){
+
+        $query = $this->db->query("
+        SELECT 
+            invoices_in_products.id AS row_id,
+            invoices_in_products.product_id,
+            invoices_in_products.product_name,
+            COUNT(stock_copy1.id) as total_quantity,
+            SUM(IF(stock_copy1.reception_date IS NOT NULL, 1, 0)) as receptioned_quantity
+        FROM 
+            invoices_in_products
+        JOIN 
+            invoices_in ON invoices_in.id = invoices_in_products.invoice_id
+        JOIN
+            stock_copy1 ON stock_copy1.invoice_product_id = invoices_in_products.id    
+        WHERE 
+            invoices_in_products.invoice_id = ?", [$invoice_id]);
+
+    return $query->getResult();
     }
 
 }
