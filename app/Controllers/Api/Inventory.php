@@ -31,6 +31,10 @@ class Inventory extends Controller
             return $this->failUnauthorized($e->getMessage());
         }
 
+        if (!isset($requestData['limit']) || !isset($requestData['offset'])) {
+            return $this->failBadRequest('Missing limit and/or offset in request data.');
+        }
+
         $results = $InventoryModel->receptionsList($requestData['limit'], $requestData['offset']);
 
         $jsonRes = json_encode(succesResponse($results), true);
