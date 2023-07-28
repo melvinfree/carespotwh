@@ -35,17 +35,13 @@ class PurchaseOrderModel extends Model
         invoices_in.id,
         invoices_in.invoice_date,
         invoices_in.due_date,
-        invoices_in.supplier_id,
         invoices_in.invoice_series,
         invoices_in.number AS invoice_number,
         suppliers.name AS supplier_name,
-        suppliers.code AS supplier_code,
         transport.driver,
         transport.number AS nr_auto,
-        invoices_in.image,
         invoices_in.locked,
         invoices_in.currency_rate,
-        invoices_in.invoice_value,
         invoices_in.currency,
         invoices_in.reception_date');
 
