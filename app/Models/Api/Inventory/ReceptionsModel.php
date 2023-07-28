@@ -98,7 +98,7 @@ class ReceptionsModel extends Model
 
     $products = $query->getResultArray();
 
-    foreach($products as $product){
+    foreach($products as &$product){
         $product['not_confirmed_quantity'] = $product['total_quantity'] - $product['receptioned_quantity'];
     }
 
