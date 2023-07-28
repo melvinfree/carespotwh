@@ -22,7 +22,7 @@ class InventoryModel extends Model
     invoices_in.invoice_value,
     invoices_in.currency,
     COUNT(stock_copy1.id) as total_quantity,
-    SUM(IF(stock.reception_date IS NOT NULL, 1, 0)) as receptioned_quantity');
+    SUM(IF(stock_copy1.reception_date IS NOT NULL, 1, 0)) as receptioned_quantity');
 
     $this->join(
         "suppliers",
