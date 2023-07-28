@@ -108,7 +108,7 @@ class Inventory extends Controller
             return $this->failUnauthorized($e->getMessage());
         }
 
-        return $this->respond(succesResponse($requestData['row_id']), 200);
+        return $this->respond(succesResponse($requestData['ean_code']), 200);
 
     }
     
