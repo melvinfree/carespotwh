@@ -4,7 +4,7 @@ namespace App\Models\Api\Inventory;
 
 use CodeIgniter\Model;
 
-class Receptions extends Model
+class ReceptionsModel extends Model
 {
 
     protected $table = 'invoices_in'; // need to change the table here.
