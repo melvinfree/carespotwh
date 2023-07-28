@@ -44,6 +44,8 @@ class InventoryModel extends Model
         "stock_copy1.invoice_product_id = invoices_in_products.id",
         "left"
     );
+    $this->where('invoices_in.reception_date', null);
+    $this->where('invoices_in.locked', 1);
     $this->groupBy("invoices_in.id");
     $this->orderBy("invoices_in.id", "DESC");
     $query = $this->get();
