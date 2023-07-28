@@ -31,18 +31,7 @@ class Inventory extends Controller
             return $this->failUnauthorized($e->getMessage());
         }
 
-                // Validate the JSON payload
-                $expectedKeys = ["limit", "offset"];
-                $requestDataKeys = array_keys($requestData);
-        
-                if (
-                    count($requestData) !== 2 ||
-                    !empty(array_diff($expectedKeys, $requestDataKeys))
-                ) {
-                    return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
-                }
-
-        $results = $InventoryModel->getInfo();
+        $results = $InventoryModel->receptionsList($requestData['limit'], $requestData['offset']);
 
         $jsonRes = json_encode(succesResponse($results), true);
 
