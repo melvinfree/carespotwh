@@ -163,7 +163,7 @@ class ReceptionsModel extends Model
     public function processProduct($product_id, $ean_code, $row_id, $ean_exist)
     {    
         // Check for the EAN in the products_eans table
-        $query = $this->db->table('products_eans')
+        $query = $this->db->table('ci_product_eans')
             ->where('product_id', $product_id)
             ->get();
 
@@ -196,7 +196,7 @@ class ReceptionsModel extends Model
             
             if ($ean_exist == 1 && !$ean_found)
             {
-                $this->db->table('products_eans')
+                $this->db->table('ci_product_eans')
                     ->insert(['product_id' => $product_id, 'ean' => $ean_code]);
             }
             
