@@ -168,7 +168,7 @@ class ReceptionsModel extends Model
         ->getRow();
         
         if($stock_row->reception_date !== null) {
-        return ['already_receptioned' => 1, 'message' => 'This product was already marked as receptioned'];
+        return ['row_id' => $row_id, 'already_receptioned' => 1, 'message' => 'This product was already marked as receptioned'];
         }
        
         $query = $this->db->table('ci_product_eans')
@@ -208,12 +208,12 @@ class ReceptionsModel extends Model
                     ->insert(['product_id' => $product_id, 'ean' => $ean_code]);
             }
             
-            $return = ['ean_exist' => 1, 'message' => 'Product succesfully marked as receptioned'];
+            $return = ['row_id' => $row_id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as receptioned'];
             return $return;
         }
         else
         {
-            $return = ['ean_exist' => 0, 'message' => 'This ean does not exist, retry the call with publish_ean 1'];
+            $return = ['row_id' => $row_id, 'ean_exist' => 0, 'message' => 'This ean does not exist, retry the call with publish_ean 1'];
             return $return;
         }
     }

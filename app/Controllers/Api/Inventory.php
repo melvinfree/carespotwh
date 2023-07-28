@@ -97,21 +97,22 @@ class Inventory extends Controller
     }
 
 
-    public function addProductInventory()
-    {
+    public function addProductInventory() {
         $Receptions = new ReceptionsModel();
-
+    
         // Validate token and get the request body
         try {
             $requestData = validateTokenAndFetchData();
         } catch (\Exception $e) {
             return $this->failUnauthorized($e->getMessage());
         }
-
-        $jsonRes = json_encode(succesResponse($Receptions->processProduct($requestData['product_id'],$requestData['ean_code'],$requestData['row_id'],$requestData['publish_ean'])), true);
-
-        return $this->respond($jsonRes, 200);
-
+    
+        $responses = [];
+        foreach ($requestData as $productData) {
+            $responses[] = $Receptions->processProduct($productData['product_id'],$productData['ean_code'],$productData['row_id'],$productData['publish_ean']);
+        }
+    
+        return $this->respond(['responses' => $responses], 200);
     }
     
 
