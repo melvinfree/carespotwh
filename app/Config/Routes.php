@@ -54,6 +54,11 @@ $routes->post('/Api/Purchase/setInvoiceValues', '\App\Controllers\Api\Purchase::
 $routes->post('/Api/Purchase/getInvoicePList', '\App\Controllers\Api\Purchase::getInvoicePList');
 $routes->post('/Api/Purchase/getPurchase', '\App\Controllers\Api\Purchase::getPurchase');
 
+// Inventory Api Routes - Endpoints
+
+$routes->post('/Api/Inventory/getReceptionsList', '\App\Controllers\Api\Inventory::getReceptionsList');
+
+
 
 /*
  * --------------------------------------------------------------------
