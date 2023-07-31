@@ -15,8 +15,9 @@ class TransfersModel extends Model
     // Used in Orders Controller for Endpoint "getAll"
     public function getInfo()
     {
-
-        $warehouses = $this->getWarehouseList(); // Fetching warehouse list from database
+        $WarehouseModel = new \App\Models\Api\Inventory\WarehouseModel();
+        
+        $warehouses = $WarehouseModel->getWarehouseList(); // Fetching warehouse list from database
 
         $prepareArray = [
             "warehouses" => $warehouses
