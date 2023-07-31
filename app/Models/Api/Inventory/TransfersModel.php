@@ -52,7 +52,7 @@ class TransfersModel extends Model
     }
 
     public function searchProducts($searchTerm)
-{
+    { 
     $searchTerm = "%{$searchTerm}%";  // Add wildcard characters for LIKE
 
     $query = $this->db->query("
@@ -60,12 +60,15 @@ class TransfersModel extends Model
             product.id, 
             product.name, 
             product.model, 
-            COUNT(stock.id) as quantity
+            COUNT(stock.id) as available_quantity,
+            warehouse.warehouse_name
         FROM " . $this->productTable . " AS product
         LEFT JOIN stock_copy1 AS stock 
         ON product.id = stock.product_id 
         AND stock.status = 'instock' 
         AND stock.warehouse = 1
+        LEFT JOIN warehouses AS warehouse
+        ON stock.warehouse = warehouse.id
         WHERE product.status = 'active' 
         AND (product.id LIKE ?
         OR product.model LIKE ?
@@ -84,7 +87,7 @@ class TransfersModel extends Model
     $products = $query->getResultArray(); 
 
     return $products;
-}
+    }
 
     
 
