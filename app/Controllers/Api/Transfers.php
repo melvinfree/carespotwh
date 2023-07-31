@@ -77,6 +77,37 @@ class Transfers extends Controller
         return $this->respond($jsonRes, 200);
     }
 
+    public function transfersListModel()
+    {
+        $TransfersModel = new TransfersModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        // Validate the JSON payload
+        $expectedKeys = ["limit", "offset"];
+        $requestDataKeys = array_keys($requestData);
+
+        if (
+            count($requestData) !== 2 ||
+            !empty(array_diff($expectedKeys, $requestDataKeys))
+        ) {
+            return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
+        }
+        if (!is_int($requestData["limit"]) || !is_int($requestData["offset"])) {
+            return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
+        }
+
+        
+        $jsonRes = json_encode(succesResponse($TransfersModel->transfersList($requestData["limit"], $requestData["offset"])), true);
+
+        return $this->respond($jsonRes, 200);
+    }
+
 
 
 }

@@ -32,6 +32,24 @@ class TransfersModel extends Model
         return $this->db->insertID(); // returns the ID of the inserted record
     }
 
+    public function transfersListModel($limit, $offset)
+    {
+        $this->select('
+        id,
+        old_warehouse_name,
+        new_warehouse_name,
+        status,
+        confirmed');
+
+        $this->orderBy("id", "DESC");
+        $this->limit($limit, $offset);
+        $query = $this->get();
+        $transfers = $query->getResultArray();
+
+        return $transfers;
+
+    }
+
     
 
 }

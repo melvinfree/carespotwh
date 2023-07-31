@@ -20,4 +20,22 @@ class WarehouseModel extends Model
     return $products;
     }
 
+    public function transfersList($limit, $offset)
+    {
+        $this->select('
+        id,
+        old_warehouse_name,
+        new_warehouse_name,
+        status,
+        confirmed');
+
+        $this->orderBy("id", "DESC");
+        $this->limit($limit, $offset);
+        $query = $this->get();
+        $transfers = $query->getResultArray();
+
+        return $transfers;
+
+    }
+
 }
