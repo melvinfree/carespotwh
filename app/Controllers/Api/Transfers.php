@@ -63,7 +63,7 @@ class Transfers extends Controller
         
             $insertdata = [
                 "old_warehouse" => $requestData["old_warehouse"],
-                "new_warehouse" => $requestData["old_warehouse"],
+                "new_warehouse" => $requestData["new_warehouse"],
                 "old_warehouse_name" => $requestData["old_warehouse_name"],
                 "new_warehouse_name" => $requestData["new_warehouse_name"]
             ];
