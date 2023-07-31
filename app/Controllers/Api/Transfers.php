@@ -108,6 +108,37 @@ class Transfers extends Controller
         return $this->respond($jsonRes, 200);
     }
 
+    public function searchProduct()
+    {
+        $TransfersModel = new TransfersModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        // Validate the JSON payload
+        $expectedKeys = ["searchterm"];
+        $requestDataKeys = array_keys($requestData);
+
+        if (
+            count($requestData) !== 1 ||
+            !empty(array_diff($expectedKeys, $requestDataKeys))
+        ) {
+            return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
+        }
+
+        $results = $TransfersModel->searchProducts(
+            $requestData["searchterm"]
+        );
+
+        $jsonRes = json_encode(succesResponse($results), true);
+
+        return $this->respond($jsonRes, 200);
+    }
+
 
 
 }
