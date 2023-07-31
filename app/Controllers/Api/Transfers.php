@@ -51,11 +51,11 @@ class Transfers extends Controller
         }
 
         // Validate the JSON payload
-        $expectedKeys = ["old_warehouse", "new_warehouse"];
+        $expectedKeys = ["old_warehouse", "new_warehouse","old_warehouse_name","new_warehouse_name"];
         $requestDataKeys = array_keys($requestData);
 
         if (
-            count($requestData) !== 2 ||
+            count($requestData) !== 4 ||
             !empty(array_diff($expectedKeys, $requestDataKeys))
         ) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
