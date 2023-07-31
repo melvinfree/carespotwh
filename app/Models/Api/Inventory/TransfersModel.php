@@ -18,10 +18,13 @@ class TransfersModel extends Model
     {
         $WarehouseModel = new \App\Models\Api\Inventory\WarehouseModel();
         
-        $warehouses = $WarehouseModel->getWarehouseList(); // Fetching warehouse list from database
+        $getAllowServicingStockWarehouseList = $WarehouseModel->getAllowServicingStockWarehouseList(); // Fetching Warehouse which allow to transfer stock from
+
+        $getAllowSellingWarehouseList = $WarehouseModel->getAllowSellingWarehouseList(); // Fetching Warehouse which allow to sell prods from
 
         $prepareArray = [
-            "warehouses" => $warehouses
+            "warehouses_allow_servicing_stock" => $getAllowServicingStockWarehouseList,
+            "warehouses_allow_selling_stock" => $getAllowSellingWarehouseList
         ];
         
         return $prepareArray;
@@ -51,7 +54,7 @@ class TransfersModel extends Model
 
     }
 
-    public function searchProducts($searchTerm)
+    public function searchProducts($searchTerm,$oldWarehouseId)
     { 
     $searchTerm = "%{$searchTerm}%";  // Add wildcard characters for LIKE
 
@@ -66,7 +69,7 @@ class TransfersModel extends Model
         LEFT JOIN stock_copy1 AS stock 
         ON product.id = stock.product_id 
         AND stock.status = 'instock' 
-        AND stock.warehouse = 1
+        AND stock.warehouse = " . $oldWarehouseId . "
         LEFT JOIN warehouses AS warehouse
         ON stock.warehouse = warehouse.id
         WHERE product.status = 'active' 

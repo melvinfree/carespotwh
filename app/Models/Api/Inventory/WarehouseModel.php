@@ -20,6 +20,26 @@ class WarehouseModel extends Model
     return $products;
     }
 
+    public function getAllowServicingStockWarehouseList()
+    {
+    $warehouses = $this->select('id, name') 
+                ->where('status', 'active')
+                ->where('allow_servicing_stock', 1)
+                ->findAll();
+
+    return $warehouses;
+    }
+
+    public function getAllowSellingWarehouseList()
+    {
+    $warehouses = $this->select('id, name') 
+                ->where('status', 'active')
+                ->where('allow_selling', 1)
+                ->findAll();
+
+    return $warehouses;
+    }
+
     public function transfersList($limit, $offset)
     {
         $this->select('

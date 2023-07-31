@@ -120,7 +120,7 @@ class Transfers extends Controller
         }
 
         // Validate the JSON payload
-        $expectedKeys = ["searchterm"];
+        $expectedKeys = ["searchterm", "old_warehouse_id"];
         $requestDataKeys = array_keys($requestData);
 
         if (
@@ -131,7 +131,8 @@ class Transfers extends Controller
         }
 
         $results = $TransfersModel->searchProducts(
-            $requestData["searchterm"]
+            $requestData["searchterm"],
+            $requestData['old_warehouse_id']
         );
 
         $jsonRes = json_encode(succesResponse($results), true);

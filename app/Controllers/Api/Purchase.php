@@ -156,7 +156,7 @@ class Purchase extends Controller
     // Payload type: JSON
     // Payload format:
     // {"searchterm": "string", "limit": int, "offset": int}
-    // Response - to be added
+    // Response - to be added // 
     public function searchProduct()
     {
         $ProductsModel = new ProductsModel();
