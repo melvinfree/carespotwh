@@ -8,6 +8,8 @@ class TransfersModel extends Model
 {
 
     protected $table = 'ci_transfers';
+
+    protected $transfers_products_table = 'ci_transfers_products';
     protected $productTable = 'products';
     protected $primaryKey = 'id';
 
@@ -91,6 +93,66 @@ class TransfersModel extends Model
 
     return $products;
 }
+
+// Adaugare produse pe nir
+    // Daca produsul deja exista se actualizeaza valorile / daca nu, se adauga linie noua.
+    public function insertProducts($data)
+    {
+    $responses = [];
+
+    $transfer_id = $data['transfer_id'];
+
+    foreach($data['products'] as $product) {
+        $dbRecord = $this->db->table($this->transfers_products_table)
+             ->where('transfer_id', $transfer_id)
+             ->where('product_id', $product['product_id'])
+             ->get()
+             ->getRow();
+
+
+        if($dbRecord) {
+
+            $products = [
+                'quantity' => $product['quantity']
+            ];
+
+            // Perform update operation and add the result to $responses
+            $this->db->table($this->transfers_products_table)
+                ->where('transfer_id', $transfer_id)
+                ->where('product_id', $product['product_id'])
+                ->update($products);
+
+                if ($this->db->affectedRows() > 0) {
+                    $updatedRecord = $this->db->table($this->transfers_products_table)
+                                       ->where('transfer_id', $transfer_id)
+                                       ->where('product_id', $product['product_id'])
+                                       ->get()
+                                       ->getRow();
+                
+                    $responses[] = ['record_id' => $updatedRecord->id];
+                } else {
+                    $responses[] = ['record_id' => "false"];
+                }
+        }
+        else {
+
+
+            // Perform insert operation and add the result to $responses
+            
+            $products = [
+                'transfer_id' => $transfer_id,
+                'product_id' => $product['product_id'],
+                'product_name' => $product['product_name'],
+                'quantity' => $product['quantity']
+            ];
+            
+            $this->db->table($this->transfers_products_table)->insert($products);
+            $responses[] = ['record_id' => $this->db->insertID()];
+        }
+    }
+
+    return $responses;
+    }
 
     
 

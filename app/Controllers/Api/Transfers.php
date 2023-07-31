@@ -140,6 +140,24 @@ class Transfers extends Controller
         return $this->respond($jsonRes, 200);
     }
 
+    public function addProduct()
+    {
+    $TransfersModel = new TransfersModel();
+
+    // Validate token and get the request body
+    try {
+        $requestData = validateTokenAndFetchData();
+    } catch (\Exception $e) {
+        return $this->failUnauthorized($e->getMessage());
+    }
+
+    $responses = $TransfersModel->insertProducts($requestData);
+
+    $jsonRes = json_encode(succesResponse($responses), true);
+
+    return $this->respond($jsonRes, 200);
+    }
+
 
 
 }
