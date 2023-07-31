@@ -8,6 +8,7 @@ class TransfersModel extends Model
 {
 
     protected $table = 'ci_transfers';
+    protected $productTable = 'products';
     protected $primaryKey = 'id';
 
 
@@ -60,7 +61,7 @@ class TransfersModel extends Model
             product.name, 
             product.model, 
             COUNT(stock.id) as quantity
-        FROM " . $this->table . " AS product
+        FROM " . $this->productTable . " AS product
         LEFT JOIN stock_copy1 AS stock 
         ON product.id = stock.product_id 
         AND stock.status = 'instock' 
