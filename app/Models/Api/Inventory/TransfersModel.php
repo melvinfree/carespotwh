@@ -32,4 +32,6 @@ class TransfersModel extends Model
         return $this->db->insertID(); // returns the ID of the inserted record
     }
 
+    
+
 }
