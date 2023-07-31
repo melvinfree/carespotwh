@@ -124,7 +124,7 @@ class Transfers extends Controller
         $requestDataKeys = array_keys($requestData);
 
         if (
-            count($requestData) !== 1 ||
+            count($requestData) !== 2 ||
             !empty(array_diff($expectedKeys, $requestDataKeys))
         ) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
