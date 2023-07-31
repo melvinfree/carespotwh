@@ -61,7 +61,7 @@ class TransfersModel extends Model
             product.name, 
             product.model, 
             COUNT(stock.id) as available_quantity,
-            warehouse.warehouse_name
+            warehouse.name as warehouse_name
         FROM " . $this->productTable . " AS product
         LEFT JOIN stock_copy1 AS stock 
         ON product.id = stock.product_id 
