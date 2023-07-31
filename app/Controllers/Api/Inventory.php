@@ -8,6 +8,7 @@ use CodeIgniter\Controller;
 use App\Models\Api\PurchaseOrder\PurchaseOrderModel;
 use App\Models\Api\PurchaseOrder\PurchaseOrderProductModel;
 use App\Models\Api\Inventory\ReceptionsModel;
+use App\Models\Api\Inventory\TransfersModel;
 use DateTime;
 
 class Inventory extends Controller
@@ -114,6 +115,7 @@ class Inventory extends Controller
     
         return $this->respond(['responses' => $responses], 200);
     }
+    
     
 
 
