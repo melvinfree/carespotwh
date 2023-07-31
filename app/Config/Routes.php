@@ -66,6 +66,7 @@ $routes->post('/Api/Inventory/addProductInventory', '\App\Controllers\Api\Invent
 
 $routes->post('/Api/Transfers/transferInit', '\App\Controllers\Api\Transfers::transferInit');
 $routes->post('/Api/Transfers/createTransfer', '\App\Controllers\Api\Transfers::createTransfer');
+$routes->post('/Api/Transfers/transfersList', '\App\Controllers\Api\Transfers::transfersList');
 
 
 

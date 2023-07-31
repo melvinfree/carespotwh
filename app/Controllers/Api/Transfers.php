@@ -77,7 +77,7 @@ class Transfers extends Controller
         return $this->respond($jsonRes, 200);
     }
 
-    public function transfersListModel()
+    public function transfersList()
     {
         $TransfersModel = new TransfersModel();
 
@@ -103,7 +103,7 @@ class Transfers extends Controller
         }
 
         
-        $jsonRes = json_encode(succesResponse($TransfersModel->transfersList($requestData["limit"], $requestData["offset"])), true);
+        $jsonRes = json_encode(succesResponse($TransfersModel->getTransferList($requestData["limit"], $requestData["offset"])), true);
 
         return $this->respond($jsonRes, 200);
     }

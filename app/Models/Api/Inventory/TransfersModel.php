@@ -32,7 +32,7 @@ class TransfersModel extends Model
         return $this->db->insertID(); // returns the ID of the inserted record
     }
 
-    public function transfersListModel($limit, $offset)
+    public function getTransferList($limit, $offset)
     {
         $this->select('
         id,
