@@ -102,7 +102,7 @@ class OrderProductsModel extends Model
             ];
         }
 
-        if ($order["order_status"] != 'new' || $order["order_status"] != 'inprogress') {
+        if ($order["order_status"] !== 'new' || $order["order_status"] !== 'inprogress') {
             return [
                 "status" => "locked",
                 "order_id" => $requestData["order_id"],
