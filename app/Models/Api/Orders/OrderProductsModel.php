@@ -103,6 +103,7 @@ class OrderProductsModel extends Model
         }
 
         if ($order["order_status"] !== 'new' || $order["order_status"] !== 'inprogress') {
+            // Execute this block only when order_status is neither 'new' nor 'inprogress'
             return [
                 "status" => "locked",
                 "order_id" => $requestData["order_id"],
