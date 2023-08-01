@@ -141,7 +141,7 @@ class OrderProductsModel extends Model
                     // For demonstration purposes, let's assume you are updating the column 'some_data' with a value of 'updated'
 
                     $sql = "
-                    UPDATE " . $this->table . "
+                    UPDATE " . $stockModel->table . "
                     SET order_product_id = NULL,
                         order_id = NULL,
                         status = 'instock'
