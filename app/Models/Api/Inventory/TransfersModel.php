@@ -109,6 +109,8 @@ class TransfersModel extends Model
             return ['error' => 1, 'already_confirmed' => 1, 'message' => 'You cannot add products into a transfer which was already confirmed'];
         }
         
+
+
     $responses = [];
 
     $transfer_id = $data['transfer_id'];
