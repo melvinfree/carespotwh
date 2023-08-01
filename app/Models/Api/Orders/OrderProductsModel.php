@@ -147,7 +147,7 @@ class OrderProductsModel extends Model
                                
                 }
 
-                $response["stock_update"] = $test;
+                $response["stock_update"] = "success";
             
         }
 
@@ -155,7 +155,7 @@ class OrderProductsModel extends Model
             ->where("id", $requestData["product_row_id"])
             ->update();
 
-        $response["order_quantity_change"] = "success";
+        $response["order_quantity_change"] = $oldQuantity;
     }
 
     if (isset($requestData["price_brutto"])) {
