@@ -144,13 +144,10 @@ class OrderProductsModel extends Model
                                ->set('status', 'instock')
                                ->where('id', $row['id'])
                                ->update();
-
-                               $xxx = var_dump($stockModel->getLastQuery()); // Print the query for debugging purposes
-
                                
                 }
 
-                $response["stock_update"] = $xxx;
+                $response["stock_update"] = "success";
             
         }
 
