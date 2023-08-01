@@ -95,6 +95,10 @@ class OrderProductsModel extends Model
 {
     $orderModel = new OrdersModel();
     $order = $orderModel->find($requestData["order_id"]);
+    $orderProduct = $this->find($requestData["product_row_id"]);
+
+    if ($orderProduct !== null) {
+        $orderProductId = $orderProduct["order_product_id"];
 
     if ($order === null) {
         // The order does not exist
@@ -115,16 +119,15 @@ class OrderProductsModel extends Model
     $response = ["order_id" => $requestData["order_id"]];
 
     if (isset($requestData["quantity"])) {
-        $oldQuantity = $order["quantity"];
+        
+        $oldQuantity = $orderProduct["quantity"];
         $newQuantity = $requestData["quantity"];
         $difference = $newQuantity - $oldQuantity;
 
         if ($difference > 0) {
             // Extract order_product_id from ci_bl_order_products
-            $orderProduct = $this->find($requestData["product_row_id"]);
 
-            if ($orderProduct !== null) {
-                $orderProductId = $orderProduct["order_product_id"];
+            
 
                 // Find the rows in stocks_copy1 with order_product_id and update the first $difference rows
                 $stockModel = new StockModel();
@@ -144,7 +147,7 @@ class OrderProductsModel extends Model
                 }
 
                 $response["stock_update"] = "success";
-            }
+            
         }
 
         $this->set("quantity", $newQuantity)
@@ -163,6 +166,7 @@ class OrderProductsModel extends Model
     }
 
     return $response;
+}
 }
 
     
