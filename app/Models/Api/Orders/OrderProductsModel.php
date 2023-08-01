@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Api\Orders;
+use App\Models\Api\Inventory\StockModel;
 
 use CodeIgniter\Model;
 
@@ -91,46 +92,78 @@ class OrderProductsModel extends Model
     }
 
     public function modifyProductValues($requestData)
-    {
-        $orderModel = new OrdersModel();
-        $order = $orderModel->find($requestData["order_id"]);
+{
+    $orderModel = new OrdersModel();
+    $order = $orderModel->find($requestData["order_id"]);
 
-        if ($order === null) {
-            // The invoice does not exist
-            return [
-                "order_id" => $requestData["order_id"],
-                "status" => "missing",
-            ];
-        }
-
-        if (!($order["order_status"] === 'new' || $order["order_status"] === 'inprogress')) {
-            // Execute this block only when order_status is neither 'new' nor 'inprogress'
-            return [
-                "status" => "locked",
-                "order_id" => $requestData["order_id"],
-            ];
-        }
-
-        $response = ["order_id" => $requestData["order_id"]];
-
-        if (isset($requestData["quantity"])) {
-            $this->set("quantity", $requestData["quantity"])
-                ->where("id", $requestData["product_row_id"])
-                ->update();
-
-            $response["order_quantity_change"] = "success";
-        }
-
-        if (isset($requestData["price_brutto"])) {
-            $this->set("price_brutto", $requestData["price_brutto"])
-                ->where("id", $requestData["product_row_id"])
-                ->update();
-
-            $response["order_price_change"] = "success";
-        }
-
-        return $response;
+    if ($order === null) {
+        // The order does not exist
+        return [
+            "order_id" => $requestData["order_id"],
+            "status" => "missing",
+        ];
     }
+
+    if ($order["order_status"] === 'locked') {
+        // The order is locked, prevent updates
+        return [
+            "status" => "locked",
+            "order_id" => $requestData["order_id"],
+        ];
+    }
+
+    $response = ["order_id" => $requestData["order_id"]];
+
+    if (isset($requestData["quantity"])) {
+        $oldQuantity = $order["quantity"];
+        $newQuantity = $requestData["quantity"];
+        $difference = $newQuantity - $oldQuantity;
+
+        if ($difference > 0) {
+            // Extract order_product_id from ci_bl_order_products
+            $orderProduct = $this->find($requestData["product_row_id"]);
+
+            if ($orderProduct !== null) {
+                $orderProductId = $orderProduct["order_product_id"];
+
+                // Find the rows in stocks_copy1 with order_product_id and update the first $difference rows
+                $stockModel = new StockModel();
+                $rowsToUpdate = $stockModel->where('order_product_id', $orderProductId)
+                    ->orderBy('id', 'ASC')
+                    ->findAll($difference); // Limit the result to the first $difference rows
+
+                foreach ($rowsToUpdate as $row) {
+                    // Perform the update on each row based on your requirements
+                    // For example, you can update some data in the row using the set() and update() methods
+                    // For demonstration purposes, let's assume you are updating the column 'some_data' with a value of 'updated'
+                    $stockModel->set('order_product_id', null)
+                               ->set('order_id', null)
+                               ->set('status', 'instock')
+                               ->where('id', $row['id'])
+                               ->update();
+                }
+
+                $response["stock_update"] = "success";
+            }
+        }
+
+        $this->set("quantity", $newQuantity)
+            ->where("id", $requestData["product_row_id"])
+            ->update();
+
+        $response["order_quantity_change"] = "success";
+    }
+
+    if (isset($requestData["price_brutto"])) {
+        $this->set("price_brutto", $requestData["price_brutto"])
+            ->where("id", $requestData["product_row_id"])
+            ->update();
+
+        $response["order_price_change"] = "success";
+    }
+
+    return $response;
+}
 
     
 }
