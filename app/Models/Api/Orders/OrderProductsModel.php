@@ -139,7 +139,7 @@ class OrderProductsModel extends Model
                     // Perform the update on each row based on your requirements
                     // For example, you can update some data in the row using the set() and update() methods
                     // For demonstration purposes, let's assume you are updating the column 'some_data' with a value of 'updated'
-                    $stockModel->set('order_product_id', null)
+                    $test = $stockModel->set('order_product_id', null)
                                ->set('order_id', null)
                                ->set('status', 'instock')
                                ->where('id', $row['id'])
@@ -147,7 +147,7 @@ class OrderProductsModel extends Model
                                
                 }
 
-                $response["stock_update"] = "success";
+                $response["stock_update"] = $test;
             
         }
 
