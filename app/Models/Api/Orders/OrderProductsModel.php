@@ -122,7 +122,7 @@ class OrderProductsModel extends Model
         
         $oldQuantity = $orderProduct["quantity"];
         $newQuantity = $requestData["quantity"];
-        $difference = $newQuantity - $oldQuantity;
+        $difference = $oldQuantity - $newQuantity;
 
         if ($difference > 0) {
             // Extract order_product_id from ci_bl_order_products
@@ -155,7 +155,7 @@ class OrderProductsModel extends Model
             ->where("id", $requestData["product_row_id"])
             ->update();
 
-        $response["order_quantity_change"] = $oldQuantity;
+        $response["order_quantity_change"] = "success";
     }
 
     if (isset($requestData["price_brutto"])) {
