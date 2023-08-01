@@ -93,7 +93,7 @@ class OrderProductsModel extends Model
     {
         $orderModel = new OrdersModel();
         $order = $orderModel->find($requestData["order_id"]);
-        
+
         if ($order === null) {
             // The invoice does not exist
             return [
@@ -102,7 +102,7 @@ class OrderProductsModel extends Model
             ];
         }
 
-        if ($order["order_status"] == 'new' || $order["order_status"] == 'inprogress') {
+        if ($order["order_status"] != 'new' || $order["order_status"] != 'inprogress') {
             return [
                 "status" => "locked",
                 "order_id" => $requestData["order_id"],
