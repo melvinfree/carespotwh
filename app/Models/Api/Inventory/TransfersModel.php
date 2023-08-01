@@ -98,6 +98,17 @@ class TransfersModel extends Model
     // Daca produsul deja exista se actualizeaza valorile / daca nu, se adauga linie noua.
     public function insertProducts($data)
     {
+
+        $transfer_row = $this->db->table($this->table)
+        ->where('id', $data['transfer_id'])
+        ->get()
+        ->getRow();
+
+        if($transfer_row->confirmed !== null){
+
+            return ['error' => 1, 'already_confirmed' => 1, 'message' => 'You cannot add products into a transfer which was already confirmed'];
+        }
+        
     $responses = [];
 
     $transfer_id = $data['transfer_id'];
