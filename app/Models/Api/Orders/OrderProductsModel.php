@@ -91,8 +91,9 @@ class OrderProductsModel extends Model
 
     public function modifyProductValues($requestData)
     {
-        $order = $this->find($requestData["order_id"]);
-
+        $orderModel = new OrdersModel();
+        $order = $orderModel->find($requestData["order_id"]);
+        
         if ($order === null) {
             // The invoice does not exist
             return [
