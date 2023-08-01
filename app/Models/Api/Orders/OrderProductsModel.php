@@ -8,6 +8,7 @@ class OrderProductsModel extends Model
 {
     protected $table = 'ci_bl_order_products';
     protected $primaryKey = 'id';
+    protected $allowedFields = ["quantity", "price_brutto"];
 
 
     
