@@ -38,6 +38,7 @@ $routes->post('/Api/Orders/searchOrder', '\App\Controllers\Api\Orders::searchOrd
 $routes->post('/Api/Orders/filterOrder', '\App\Controllers\Api\Orders::filterOrder'); 
 $routes->post('/Api/Orders/deleteOrder', '\App\Controllers\Api\Orders::deleteOrder'); 
 $routes->post('/Api/Orders/getPlist', '\App\Controllers\Api\Orders::getPlist'); 
+$routes->post('/Api/Orders/modifyOrderProduct', '\App\Controllers\Api\Orders::modifyOrderProduct'); 
 
 // PurchaseOrders Api Routes - Endpoints
 

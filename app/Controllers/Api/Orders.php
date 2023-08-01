@@ -5,6 +5,7 @@ namespace App\Controllers\Api;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Controller;
 use App\Models\Api\Orders\OrdersModel;
+use App\Models\Api\Orders\OrderProductsModel;
 
 class Orders extends Controller
 {
@@ -229,6 +230,22 @@ class Orders extends Controller
 
         // Return a success message
         return $this->respond($jsonRes, 200);
+    }
+    public function modifyOrderProduct()
+    {
+    $OrderProductsModel = new OrderProductsModel();
+
+    // Validate token and get the request body
+    try {
+        $requestData = validateTokenAndFetchData();
+    } catch (\Exception $e) {
+        return $this->failUnauthorized($e->getMessage());
+    }
+    $responses = $OrderProductsModel->modifyProductValues($requestData);
+
+    $jsonRes = json_encode(succesResponse($responses), true);
+
+    return $this->respond($jsonRes, 200);
     }
 
 }

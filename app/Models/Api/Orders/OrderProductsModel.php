@@ -89,5 +89,45 @@ class OrderProductsModel extends Model
         return $price * $quantity;
     }
 
+    public function modifyProductValues($requestData)
+    {
+        $order = $this->find($requestData["order_id"]);
+
+        if ($order === null) {
+            // The invoice does not exist
+            return [
+                "order_id" => $requestData["order_id"],
+                "status" => "missing",
+            ];
+        }
+
+        if ($order["order_status"] == 'new' || $order["order_status"] == 'inprogress') {
+            return [
+                "status" => "locked",
+                "order_id" => $requestData["order_id"],
+            ];
+        }
+
+        $response = ["order_id" => $requestData["order_id"]];
+
+        if (isset($requestData["quantity"])) {
+            $this->set("quantity", $requestData["quantity"])
+                ->where("id", $requestData["product_row_id"])
+                ->update();
+
+            $response["order_quantity_change"] = "success";
+        }
+
+        if (isset($requestData["price_brutto"])) {
+            $this->set("price_brutto", $requestData["price_brutto"])
+                ->where("id", $requestData["product_row_id"])
+                ->update();
+
+            $response["order_price_change"] = "success";
+        }
+
+        return $response;
+    }
+
     
 }
