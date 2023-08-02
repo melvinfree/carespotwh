@@ -122,15 +122,16 @@ class OrderProductsModel extends Model
 
     if (isset($requestData["quantity"])) {
         
-        
 
         $response["operation_success"][] = $OrderAllocation->modifyAllocatedQuantityOrderProduct($orderProduct["quantity"],$requestData["quantity"],$orderProduct["order_product_id"],$orderProduct["product_id"],$requestData["order_id"]);
 
         $this->set("quantity", $requestData["quantity"])
             ->where("id", $requestData["product_row_id"])
             ->update();
-
+        
+        if($orderProduct['quantity'] !== $requestData['quantity']){
         $response["order_quantity_change"] = "success";
+        }
     }
 
     if (isset($requestData["price_brutto"])) {
