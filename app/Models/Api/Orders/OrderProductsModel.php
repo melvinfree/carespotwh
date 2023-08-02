@@ -93,7 +93,7 @@ class OrderProductsModel extends Model
 
     public function modifyProductValues($requestData)
 {
-    $OrderAllocation = new \App\Models\Api\Inventory\WarehouseModel();
+    $OrderAllocation = new \App\Models\Api\Orders\OrderAllocation();
     $orderModel = new OrdersModel();
 
     $order = $orderModel->find($requestData["order_id"]);
