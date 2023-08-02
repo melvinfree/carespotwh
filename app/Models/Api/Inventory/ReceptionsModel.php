@@ -164,16 +164,16 @@ class ReceptionsModel extends Model
     {    
 
         $checkifeanExist = $this->db->table('ci_product_eans')
-                 ->where('ean', $ean_code)
-                 ->where("product_id != ", $product_id);
+                ->where('ean', $ean_code)
+                ->where("product_id != ", $product_id)
+                ->get();
 
         // If the EAN exists for another product
-        if ($checkifeanExist->countAllResults() > 0) {
+        if ($checkifeanExist->getNumRows() > 0) {
 
-            $eanrows = $checkifeanExist->get()->getRow();
+            $eanrows = $checkifeanExist->getRow();
 
             return ['error' => true, 'ean_linked_with_other_product' => 1, 'product_id' => $eanrows->product_id];
-
         }
         
         
