@@ -170,7 +170,9 @@ class ReceptionsModel extends Model
         // If the EAN exists for another product
         if ($query->countAllResults() > 0) {
 
-            return ['error' => true, 'ean_linked_with_other_product' => 1];
+            $row = $query->get()->getRow();
+
+            return ['error' => true, 'ean_linked_with_other_product' => 1, 'product_id' => $row->product_id];
 
         }
         
