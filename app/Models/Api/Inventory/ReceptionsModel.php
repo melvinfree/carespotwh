@@ -204,15 +204,14 @@ class ReceptionsModel extends Model
             
                 if ($ean_exist == 1 && !$ean_found) {
                     $query = $this->db->table('ci_product_eans')
-                        ->where('ean', $ean_code)
-                        ->get();
+                        ->where('ean', $ean_code);
                 
                     // If the EAN exists for another product
-                    if ($query->num_rows() > 0) {
-                        $row = $query->row();
+                    if ($query->countAllResults() > 0) {
+                        $row = $query->get()->getRow();
                 
                         if ($row->product_id != $product_id) {
-                            return ['row_id' => $row_id, 'error' => 1, 'message' => 'This ean it is linked to other product you cannot link to this one.'];
+                            return ['row_id' => $row_id, 'error' => 1, 'message'=> 'This ean is linked to other product.'];
                         }
                     }
                 
