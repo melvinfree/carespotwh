@@ -129,9 +129,7 @@ class OrderProductsModel extends Model
             ->where("id", $requestData["product_row_id"])
             ->update();
         
-        if($orderProduct['quantity'] !== $requestData['quantity']){
-        $response["order_quantity_change"] = "success";
-        }
+        $response["operation_success"][]= ["order_quantity_change" => "success"];
     }
 
     if (isset($requestData["price_brutto"])) {
