@@ -128,9 +128,7 @@ class OrderProductsModel extends Model
         $this->set("quantity", $requestData["quantity"])
             ->where("id", $requestData["product_row_id"])
             ->update();
-        
-        $response["operation_success"][]= ["order_quantity_change" => "success"];
-    }
+            }
 
     if (isset($requestData["price_brutto"])) {
         $this->set("price_brutto", $requestData["price_brutto"])
