@@ -2,6 +2,7 @@
 
 namespace App\Models\Api\Orders;
 use App\Models\Api\Inventory\StockModel;
+use App\Models\Api\Orders\OrderAllocation;
 
 use CodeIgniter\Model;
 
@@ -93,6 +94,7 @@ class OrderProductsModel extends Model
 
     public function modifyProductValues($requestData)
 {
+    $OrderAllocation = new OrderAllocation();
     $orderModel = new OrdersModel();
     $order = $orderModel->find($requestData["order_id"]);
     $orderProduct = $this->find($requestData["product_row_id"]);
@@ -122,7 +124,7 @@ class OrderProductsModel extends Model
         
         
 
-        $response["operation_success"][] = modifyAllocatedQuantityOrderProduct($orderProduct["quantity"],$requestData["quantity"],$orderProduct["order_product_id"],$requestData["order_id"]);
+        $response["operation_success"][] = $OrderAllocation->modifyAllocatedQuantityOrderProduct($orderProduct["quantity"],$requestData["quantity"],$orderProduct["order_product_id"],$requestData["order_id"]);
 
         $this->set("quantity", $requestData["quantity"])
             ->where("id", $requestData["product_row_id"])
