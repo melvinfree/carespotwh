@@ -202,11 +202,24 @@ class ReceptionsModel extends Model
                 ->update();
 
             
-            if ($ean_exist == 1 && !$ean_found)
-            {
-                $this->db->table('ci_product_eans')
-                    ->insert(['product_id' => $product_id, 'ean' => $ean_code]);
-            }
+                if ($ean_exist == 1 && !$ean_found) {
+                    $query = $this->db->table('ci_product_eans')
+                        ->where('ean', $ean_code)
+                        ->get();
+                
+                    // If the EAN exists for another product
+                    if ($query->num_rows() > 0) {
+                        $row = $query->row();
+                
+                        if ($row->product_id != $product_id) {
+                            return ['row_id' => $row_id, 'error' => 1, 'message' => 'This ean it is linked to other product you cannot link to this one.'];
+                        }
+                    }
+                
+                    // If the EAN does not exist or belongs to the same product, perform the insert
+                    $this->db->table('ci_product_eans')
+                        ->insert(['product_id' => $product_id, 'ean' => $ean_code]);
+                }
             
             $return = ['row_id' => $row_id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as receptioned'];
             return $return;
