@@ -20,6 +20,20 @@ class ProductsModel extends Model
     return $products;
     }
 
+    public function findProductNamebyId($product_id)
+    {
+    $product = $this->select('name') 
+                ->where('id', $product_id)
+                ->first();
+
+    // check if product was found
+    if (!$product) {
+        return null; // or return an error message or throw an exception
+    }
+
+    return $product->name; // this will return the 'name' of the product
+    }
+
     public function searchProducts($searchTerm)
 {
     $searchTerm = "%{$searchTerm}%";  // Add wildcard characters for LIKE

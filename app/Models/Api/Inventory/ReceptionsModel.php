@@ -3,6 +3,7 @@
 namespace App\Models\Api\Inventory;
 
 use CodeIgniter\Model;
+use App\Models\Api\Inventory\ProductsModel;
 
 class ReceptionsModel extends Model
 {
@@ -173,7 +174,11 @@ class ReceptionsModel extends Model
 
             $eanrows = $checkifeanExist->getRow();
 
-            return ['error' => true, 'ean_linked_with_other_product' => 1, 'product_id' => $eanrows->product_id];
+            $ProductsModel = new ProductsModel();
+            $product_name = $ProductsModel->findProductNamebyId($product_id);
+            
+
+            return ['error' => true, 'ean_linked_with_other_product' => 1, 'product_id' => $eanrows->product_id, 'product_name' => $product_name];
         }
         
         
