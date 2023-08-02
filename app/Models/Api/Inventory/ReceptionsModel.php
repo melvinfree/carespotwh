@@ -162,6 +162,19 @@ class ReceptionsModel extends Model
 
     public function processProduct($product_id, $ean_code, $row_id, $ean_exist)
     {    
+
+        $query = $this->db->table('ci_product_eans')
+                 ->where('ean', $ean_code)
+                 ->where("product_id != ", $product_id);
+
+        // If the EAN exists for another product
+        if ($query->countAllResults() > 0) {
+
+            return ['error' => true, 'ean_linked_with_other_product' => 1];
+
+        }
+        
+        
         $stock_row = $this->db->table('stock_copy1')
         ->where('id', $row_id)
         ->get()
