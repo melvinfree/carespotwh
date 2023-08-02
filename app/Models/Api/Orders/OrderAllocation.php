@@ -84,6 +84,11 @@ class OrderAllocation extends Model
 
             }
         }
+        elseif($new_quantity == $old_quantity){
+
+            return ['error' => 0, "allocated_quantity" => 0, 'message' => 'Old quantity = New quantity, no changes'];
+
+        }
 
     }
 
