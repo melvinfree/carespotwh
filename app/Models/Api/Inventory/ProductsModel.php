@@ -31,7 +31,7 @@ class ProductsModel extends Model
         return null; // or return an error message or throw an exception
     }
 
-    return $product->name; // this will return the 'name' of the product
+    return $product['name']; // this will return the 'name' of the product
     }
 
     public function searchProducts($searchTerm)
