@@ -2,7 +2,6 @@
 
 namespace App\Models\Api\Orders;
 use App\Models\Api\Inventory\StockModel;
-use App\Models\Api\Orders\OrderAllocation;
 
 use CodeIgniter\Model;
 
@@ -96,6 +95,7 @@ class OrderProductsModel extends Model
 {
     $OrderAllocation = new OrderAllocation();
     $orderModel = new OrdersModel();
+
     $order = $orderModel->find($requestData["order_id"]);
     $orderProduct = $this->find($requestData["product_row_id"]);
 
