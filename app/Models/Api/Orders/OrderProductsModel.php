@@ -120,43 +120,11 @@ class OrderProductsModel extends Model
 
     if (isset($requestData["quantity"])) {
         
-        $oldQuantity = $orderProduct["quantity"];
-        $newQuantity = $requestData["quantity"];
-        $difference = $oldQuantity - $newQuantity;
+        
 
-        if ($difference > 0) {
-            // Extract order_product_id from ci_bl_order_products
+        $response["operation_success"][] = modifyAllocatedQuantityOrderProduct($orderProduct["quantity"],$requestData["quantity"],$orderProduct["order_product_id"],$requestData["order_id"]);
 
-            
-
-                // Find the rows in stocks_copy1 with order_product_id and update the first $difference rows
-                $stockModel = new StockModel();
-                $rowsToUpdate = $stockModel->where('order_product_id', $orderProductId)
-                    ->orderBy('id', 'ASC')
-                    ->findAll($difference); // Limit the result to the first $difference rows
-
-                foreach ($rowsToUpdate as $row) {
-                    // Perform the update on each row based on your requirements
-                    // For example, you can update some data in the row using the set() and update() methods
-                    // For demonstration purposes, let's assume you are updating the column 'some_data' with a value of 'updated'
-
-                    $sql = "
-                    UPDATE " . $stockModel->table . "
-                    SET order_product_id = NULL,
-                        order_id = NULL,
-                        status = 'instock'
-                    WHERE id = ?
-                ";
-            
-                $this->db->query($sql, [$row['id']]);
-                               
-                }
-
-                $response["stock_update"] = "success";
-            
-        }
-
-        $this->set("quantity", $newQuantity)
+        $this->set("quantity", $requestData["quantity"])
             ->where("id", $requestData["product_row_id"])
             ->update();
 
