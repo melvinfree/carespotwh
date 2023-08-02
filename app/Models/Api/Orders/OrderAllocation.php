@@ -12,7 +12,7 @@ class OrderAllocation extends Model
 
     protected $allowedFields = ["quantity", "price_brutto"];
 
-    public function modifyAllocatedQuantityOrderProduct($old_quantity,$new_quantity,$orderProductId,$orderId){
+    public function modifyAllocatedQuantityOrderProduct($old_quantity,$new_quantity,$orderProductId,$product_id,$orderId){
 
         $stockModel = new StockModel();
 
@@ -51,7 +51,7 @@ class OrderAllocation extends Model
 
             if($difference > 0){
 
-                $count = $stockModel->where('order_product_id', $orderProductId)
+                $count = $stockModel->where('product_id', $product_id)
                     ->where('warehouse', 1)
                     ->where('status', "instock")
                     ->countAllResults();
@@ -60,7 +60,7 @@ class OrderAllocation extends Model
                         return ['error' => 1, "available_quantity" => $count, 'needed_quantity' => $difference];
                     }
                 
-                $rowsToUpdate = $stockModel->where('order_product_id', $orderProductId)
+                $rowsToUpdate = $stockModel->where('product_id', $product_id)
                     ->where('warehouse', 1)
                     ->where('status', "instock")
                     ->orderBy('id', 'DESC')

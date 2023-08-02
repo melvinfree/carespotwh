@@ -124,7 +124,7 @@ class OrderProductsModel extends Model
         
         
 
-        $response["operation_success"][] = $OrderAllocation->modifyAllocatedQuantityOrderProduct($orderProduct["quantity"],$requestData["quantity"],$orderProduct["order_product_id"],$requestData["order_id"]);
+        $response["operation_success"][] = $OrderAllocation->modifyAllocatedQuantityOrderProduct($orderProduct["quantity"],$requestData["quantity"],$orderProduct["order_product_id"],$orderProduct["product_id"],$requestData["order_id"]);
 
         $this->set("quantity", $requestData["quantity"])
             ->where("id", $requestData["product_row_id"])
