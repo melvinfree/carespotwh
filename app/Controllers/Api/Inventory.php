@@ -108,19 +108,17 @@ class Inventory extends Controller
             return $this->failUnauthorized($e->getMessage());
         }
 
+        $eanCode = $requestData['ean_code'];
         $totalExecutions = $requestData['total_count_to_add_in_stock'];
-    
+
         $responses = [];
 
         $counter = 0;
 
-        foreach ($requestData as $productData) {
-            $responses[] = $Receptions->processProduct($productData['ean_code']);
-
+        while ($counter < $totalExecutions) {
+            $responses[] = $Receptions->processProduct($eanCode);
+    
             $counter++;
-            if ($counter >= $totalExecutions) {
-                break; // Break the loop when the specified number is reached
-            }
         }
     
         return $this->respond(['responses' => $responses], 200);
