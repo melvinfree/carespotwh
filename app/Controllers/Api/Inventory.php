@@ -116,7 +116,7 @@ class Inventory extends Controller
         $counter = 0;
 
         while ($counter < $totalExecutions) {
-            $responses[] = $Receptions->processProduct($eanCode);
+            $responses[] = $Receptions->processProduct($eanCode,$requestData['invoice_in_id']);
     
             $counter++;
         }

@@ -162,7 +162,7 @@ class ReceptionsModel extends Model
     }
 
     
-    public function processProduct($ean_code){
+    public function processProduct($ean_code,$invoice_in_id){
         
         $eanExist = $this->db->table('ci_product_eans')
             ->where('ean', $ean_code)
@@ -178,6 +178,7 @@ class ReceptionsModel extends Model
 
             $stock_row = $this->db->table('stock_copy1')
                 ->where('product_id', $eanExist->product_id)
+                ->where('invoice_in_id', $invoice_in_id)
                 ->where('warehouse', 2)
                 ->where('reception_date IS NULL', null, false)
                 ->get()
