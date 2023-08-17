@@ -13,7 +13,7 @@ class ReceptionsModel extends Model
 
 
     // This function it will be used to display receptions list inside Inventory Controller.
-    // This function it will return all receptions which wasn't confirmed(receptioned in warehouse) and which are locked(nir was closed)
+    // This function it will return all receptions which wasn't con med(receptioned in warehouse) and which are locked(nir was closed)
     // limit and offset used for pagination
     
     public function receptionsList($limit, $offset)
@@ -161,7 +161,53 @@ class ReceptionsModel extends Model
 
     }
 
-    public function processProduct($product_id, $ean_code, $row_id, $ean_exist)
+    
+    public function processProduct($ean_code){
+        
+        $eanExist = $this->db->table('ci_product_eans')
+            ->where('ean', $ean_code)
+            ->get()
+            ->getRow();
+
+            if(!$eanExist){
+                return ['error' => true, 'ean_status' => 'EAN-ul inserat nu exista in baza de date, te rog sa il adaugi produsului corespondent'];
+            }
+
+            $ProductsModel = new ProductsModel();
+            $product_name = $ProductsModel->findProductNamebyId($eanExist['product_id']);
+
+            $stock_row = $this->db->table('stock_copy1')
+                ->where('product_id', $eanExist['product_id'])
+                ->get()
+                ->getRow();
+
+            if($stock_row->reception_date !== null) {
+                return ['row_id' => $stock_row->id, 'already_receptioned' => 1, 'message' => 'This product was already marked as receptioned'];
+            }
+
+            if ($eanExist){
+            
+                $insert_data_stock = [
+                    'ean' => $ean_code,
+                    'reception_date' => date('Y-m-d H:i:s'),
+                    'warehouse' => '1'
+                ];
+
+                $this->db->table('stock_copy1')
+                ->set($insert_data_stock)
+                ->where('id', $stock_row->id)
+                ->update();
+
+                $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as receptioned'];
+                return $return;
+
+            }
+
+            }
+
+            
+    
+    /* public function processProduct($product_id, $ean_code, $row_id, $ean_exist)
     {    
 
         $checkifeanExist = $this->db->table('ci_product_eans')
@@ -236,6 +282,6 @@ class ReceptionsModel extends Model
             $return = ['row_id' => $row_id, 'ean_exist' => 0, 'message' => 'This ean does not exist, retry the call with publish_ean 1'];
             return $return;
         }
-    }
+    }*/
 
 }
