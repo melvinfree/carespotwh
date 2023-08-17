@@ -184,6 +184,8 @@ class ReceptionsModel extends Model
                 ->get()
                 ->getRow();
 
+                
+
             if($stock_row->reception_date !== null) {
                 return ['row_id' => $stock_row->id, 'already_receptioned' => 1, 'message' => 'This product was already marked as receptioned'];
             }
@@ -201,7 +203,14 @@ class ReceptionsModel extends Model
                 ->where('id', $stock_row->id)
                 ->update();
 
-                $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as receptioned'];
+
+                $count = $this->db->table('stock_copy1')
+                    ->where('product_id', $eanExist->product_id)
+                    ->where('warehouse', 2)
+                    ->where('reception_date IS NULL', null, false)
+                    ->countAllResults();
+                
+                $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as receptioned', 'remains_to_be_receptioned' => $count];
                 return $return;
 
             }
