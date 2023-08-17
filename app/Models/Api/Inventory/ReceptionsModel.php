@@ -179,11 +179,11 @@ class ReceptionsModel extends Model
             $stock_row = $this->db->table('stock_copy1')
                 ->where('product_id', $eanExist->product_id)
                 ->where('warehouse', 2)
-                ->where('reception_date IS NULL', null, false) // Add this line
+                ->where('reception_date IS NULL', null, false)
                 ->get()
                 ->getRow();
 
-            if(!empty($stock_row)) {
+            if($stock_row->reception_date !== null) {
                 return ['row_id' => $stock_row->id, 'already_receptioned' => 1, 'message' => 'This product was already marked as receptioned'];
             }
 
