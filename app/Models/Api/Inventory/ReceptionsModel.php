@@ -178,6 +178,7 @@ class ReceptionsModel extends Model
 
             $stock_row = $this->db->table('stock_copy1')
                 ->where('product_id', $eanExist->product_id)
+                ->where('reception_date', null)
                 ->get()
                 ->getRow();
 
