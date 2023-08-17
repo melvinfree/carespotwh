@@ -174,10 +174,10 @@ class ReceptionsModel extends Model
             }
 
             $ProductsModel = new ProductsModel();
-            $product_name = $ProductsModel->findProductNamebyId($eanExist['product_id']);
+            $product_name = $ProductsModel->findProductNamebyId($eanExist->product_id);
 
             $stock_row = $this->db->table('stock_copy1')
-                ->where('product_id', $eanExist['product_id'])
+                ->where('product_id', $eanExist->product_id)
                 ->get()
                 ->getRow();
 
