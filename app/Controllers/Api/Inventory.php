@@ -111,20 +111,20 @@ class Inventory extends Controller
 
         $eanCode = $requestData['ean_code'];
         $totalExecutions = $requestData['total_count_to_add_in_stock'];
+        $invoice_in_id = $requestData['invoice_in_id'];
 
-       /* $responses = [];
+        $responses = [];
 
         $counter = 0;
 
         while ($counter < $totalExecutions) {
-            $responses[] = $Receptions->processProduct($eanCode,$requestData['invoice_in_id']);
+            $responses[] = $Receptions->processProduct($eanCode,$invoice_in_id);
     
             $counter++;
         }
     
-        return $this->respond(['responses' => $responses], 200); */
+        return $this->respond(['responses' => $responses], 200); 
 
-        return $this->respond(json_encode($requestData,true),200);
     }
 
     public function ProductsStock()
