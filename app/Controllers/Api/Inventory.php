@@ -124,7 +124,7 @@ class Inventory extends Controller
     
         return $this->respond(['responses' => $responses], 200); */
 
-        return $requestData;
+        return $this->respond(json_encode($requestData,true),200);
     }
 
     public function ProductsStock()
