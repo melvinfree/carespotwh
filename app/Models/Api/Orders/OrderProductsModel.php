@@ -9,7 +9,7 @@ class OrderProductsModel extends Model
 {
     protected $table = 'ci_bl_order_products';
     protected $primaryKey = 'id';
-    protected $allowedFields = ["quantity", "price_brutto"];
+    protected $allowedFields = ["quantity", "price_brutto", "price_netto"];
 
 
     
@@ -130,7 +130,7 @@ class OrderProductsModel extends Model
             ->where("id", $requestData["product_row_id"])
             ->update();
             }
-            
+
             $response["order_quantity_change"] = "success";
 
     if (isset($requestData["price_netto"])) {
