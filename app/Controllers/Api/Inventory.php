@@ -112,7 +112,7 @@ class Inventory extends Controller
         $eanCode = $requestData['ean_code'];
         $totalExecutions = $requestData['total_count_to_add_in_stock'];
 
-        $responses = [];
+       /* $responses = [];
 
         $counter = 0;
 
@@ -122,7 +122,9 @@ class Inventory extends Controller
             $counter++;
         }
     
-        return $this->respond(['responses' => $responses], 200);
+        return $this->respond(['responses' => $responses], 200); */
+
+        return $requestData;
     }
 
     public function ProductsStock()
