@@ -45,4 +45,11 @@ class StockModel extends Model
         }
     }
 
+    public function getProductStockCount($productCode)
+    {
+        return $this->where('product_id', $productCode)
+            ->where('status', 'instock')
+            ->countAllResults();
+    }
+
 }

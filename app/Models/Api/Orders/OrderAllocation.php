@@ -45,7 +45,7 @@ class OrderAllocation extends Model
 
         }
         // Stock increase scenario (e.g. In order product quantity is 10 pcs, user adjust it to a greater number, e.g. 12 pcs) 
-        elseif($new_quantity > $old_quantity){
+        /*elseif($new_quantity > $old_quantity){
 
             $difference = $new_quantity - $old_quantity;
 
@@ -83,7 +83,7 @@ class OrderAllocation extends Model
 
 
             }
-        }
+        } */
         elseif($new_quantity == $old_quantity){
 
             return ['error' => 0, "allocated_quantity" => 0, 'message' => 'Old quantity = New quantity, no changes'];

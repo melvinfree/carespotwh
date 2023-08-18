@@ -61,7 +61,7 @@ $routes->post('/Api/Inventory/getReceptionsList', '\App\Controllers\Api\Inventor
 $routes->post('/Api/Inventory/getProductsList', '\App\Controllers\Api\Inventory::getProductsList');
 $routes->post('/Api/Inventory/getNotConfirmedProductPcs', '\App\Controllers\Api\Inventory::getNotConfirmedProductPcs');
 $routes->post('/Api/Inventory/addProductInventory', '\App\Controllers\Api\Inventory::addProductInventory');
-
+$routes->post('/Api/Inventory/ProductsStock', '\App\Controllers\Api\Inventory::ProductsStock');
 
 // Inventory Transfers (between warehouses)
 

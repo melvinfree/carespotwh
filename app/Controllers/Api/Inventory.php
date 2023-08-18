@@ -9,6 +9,7 @@ use App\Models\Api\PurchaseOrder\PurchaseOrderModel;
 use App\Models\Api\PurchaseOrder\PurchaseOrderProductModel;
 use App\Models\Api\Inventory\ReceptionsModel;
 use App\Models\Api\Inventory\TransfersModel;
+use App\Models\Api\Inventory\StockModel;
 use DateTime;
 
 class Inventory extends Controller
@@ -122,6 +123,45 @@ class Inventory extends Controller
         }
     
         return $this->respond(['responses' => $responses], 200);
+    }
+
+    public function ProductsStock()
+    {
+
+        
+        // Load the StockModel
+        $stockModel = new StockModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        // Fetch all distinct product codes from the stock table
+        $distinctProductCodes = $stockModel->distinct('product_id')->findColumn('product_id');
+
+        // Initialize an array to store the product codes and their stock counts
+        $productStock = [];
+
+        foreach ($distinctProductCodes as $productCode) {
+            // Get the stock count for the current product code
+            $stockCount = $stockModel->getProductStockCount($productCode);
+
+            // Store the product code and stock count in the array
+            $productStock[] = [
+                'product_id' => $productCode,
+                'stock' => $stockCount
+            ];
+        }
+
+        // Convert the array to JSON
+        $jsonData = json_encode($productStock);
+
+        return $this->respond(['responses' => $jsonData], 200);
+
+
     }
     
     
