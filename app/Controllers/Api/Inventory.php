@@ -157,7 +157,7 @@ class Inventory extends Controller
         }
 
         // Convert the array to JSON
-        $jsonData = json_encode($productStock);
+        $jsonData = json_encode($productStock, JSON_UNESCAPED_SLASHES);
 
         return $this->respond(['responses' => $jsonData], 200);
 
