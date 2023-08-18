@@ -130,8 +130,8 @@ class OrderProductsModel extends Model
             ->update();
             }
 
-    if (isset($requestData["price_brutto"])) {
-        $this->set("price_brutto", $requestData["price_brutto"])
+    if (isset($requestData["price_netto"])) {
+        $this->set("price_netto", $requestData["price_netto"])
             ->where("id", $requestData["product_row_id"])
             ->update();
 
