@@ -17,8 +17,8 @@ class ProductsModel extends Model
     {
         $this->select('
         products.id,
-        products.name,
-        manufacturers.name,
+        products.name as product_name,
+        manufacturers.name as man_name,
         products.status
         ');
 
