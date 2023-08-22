@@ -9,6 +9,14 @@ use App\Models\Api\Products\ProductsModel;
 class Products extends Controller
 {
 
+    use ResponseTrait;
+
+    public function __construct()
+    {
+        helper("api");
+        helper("currency");
+    }
+
     public function getProductsList(){
 
         $ProductsModel = new ProductsModel();
