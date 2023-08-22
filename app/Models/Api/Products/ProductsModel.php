@@ -28,7 +28,7 @@ class ProductsModel extends Model
             "left"
         );
 
-        $this->orderBy("id", "DESC");
+        $this->orderBy("id", "ASC");
         $this->limit($limit, $offset);
         $query = $this->get();
         $products = $query->getResultArray();
