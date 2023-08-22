@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Api\PurchaseOrder;
+namespace App\Models\Api\Products;
 
 use CodeIgniter\Model;
 
-class PurchaseOrderModel extends Model
+class ProductsModel extends Model
 {
     protected $table = "products";
     protected $primaryKey = "id";
