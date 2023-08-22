@@ -73,6 +73,13 @@ $routes->post('/Api/Transfers/addProduct', '\App\Controllers\Api\Transfers::addP
 
 
 
+// Products
+
+
+$routes->post('/Api/Products/getProductsList', '\App\Controllers\Api\Products::getProductsList');
+
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
