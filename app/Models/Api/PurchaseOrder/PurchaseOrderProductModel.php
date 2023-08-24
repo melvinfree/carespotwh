@@ -154,7 +154,6 @@ class PurchaseOrderProductModel extends Model
         foreach ($invoiceProducts as $product) {
 
             
-
             $data = [
                 'product_id' => $product['product_id'],
                 'supplier' => $supplierId,
