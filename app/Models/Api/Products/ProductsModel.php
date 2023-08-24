@@ -37,4 +37,42 @@ class ProductsModel extends Model
 
     }
 
+    public function getProductDetails($product_id)
+    {
+
+        $productDetails = $this->find($product_id);
+
+        if ($productDetails === null) {
+            return [
+                'error' => true,
+                'message' => 'Product id not found'
+            ];
+        }
+
+        $productEans = new \App\Models\Api\Products\ProductsEansModel();
+
+        
+        $this->select('
+        products.id,
+        products.name as product_name,
+        manufacturers.name as man_name,
+        products.status
+        ');
+
+        $this->join(
+            "manufacturers",
+            "manufacturers.id = products.manufacturer",
+            "left"
+        );
+
+        $this->where('id', $product_id);
+        $query = $this->get();
+
+        $product['product'] = $query->getResultArray();
+        $product['product_ean_codes'] = $productEans->getEans($product_id);
+
+        return $product;
+
+    }
+
 }

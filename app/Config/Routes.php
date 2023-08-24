@@ -79,6 +79,7 @@ $routes->post('/Api/Transfers/addProduct', '\App\Controllers\Api\Transfers::addP
 
 
 $routes->post('/Api/Products/getProductsList', '\App\Controllers\Api\Products::getProductsList');
+$routes->post('/Api/Products/getProduct', '\App\Controllers\Api\Products::getProduct');
 
 
 
