@@ -39,7 +39,8 @@ $routes->post('/Api/Orders/filterOrder', '\App\Controllers\Api\Orders::filterOrd
 $routes->post('/Api/Orders/deleteOrder', '\App\Controllers\Api\Orders::deleteOrder'); 
 $routes->post('/Api/Orders/getPlist', '\App\Controllers\Api\Orders::getPlist'); 
 $routes->post('/Api/Orders/modifyOrderProduct', '\App\Controllers\Api\Orders::modifyOrderProduct'); 
-
+$routes->post('/Api/Orders/setOrderNotes', '\App\Controllers\Api\Orders::setOrderNotes'); 
+$routes->post('/Api/Orders/setOrderStatus', '\App\Controllers\Api\Orders::setOrderStatus'); 
 // PurchaseOrders Api Routes - Endpoints
 
 $routes->post('/Api/Purchase/purchaseInit', '\App\Controllers\Api\Purchase::purchaseInit'); 
