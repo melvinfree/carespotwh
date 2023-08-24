@@ -101,7 +101,7 @@ class Products extends Controller
         ) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
-        if (!is_int($requestData["product_id"])) {
+        if (!is_int($requestData["row_id"])) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
 
