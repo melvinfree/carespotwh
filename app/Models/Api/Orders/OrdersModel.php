@@ -9,7 +9,7 @@ class OrdersModel extends Model
     protected $table = 'ci_bl_orders';
     protected $primaryKey = 'id';
 
-    protected $allowedFields = ["quantity", "price_brutto", "price_netto"];
+    protected $allowedFields = ["order_notes", "whStatus"];
 
 
     // Returning order list (including total with vat and without)
@@ -193,4 +193,30 @@ class OrdersModel extends Model
 
         
     }
+
+    private function setOrderStatus($requestData)
+    {
+
+        $order = $this->find($requestData["order_id"]);
+
+        if ($order === null) {
+            return [
+                'error' => true,
+                'message' => 'Order not found'
+            ];
+        }
+
+        $this->set("whStatus", $requestData["order_status"])
+        ->where("id", $requestData["order_id"])
+        ->update();
+        
+        return [
+            'error' => false,
+            'message' => 'Order notes succesfuly updated'
+        ];
+
+        
+    }
+
+    
 }

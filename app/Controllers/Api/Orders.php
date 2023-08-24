@@ -248,7 +248,7 @@ class Orders extends Controller
     return $this->respond($jsonRes, 200);
     }
 
-
+    // required fields: order_id && order_notes
     public function setOrderNotes()
     {
     $OrdersModel = new OrdersModel();
@@ -260,6 +260,25 @@ class Orders extends Controller
         return $this->failUnauthorized($e->getMessage());
     }
     $responses = $OrdersModel->setOrderNotes($requestData);
+
+    $jsonRes = json_encode(succesResponse($responses), true);
+
+    return $this->respond($jsonRes, 200);
+    }
+
+
+    // required fields: order_id && order_status
+    public function setOrderStatus()
+    {
+    $OrdersModel = new OrdersModel();
+
+    // Validate token and get the request body
+    try {
+        $requestData = validateTokenAndFetchData();
+    } catch (\Exception $e) {
+        return $this->failUnauthorized($e->getMessage());
+    }
+    $responses = $OrdersModel->setOrderStatus($requestData);
 
     $jsonRes = json_encode(succesResponse($responses), true);
 
