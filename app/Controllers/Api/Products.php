@@ -118,7 +118,7 @@ class Products extends Controller
 
     }
 
-    public function createPurchase()
+    public function addEan()
     {
         $ProductsEansModel = new ProductsEansModel();
 
