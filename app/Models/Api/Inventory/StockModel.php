@@ -35,12 +35,9 @@ class StockModel extends Model
                 ->where('invoice_in_id', $data['invoice_in_id'])
                 ->countAllResults();
         
-        for($i = 0; $i < $data['quantity']; $i++) {
+        for($i = $countProductsAdded; $i < $data['quantity']; $i++) {
             
-            if($countProductsAdded >= $data['quantity']){
-                return ["error" => false, "message" => "All products added"];
-            
-            }
+
             $this->insert([
                 'product_id' => $data['product_id'],
                 'supplier' => $data['supplier'],
