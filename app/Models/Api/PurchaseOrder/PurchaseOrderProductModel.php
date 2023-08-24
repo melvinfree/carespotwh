@@ -170,9 +170,11 @@ class PurchaseOrderProductModel extends Model
 
 
             $stockModel->addToStock($data);
+
+            $returnInfo['info'] = $stockModel->addToStock($data);
         }
 
-        return "success";
+        return $returnInfo;
     }
 
     
