@@ -40,6 +40,11 @@ class StockModel extends Model
         }
         
         for($i = 0; $i < $data['quantity']; $i++) {
+            
+            if($countProductsAdded >= $data['quantity']){
+                return ["error" => false, "message" => "All products added"];
+            
+            }
             $this->insert([
                 'product_id' => $data['product_id'],
                 'supplier' => $data['supplier'],
