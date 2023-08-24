@@ -259,7 +259,7 @@ class Orders extends Controller
     } catch (\Exception $e) {
         return $this->failUnauthorized($e->getMessage());
     }
-    $responses = $OrdersModel->setOrderNotesM($requestData);
+    $responses = $OrdersModel->setOrderNotes($requestData);
 
     $jsonRes = json_encode(succesResponse($responses), true);
 
@@ -278,7 +278,7 @@ class Orders extends Controller
     } catch (\Exception $e) {
         return $this->failUnauthorized($e->getMessage());
     }
-    $responses = $OrdersModel->setOrderStatusM($requestData);
+    $responses = $OrdersModel->setOrderStatus($requestData);
 
     $jsonRes = json_encode(succesResponse($responses), true);
 
