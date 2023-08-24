@@ -35,6 +35,27 @@ class ProductsEansModel extends Model
         return $product_eans;
     }
 
+    public function delete($rowId){
+
+        if($this->delete(['id' => $rowId])){
+            return ["error" => false, "message" => "Selected ean was deleted"];
+        }
+        else{
+            return ["error" => true, "message" => "Ean cannot be deleted"];
+        }
+    }
+
+    public function add($product_id,$ean_code){
+
+        $this->insert([
+            'product_id' => $product_id,
+            'ean' => $ean_code
+        ]);
+
+        return ['record_id' => $this->db->insertID()];
+
+    }
+
 
 
 }
