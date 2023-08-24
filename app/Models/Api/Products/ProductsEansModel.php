@@ -27,7 +27,7 @@ class ProductsEansModel extends Model
         product_id,
         ean');
 
-        $this->orderBy("id", "ASC");
+        $this->where("product_id", $product_id);
         $query = $this->get();
 
         $product_eans = $query->getResultArray();
