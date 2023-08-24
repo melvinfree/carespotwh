@@ -55,6 +55,7 @@ class ProductsModel extends Model
         $this->select('
         products.id,
         products.name as product_name,
+        products.description,
         manufacturers.name as man_name,
         products.status
         ');
