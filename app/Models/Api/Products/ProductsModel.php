@@ -50,7 +50,7 @@ class ProductsModel extends Model
         }
 
         $productEans = new \App\Models\Api\Products\ProductsEansModel();
-
+        $manufacturers = new \App\Models\Api\Products\ManufacturersModel();
         
         $this->select('
         products.id,
@@ -70,6 +70,7 @@ class ProductsModel extends Model
 
         $product['product'] = $query->getResultArray();
         $product['product_ean_codes'] = $productEans->getEans($product_id);
+        $product['available_brands'] = $productEans->getAllManufacturersName();
 
         return $product;
 
