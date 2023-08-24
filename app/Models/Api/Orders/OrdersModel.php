@@ -170,7 +170,7 @@ class OrdersModel extends Model
     }
 
 
-    private function setOrderNotes($requestData)
+    private function setOrderNotesM($requestData)
     {
 
         $order = $this->find($requestData["order_id"]);
@@ -194,7 +194,7 @@ class OrdersModel extends Model
         
     }
 
-    private function setOrderStatus($requestData)
+    private function setOrderStatusM($requestData)
     {
 
         $order = $this->find($requestData["order_id"]);
