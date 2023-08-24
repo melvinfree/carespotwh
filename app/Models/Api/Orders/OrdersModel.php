@@ -173,7 +173,7 @@ class OrdersModel extends Model
     private function setOrderNotes($requestData)
     {
 
-        $order = $this->find($id);
+        $order = $this->find($requestData["order_id"]);
 
         if ($order === null) {
             return [
@@ -185,8 +185,7 @@ class OrdersModel extends Model
         $this->set("order_notes", $requestData["order_notes"])
         ->where("id", $requestData["order_id"])
         ->update();
-        }
-
+        
         return [
             'error' => false,
             'message' => 'Order notes succesfuly updated'
