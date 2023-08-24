@@ -9,6 +9,8 @@ class OrdersModel extends Model
     protected $table = 'ci_bl_orders';
     protected $primaryKey = 'id';
 
+    protected $allowedFields = ["quantity", "price_brutto", "price_netto"];
+
 
     // Returning order list (including total with vat and without)
     // Used in Orders Controller for Endpoint "getAll"
@@ -165,5 +167,31 @@ class OrdersModel extends Model
     private function calculateShippingWithoutVat($price, $vatRate)
     {
         return $price / (1 + $vatRate/100);
+    }
+
+
+    private function setOrderNotes($requestData)
+    {
+
+        $order = $this->find($id);
+
+        if ($order === null) {
+            return [
+                'error' => true,
+                'message' => 'Order not found'
+            ];
+        }
+
+        $this->set("order_notes", $requestData["order_notes"])
+        ->where("id", $requestData["order_id"])
+        ->update();
+        }
+
+        return [
+            'error' => false,
+            'message' => 'Order notes succesfuly updated'
+        ];
+
+        
     }
 }

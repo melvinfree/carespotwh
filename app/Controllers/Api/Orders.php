@@ -248,4 +248,22 @@ class Orders extends Controller
     return $this->respond($jsonRes, 200);
     }
 
+
+    public function setOrderNotes()
+    {
+    $OrdersModel = new OrdersModel();
+
+    // Validate token and get the request body
+    try {
+        $requestData = validateTokenAndFetchData();
+    } catch (\Exception $e) {
+        return $this->failUnauthorized($e->getMessage());
+    }
+    $responses = $OrdersModel->setOrderNotes($requestData);
+
+    $jsonRes = json_encode(succesResponse($responses), true);
+
+    return $this->respond($jsonRes, 200);
+    }
+
 }
