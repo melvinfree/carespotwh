@@ -70,7 +70,7 @@ class ProductsModel extends Model
 
         $product['product'] = $query->getResultArray();
         $product['product_ean_codes'] = $productEans->getEans($product_id);
-        $product['available_brands'] = $productEans->getAllManufacturersName();
+        $product['available_brands'] = $manufacturers->getAllManufacturersName();
 
         return $product;
 
