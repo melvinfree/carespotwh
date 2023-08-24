@@ -65,7 +65,7 @@ class ProductsModel extends Model
             "left"
         );
 
-        $this->where('id', $product_id);
+        $this->where('products.id', $product_id);
         $query = $this->get();
 
         $product['product'] = $query->getResultArray();
