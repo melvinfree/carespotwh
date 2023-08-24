@@ -107,7 +107,7 @@ class Products extends Controller
 
         
         
-        $results = $ProductsEansModel->delete($requestData["row_id"]);
+        $results = $ProductsEansModel->deleteEan($requestData["row_id"]);
 
         if ($results) {
             $jsonRes = json_encode(succesResponse($results), true);
@@ -133,7 +133,7 @@ class Products extends Controller
         $expectedKeys = ["product_id", "ean"];
         $requestDataKeys = array_keys($requestData);
 
-        $insertedId = $ProductsEansModel->add($requestData['product_id'],$requestData['ean']);
+        $insertedId = $ProductsEansModel->addEan($requestData['product_id'],$requestData['ean']);
 
         
         $jsonRes = json_encode(succesResponse(['id_ean_adaugat' => $insertedId]), true);

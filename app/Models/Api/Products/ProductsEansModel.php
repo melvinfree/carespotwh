@@ -35,7 +35,7 @@ class ProductsEansModel extends Model
         return $product_eans;
     }
 
-    public function delete($rowId){
+    public function deleteEan($rowId){
 
         if($this->delete(['id' => $rowId])){
             return ["error" => false, "message" => "Selected ean was deleted"];
@@ -45,7 +45,7 @@ class ProductsEansModel extends Model
         }
     }
 
-    public function add($product_id,$ean_code){
+    public function addEan($product_id,$ean_code){
 
         $this->insert([
             'product_id' => $product_id,
