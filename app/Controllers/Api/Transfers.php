@@ -9,6 +9,7 @@ use App\Models\Api\PurchaseOrder\PurchaseOrderModel;
 use App\Models\Api\PurchaseOrder\PurchaseOrderProductModel;
 use App\Models\Api\Inventory\ReceptionsModel;
 use App\Models\Api\Inventory\TransfersModel;
+use App\Models\Api\Inventory\TransferProductModel;
 use DateTime;
 
 class Transfers extends Controller
@@ -193,6 +194,24 @@ class Transfers extends Controller
             return $this->failNotFound('No Transfer found with ID: '.$requestData["id"]);
         }
 
+    }
+
+    public function addToTransfer()
+    {
+    $TransferProductModel = new TransferProductModel();
+
+    // Validate token and get the request body
+    try {
+        $requestData = validateTokenAndFetchData();
+    } catch (\Exception $e) {
+        return $this->failUnauthorized($e->getMessage());
+    }
+
+    $responses = $TransferProductModel->blockQuantityTransferProducts($requestData['transfer_id']);
+
+    $jsonRes = json_encode(succesResponse($responses), true);
+
+    return $this->respond($jsonRes, 200);
     }
     
 

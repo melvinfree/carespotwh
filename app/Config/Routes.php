@@ -73,6 +73,7 @@ $routes->post('/Api/Transfers/transfersList', '\App\Controllers\Api\Transfers::t
 $routes->post('/Api/Transfers/searchProduct', '\App\Controllers\Api\Transfers::searchProduct');
 $routes->post('/Api/Transfers/addProduct', '\App\Controllers\Api\Transfers::addProduct');
 $routes->post('/Api/Transfers/getTransfer', '\App\Controllers\Api\Transfers::getTransfer');
+$routes->post('/Api/Transfers/addToTransfer', '\App\Controllers\Api\Transfers::addToTransfer');
 
 
 // Products
