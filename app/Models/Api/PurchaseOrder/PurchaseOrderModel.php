@@ -200,7 +200,7 @@ class PurchaseOrderModel extends Model
             ];
         }
 
-        if ($invoice["locked"] === null) {
+        if ($invoice["locked"] == null) {
             
             $this->set("locked", 1)
             ->where("id", $invoice_id)
@@ -209,7 +209,7 @@ class PurchaseOrderModel extends Model
             return $response["locked"] = "success";
         }
 
-        if ($invoice["locked"] === 1) {
+        if ($invoice["locked"] == 1) {
             
             $this->set("locked", NULL)
             ->where("id", $invoice_id)
