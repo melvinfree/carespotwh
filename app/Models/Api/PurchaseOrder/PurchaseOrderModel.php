@@ -189,8 +189,11 @@ class PurchaseOrderModel extends Model
 
     public function lockUnlock($invoice_id)
     {
+        
+        
+        
         $invoice = $this->find($invoice_id);
-
+        $response = $invoice;
         if ($invoice === null) {
             // The invoice does not exist
             return [
