@@ -54,10 +54,11 @@ class TransferProductModel extends Model
             ];
 
             $response[] = ['Quantity' => $product['quantity']];
+            $stockModel->addToTransfer($data);
 
         }
 
-        $stockModel->addToTransfer($data);
+        
 
         return $response;
     }
