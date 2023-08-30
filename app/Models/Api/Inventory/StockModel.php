@@ -61,28 +61,35 @@ class StockModel extends Model
                 ->where('product_transfer_id', $data['product_transfer_id'])
                 ->where('transfer_id', $data['transfer_id'])
                 ->countAllResults();
-        
-        for($i = $countProductsAdded; $i < $data['quantity']; $i++) {
-            
 
-            $dataToUpdate = [
-                'transfer_id' => $data['transfer_id'],
-                'product_transfer_id' => $data['product_transfer_id'],
-                'status' => $data['status'],
-                'warehouse' => $data['new_warehouse']
-            ];
-            
-            $response = $this->set($dataToUpdate)
+        $rowsToSelect = $data['quantity'] - $countProductsAdded; 
+        if($rowsToSelect > 0){     
+
+        $rowsToUpdate = $this->select('*')
                 ->where('product_id', $data['product_id'])
                 ->where('status', 'instock')
                 ->where('warehouse', $data['old_warehouse'])
-                ->update();
+                ->limit($rowsToSelect)
+                ->findAll();
 
-                
 
-        }
-        $response =  ["MSG1" => "Count products added: " . $countProductsAdded . "\n", "MSG2" => "Desired quantity: " . $data['quantity'] . "\n"];
-        return $response;
+        foreach ($rowsToUpdate as $row) {
+                    $this->set([
+                        'transfer_id' => $data['transfer_id'],
+                        'product_transfer_id' => $data['product_transfer_id'],
+                        'status' => $data['status'],
+                        'warehouse' => $data['new_warehouse_id']
+                    ])
+                    ->where('id', $row['id'])  // Assuming the primary key column is 'id'
+                    ->update();
+                $updatedRowIds[] = $row['id'];
+        } 
+        return $updatedRowIds;
+    }       
+    else{
+        return ['rows_updated' => 0];
+    }
+        
     }
 
     public function getProductStockCount($productCode)
