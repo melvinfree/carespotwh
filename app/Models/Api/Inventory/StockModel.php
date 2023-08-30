@@ -72,13 +72,13 @@ class StockModel extends Model
                 'warehouse' => $data['new_warehouse']
             ];
             
-            $this->set($dataToUpdate)
+            $response = $this->set($dataToUpdate)
                 ->where('product_id', $data['product_id'])
                 ->where('status', 'instock')
                 ->where('warehouse', $data['old_warehouse'])
                 ->update();
 
-                $response =  ["MSG1" => "Count products added: " . $countProductsAdded . "\n", "MSG2" => "Desired quantity: " . $data['quantity'] . "\n"];
+                //$response =  ["MSG1" => "Count products added: " . $countProductsAdded . "\n", "MSG2" => "Desired quantity: " . $data['quantity'] . "\n"];
 
         }
         return $response;
