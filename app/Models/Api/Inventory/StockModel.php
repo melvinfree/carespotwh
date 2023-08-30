@@ -84,7 +84,7 @@ class StockModel extends Model
                     ->update();
                 $updatedRowIds[] = $row['id'];
         } 
-        return $updatedRowIds;
+        return ['rows_updated' => $rowsToSelect];
     }       
     else{
         return ['rows_updated' => 0];

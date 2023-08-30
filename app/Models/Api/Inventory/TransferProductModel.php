@@ -54,8 +54,9 @@ class TransferProductModel extends Model
             ];
 
 
-
+        
           return  $stockModel->addToTransfer($data);
+
 
         }
 
