@@ -90,10 +90,10 @@ class StockModel extends Model
                 $updatedRowIds[] = $row['id'];
             }    
         }
-        return ['updated_rows' => $updatedRowCount, 'updated_rows_ids' => $updatedRowIds];
+        return ['product_id' => $data['product_id'], 'updated_rows' => $updatedRowCount, 'updated_rows_ids' => $updatedRowIds];
     } 
     else{
-        return ['updated_rows' => 0, 'updated_rows_ids' => false];
+        return ['product_id' => $data['product_id'], 'updated_rows' => 0, 'updated_rows_ids' => false];
     }  
 }
 
