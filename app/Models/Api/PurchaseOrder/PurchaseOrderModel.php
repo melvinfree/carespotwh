@@ -9,7 +9,7 @@ class PurchaseOrderModel extends Model
     protected $table = "invoices_in";
     protected $primaryKey = "id";
 
-    protected $allowedFields = ["number", "invoice_date", "invoice_series"];
+    protected $allowedFields = ["number", "invoice_date", "invoice_series", "locked"];
 
     // Returning order list (including total with vat and without)
     // Used in Orders Controller for Endpoint "getAll"
@@ -188,14 +188,10 @@ class PurchaseOrderModel extends Model
     }
 
     public function lockUnlock($invoice_id)
-    {
-        
-        
+    {       
         
         $invoice = $this->find($invoice_id);
-        $response = $invoice;
 
-        return $response;
         if ($invoice === null) {
             // The invoice does not exist
             return [
