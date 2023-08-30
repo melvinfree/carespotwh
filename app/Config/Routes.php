@@ -56,7 +56,7 @@ $routes->post('/Api/Purchase/deleteProduct', '\App\Controllers\Api\Purchase::del
 $routes->post('/Api/Purchase/setInvoiceValues', '\App\Controllers\Api\Purchase::setInvoiceValues');
 $routes->post('/Api/Purchase/getInvoicePList', '\App\Controllers\Api\Purchase::getInvoicePList');
 $routes->post('/Api/Purchase/getPurchase', '\App\Controllers\Api\Purchase::getPurchase');
-
+$routes->post('/Api/Purchase/lockInvoice', '\App\Controllers\Api\Purchase::lockInvoice');
 // Inventory Api Routes - Endpoints
 
 $routes->post('/Api/Inventory/getReceptionsList', '\App\Controllers\Api\Inventory::getReceptionsList');
