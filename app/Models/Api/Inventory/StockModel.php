@@ -65,12 +65,13 @@ class StockModel extends Model
         $rowsToSelect = $data['quantity'] - $countProductsAdded; 
         if($rowsToSelect > 0){     
 
-        $rowsToUpdate = $this->select('*')
-                ->where('product_id', $data['product_id'])
-                ->where('status', 'instock')
-                ->where('warehouse', $data['old_warehouse'])
-                ->limit($rowsToSelect)
-                ->get();
+        $this->select('*');
+        $this->where('product_id', $data['product_id']);
+        $this->where('status', 'instock');
+        $this->where('warehouse', $data['old_warehouse']);
+        $this->limit($rowsToSelect);
+        $query = $this->get();
+        $rowsToUpdate = $query->getResultArray();
 
 
         foreach ($rowsToUpdate as $row) {
