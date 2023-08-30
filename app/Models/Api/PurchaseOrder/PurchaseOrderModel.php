@@ -206,7 +206,7 @@ class PurchaseOrderModel extends Model
             ->where("id", $invoice_id)
             ->update();
 
-            $response["locked"] = "success";
+            return $response["locked"] = "success";
         }
 
         if ($invoice["locked"] === 1) {
@@ -215,9 +215,8 @@ class PurchaseOrderModel extends Model
             ->where("id", $invoice_id)
             ->update();
 
-            $response["unlocked"] = "success";
+            return $response["unlocked"] = "success";
         }
 
-        return $response;
     }
 }
