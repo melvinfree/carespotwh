@@ -158,6 +158,44 @@ class Transfers extends Controller
     return $this->respond($jsonRes, 200);
     }
 
+    public function getTransfer()
+    {
+        $TransfersModel = new TransfersModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        // Validate the JSON payload
+        $expectedKeys = ["transfer_id"];
+        $requestDataKeys = array_keys($requestData);
+
+        if (
+            count($requestData) !== 1 || !empty(array_diff($expectedKeys, $requestDataKeys))
+        ) {
+            return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
+        }
+        if (!is_int($requestData["id"])) {
+            return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
+        }
+
+        
+        
+        $results = $TransfersModel->getTransfer($requestData["transfer_id"]);
+
+        if ($results) {
+            $jsonRes = json_encode(succesResponse($results), true);
+            return $this->respond($jsonRes, 200);
+        } else {
+            return $this->failNotFound('No Transfer found with ID: '.$requestData["id"]);
+        }
+
+    }
+    
+
 
 
 }
