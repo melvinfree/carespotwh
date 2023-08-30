@@ -69,7 +69,7 @@ class StockModel extends Model
                 'transfer_id' => $data['transfer_id'],
                 'product_transfer_id' => $data['product_transfer_id'],
                 'status' => $data['status'],
-                'warehouse' => $data['new_warehouse_id']
+                'warehouse' => $data['new_warehouse']
             ];
             
             $this->set($dataToUpdate)
