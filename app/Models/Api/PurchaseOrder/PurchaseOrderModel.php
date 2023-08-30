@@ -186,4 +186,37 @@ class PurchaseOrderModel extends Model
 
         return $response;
     }
+
+    public function lockUnlock($invoice_id)
+    {
+        $invoice = $this->find($invoice_id);
+
+        if ($invoice === null) {
+            // The invoice does not exist
+            return [
+                "invoice_id" => $invoice_id,
+                "status" => "missing",
+            ];
+        }
+
+        if ($invoice["locked"] === null) {
+            
+            $this->set("locked", 1)
+            ->where("id", $invoice_id)
+            ->update();
+
+            $response["locked"] = "success";
+        }
+
+        if ($invoice["locked"] === 1) {
+            
+            $this->set("locked", NULL)
+            ->where("id", $invoice_id)
+            ->update();
+
+            $response["unlocked"] = "success";
+        }
+
+        return $response;
+    }
 }
