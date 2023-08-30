@@ -72,7 +72,8 @@ class StockModel extends Model
             ->get(); // Get the query instance
 
         $rowsToUpdate = $query->getResultArray();
-
+        
+        $updatedRowCount = 0;
         foreach ($rowsToUpdate as $row) {
             $this->set([
                 'transfer_id' => $data['transfer_id'],
@@ -82,8 +83,18 @@ class StockModel extends Model
             ])
             ->where('id', $row['id'])
             ->update();
+        
+            $affectedRows = $this->affectedRows();
+            if ($affectedRows > 0) {
+                $updatedRowCount++;
+                $updatedRowIds[] = $row['id'];
+            }    
         }
-    }   
+        return ['updated_rows' => $updatedRowCount, 'updated_rows_ids' => $updatedRowIds];
+    } 
+    else{
+        return ['updated_rows' => 0, 'updated_rows_ids' => false];
+    }  
 }
 
     public function getProductStockCount($productCode)
