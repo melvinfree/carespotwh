@@ -55,23 +55,22 @@ class StockModel extends Model
     }
 
     public function addToTransfer($data)
-    {
+{
+    $countProductsAdded = $this->where('product_id', $data['product_id'])
+        ->where('product_transfer_id', $data['product_transfer_id'])
+        ->where('transfer_id', $data['transfer_id'])
+        ->countAllResults();
 
-        $countProductsAdded = $this->where('product_id', $data['product_id'])
-                ->where('product_transfer_id', $data['product_transfer_id'])
-                ->where('transfer_id', $data['transfer_id'])
-                ->countAllResults();
-        
-        for($i = $countProductsAdded; $i < $data['quantity']; $i++) {
-            
-
+    $quantityToAdd = $data['quantity'] - $countProductsAdded;
+    if ($quantityToAdd > 0) {
+        for ($i = 0; $i < $quantityToAdd; $i++) {
             $dataToUpdate = [
                 'transfer_id' => $data['transfer_id'],
                 'product_transfer_id' => $data['product_transfer_id'],
                 'status' => $data['status'],
                 'warehouse' => $data['new_warehouse']
             ];
-            
+
             $this->set($dataToUpdate)
                 ->where('product_id', $data['product_id'])
                 ->where('status', 'instock')
@@ -79,6 +78,7 @@ class StockModel extends Model
                 ->update();
         }
     }
+}
 
     public function getProductStockCount($productCode)
     {
