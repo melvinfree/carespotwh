@@ -55,39 +55,36 @@ class StockModel extends Model
     }
 
     public function addToTransfer($data)
-    {
+{
+    $countProductsAdded = $this->where('product_id', $data['product_id'])
+        ->where('product_transfer_id', $data['product_transfer_id'])
+        ->where('transfer_id', $data['transfer_id'])
+        ->countAllResults();
 
-        $countProductsAdded = $this->where('product_id', $data['product_id'])
-                ->where('product_transfer_id', $data['product_transfer_id'])
-                ->where('transfer_id', $data['transfer_id'])
-                ->countAllResults();
+    $rowsToSelect = $data['quantity'] - $countProductsAdded; 
+    if ($rowsToSelect > 0) {     
 
-        $rowsToSelect = $data['quantity'] - $countProductsAdded; 
-        if($rowsToSelect > 0){     
+        $query = $this->select('*')
+            ->where('product_id', $data['product_id'])
+            ->where('status', 'instock')
+            ->where('warehouse', $data['old_warehouse'])
+            ->limit($rowsToSelect)
+            ->get(); // Get the query instance
 
-        $this->select('*');
-        $this->where('product_id', $data['product_id']);
-        $this->where('status', 'instock');
-        $this->where('warehouse', $data['old_warehouse']);
-        $this->limit($rowsToSelect);
-        $query = $this->get();
         $rowsToUpdate = $query->getResultArray();
 
-
         foreach ($rowsToUpdate as $row) {
-                    $this->set([
-                        'transfer_id' => $data['transfer_id'],
-                        'product_transfer_id' => $data['product_transfer_id'],
-                        'status' => $data['status'],
-                        'warehouse' => $data['new_warehouse']
-                    ])
-                    ->where('id', $row['id'])
-                    ->update();
-                $updatedRowIds[] = $row['id'];
-        } 
-    }       
-        
-    }
+            $this->set([
+                'transfer_id' => $data['transfer_id'],
+                'product_transfer_id' => $data['product_transfer_id'],
+                'status' => $data['status'],
+                'warehouse' => $data['new_warehouse']
+            ])
+            ->where('id', $row['id'])
+            ->update();
+        }
+    }   
+}
 
     public function getProductStockCount($productCode)
     {
