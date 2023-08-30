@@ -194,6 +194,8 @@ class PurchaseOrderModel extends Model
         
         $invoice = $this->find($invoice_id);
         $response = $invoice;
+
+        return $response;
         if ($invoice === null) {
             // The invoice does not exist
             return [
