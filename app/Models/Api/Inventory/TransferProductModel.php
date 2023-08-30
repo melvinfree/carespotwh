@@ -38,7 +38,7 @@ class TransferProductModel extends Model
 
         $transfer = $transferModel->where('id', $transfer_id)->first();
         $old_warehouse_id = $transfer['old_warehouse'];
-        $new_warehouse_id = $transfer['old_warehouse'];
+        $new_warehouse_id = $transfer['new_warehouse'];
 
         foreach ($transferProducts as $product) {
 
