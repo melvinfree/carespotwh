@@ -21,6 +21,8 @@ class StockModel extends Model
         'acquisition_price',
         'acquisition_price_invoice',
         'ean',
+        'product_transfer_id',
+        'transfer_id',
         'reception_date'
     ];
 
