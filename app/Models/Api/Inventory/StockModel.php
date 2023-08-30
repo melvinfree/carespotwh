@@ -69,7 +69,7 @@ class StockModel extends Model
                 'transfer_id' => $data['transfer_id'],
                 'product_transfer_id' => $data['product_transfer_id'],
                 'status' => $data['status'],
-                'warehouse' => $data['new_warehouse']
+                'warehouse' => $data['new_warehouse_id']
             ];
             
             $this->set($dataToUpdate)
@@ -77,7 +77,11 @@ class StockModel extends Model
                 ->where('status', 'instock')
                 ->where('warehouse', $data['old_warehouse'])
                 ->update();
+
+                echo "Count products added: " . $countProductsAdded . "\n";
+                echo "Desired quantity: " . $data['quantity'] . "\n";
         }
+        
     }
 
     public function getProductStockCount($productCode)
