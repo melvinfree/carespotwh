@@ -80,15 +80,11 @@ class StockModel extends Model
                         'status' => $data['status'],
                         'warehouse' => $data['new_warehouse']
                     ])
-                    ->where('id', $row['id'])  // Assuming the primary key column is 'id'
+                    ->where('id', $row['id'])
                     ->update();
                 $updatedRowIds[] = $row['id'];
         } 
-        return ['rows_updated' => $rowsToSelect];
     }       
-    else{
-        return ['rows_updated' => 0];
-    }
         
     }
 

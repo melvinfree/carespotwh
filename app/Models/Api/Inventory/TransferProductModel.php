@@ -53,12 +53,9 @@ class TransferProductModel extends Model
                 'status' => 'allocated_transfer'
             ];
 
-
-        
-          return  $stockModel->addToTransfer($data);
-
-
         }
+        
+        return  $stockModel->addToTransfer($data);
 
        // return ["error"=> false, "message" => "success"];
     }
