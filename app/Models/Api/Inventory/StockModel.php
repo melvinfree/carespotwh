@@ -78,8 +78,8 @@ class StockModel extends Model
                 ->where('warehouse', $data['old_warehouse'])
                 ->update();
 
-                echo "Count products added: " . $countProductsAdded . "\n";
-                echo "Desired quantity: " . $data['quantity'] . "\n";
+                return ["MSG1" => "Count products added: " . $countProductsAdded . "\n", "MSG2" => "Desired quantity: " . $data['quantity'] . "\n"];
+
         }
         
     }

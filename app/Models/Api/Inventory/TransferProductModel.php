@@ -55,11 +55,11 @@ class TransferProductModel extends Model
 
 
 
-            $stockModel->addToTransfer($data);
+          return  $stockModel->addToTransfer($data);
 
         }
 
-        return ["error"=> false, "message" => "success"];
+       // return ["error"=> false, "message" => "success"];
     }
 
 }
