@@ -70,7 +70,7 @@ class StockModel extends Model
                 ->where('status', 'instock')
                 ->where('warehouse', $data['old_warehouse'])
                 ->limit($rowsToSelect)
-                ->findAll();
+                ->get();
 
 
         foreach ($rowsToUpdate as $row) {
