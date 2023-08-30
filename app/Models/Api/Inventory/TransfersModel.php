@@ -3,6 +3,7 @@
 namespace App\Models\Api\Inventory;
 
 use CodeIgniter\Model;
+use App\Models\Api\Inventory\TransferProductModel;
 
 class TransfersModel extends Model
 {
@@ -54,6 +55,21 @@ class TransfersModel extends Model
 
         return $transfers;
 
+    }
+
+    public function getTransferInfo($transfer_id)
+    {
+        $transfer = $this->select('*')
+                    ->where('id', $transfer_id)
+                    ->first();
+
+        if ($transfer) {
+
+            $transferProductModel = new TransferProductModel();
+            $transfer['transferProducts'] = $transferProductModel->getTransferProducts($transfer_id);
+        }
+
+        return $transfer;
     }
 
     public function searchProducts($searchTerm, $oldWarehouseId)

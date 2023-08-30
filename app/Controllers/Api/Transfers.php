@@ -184,7 +184,7 @@ class Transfers extends Controller
 
         
         
-        $results = $TransfersModel->getTransfer($requestData["transfer_id"]);
+        $results = $TransfersModel->getTransferInfo($requestData["transfer_id"]);
 
         if ($results) {
             $jsonRes = json_encode(succesResponse($results), true);
