@@ -178,7 +178,7 @@ class Transfers extends Controller
         ) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
-        if (!is_int($requestData["id"])) {
+        if (!is_int($requestData["transfer_id"])) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
 
