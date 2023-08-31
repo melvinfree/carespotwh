@@ -50,7 +50,8 @@ class TransferProductModel extends Model
                 'quantity' => $product['quantity'],
                 'old_warehouse' => $old_warehouse_id,
                 'new_warehouse' => $new_warehouse_id,
-                'status' => 'allocated_transfer'
+                'status' => 'allocated_transfer',
+                'transfer_status' => 'new'
             ];
 
             $response[] = $stockModel->addToTransfer($data);

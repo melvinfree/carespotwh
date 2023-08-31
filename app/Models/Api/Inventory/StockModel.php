@@ -79,6 +79,7 @@ class StockModel extends Model
                 'transfer_id' => $data['transfer_id'],
                 'product_transfer_id' => $data['product_transfer_id'],
                 'status' => $data['status'],
+                'transfer_status' => $data['transfer_status'],
                 'warehouse' => $data['new_warehouse']
             ])
             ->where('id', $row['id'])
