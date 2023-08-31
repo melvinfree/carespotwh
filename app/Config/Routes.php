@@ -88,10 +88,10 @@ $routes->post('/Api/Products/addEan', '\App\Controllers\Api\Products::addEan');
 // GENERAL
 
 //warehouses
-$routes->post('/Api/Warehouse/warehouseList', '\App\Controllers\Api\General\Warehouse::warehouseList');
-$routes->post('/Api/Warehouse/getWarehouse', '\App\Controllers\Api\General\Warehouse::getWarehouse');
-$routes->post('/Api/Warehouse/deleteWarehouse', '\App\Controllers\Api\General\Warehouse::deleteWarehouse');
-$routes->post('/Api/Warehouse/setWarehouseInfo', '\App\Controllers\Api\General\Warehouse::setWarehouseInfo');
+$routes->post('/Api/Warehouse/warehouseList', '\App\Controllers\Api\Warehouse::warehouseList');
+$routes->post('/Api/Warehouse/getWarehouse', '\App\Controllers\Api\Warehouse::getWarehouse');
+$routes->post('/Api/Warehouse/deleteWarehouse', '\App\Controllers\Api\Warehouse::deleteWarehouse');
+$routes->post('/Api/Warehouse/setWarehouseInfo', '\App\Controllers\Api\Warehouse::setWarehouseInfo');
 /*
  * --------------------------------------------------------------------
  * Additional Routing
