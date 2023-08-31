@@ -213,6 +213,25 @@ class Transfers extends Controller
 
     return $this->respond($jsonRes, 200);
     }
+
+    public function getTransferProductsList()
+    {
+        $TransferProductModel = new TransferProductModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+        if (!isset($requestData['transfer_id'])) {
+            return $this->failBadRequest('Missing parameter.');
+        }
+        
+        $jsonRes = json_encode(succesResponse($TransferProductModel->transfersProductsList($requestData['transfer_id'])), true);
+
+        return $this->respond($jsonRes, 200);
+    }
     
 
 
