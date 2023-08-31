@@ -182,6 +182,10 @@ class ReceptionsModel extends Model
                 ->get()
                 ->getRow();
 
+                if(!$stock_row){
+                    return ['already_receptioned' => 1, 'message' => 'This product was already marked as receptioned'];
+                }
+
             if ($eanExist){
 
                 $countBeforeAdd = $this->db->table('stock_copy1')
