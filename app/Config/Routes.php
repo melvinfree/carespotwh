@@ -85,6 +85,13 @@ $routes->post('/Api/Products/getProduct', '\App\Controllers\Api\Products::getPro
 $routes->post('/Api/Products/deleteEan', '\App\Controllers\Api\Products::deleteEan');
 $routes->post('/Api/Products/addEan', '\App\Controllers\Api\Products::addEan');
 
+// GENERAL
+
+//warehouses
+$routes->post('/Api/General/Warehouse/warehouseList', '\App\Controllers\Api\General\Warehouse::warehouseList');
+$routes->post('/Api/General/Warehouse/getWarehouse', '\App\Controllers\Api\General\Warehouse::getWarehouse');
+$routes->post('/Api/General/Warehouse/deleteWarehouse', '\App\Controllers\Api\General\Warehouse::deleteWarehouse');
+$routes->post('/Api/General/Warehouse/setWarehouseInfo', '\App\Controllers\Api\General\Warehouse::setWarehouseInfo');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

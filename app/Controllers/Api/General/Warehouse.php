@@ -58,7 +58,7 @@ class Warehouse extends Controller
     /* MANDATORY: warehouse_id
 
     */
-    public function getTransfer()
+    public function getWarehouse()
     {
         $WarehouseModel = new WarehouseModel();
 
