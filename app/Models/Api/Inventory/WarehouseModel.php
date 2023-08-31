@@ -66,6 +66,9 @@ class WarehouseModel extends Model
 
         // Delete product from current NIR.
         $this->delete(['id' => $warehouse_id]);
+        
+        return ["error" => false, "message" => "Deleted succesfully"];
+
 
     }
 
