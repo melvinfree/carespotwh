@@ -78,7 +78,7 @@ class Warehouse extends Controller
         ) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
-        if (!is_int($requestData["transfer_id"])) {
+        if (!is_int($requestData["warehouse_id"])) {
             return $this->fail("Invalid JSON Payload, check APIDocs.", 400);
         }
 
