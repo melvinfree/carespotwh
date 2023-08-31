@@ -82,7 +82,7 @@ class WarehouseModel extends Model
             ];
         }
 
-        $response[] = ["warehouse_id" => $requestData["warehouse_id"]];
+        $response = ["warehouse_id" => $requestData["warehouse_id"]];
 
         if (isset($requestData["name"])) {
             $this->set("name", $requestData["name"])
