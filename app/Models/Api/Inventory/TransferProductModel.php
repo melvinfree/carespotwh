@@ -125,7 +125,8 @@ class TransferProductModel extends Model
                 ->where('product_id', $eanExist->product_id)
                 ->where('transfer_id', $transfer_id)
                 ->where('warehouse', 10)
-                ->where('transfer_status', 'new')
+                ->where('transfer_status', null)
+                ->orWhere('transfer_status', 'new')
                 ->get()
                 ->getRow();
 
@@ -139,7 +140,8 @@ class TransferProductModel extends Model
                     ->where('product_id', $eanExist->product_id)
                     ->where('transfer_id', $transfer_id)
                     ->where('warehouse', 10)
-                    ->where('transfer_status', 'new')
+                    ->where('transfer_status', null)
+                    ->orWhere('transfer_status', 'new')
                     ->countAllResults();
 
                 if($countBeforeAdd <= 0){
@@ -162,7 +164,8 @@ class TransferProductModel extends Model
                     ->where('product_id', $eanExist->product_id)
                     ->where('transfer_id', $transfer_id)
                     ->where('warehouse', 10)
-                    ->where('transfer_status', 'new')
+                    ->where('transfer_status', null)
+                    ->orWhere('transfer_status', 'new')
                     ->countAllResults();
                 
                 $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as picked', 'remains_to_be_picked' => $count];
