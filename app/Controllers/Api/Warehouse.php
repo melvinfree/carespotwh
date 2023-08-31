@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Api\General;
+namespace App\Controllers\Api;
 
 use CodeIgniter\API\ResponseTrait;
 use App\Models\Api\Inventory\ProductsModel;
