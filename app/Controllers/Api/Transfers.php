@@ -232,6 +232,35 @@ class Transfers extends Controller
 
         return $this->respond($jsonRes, 200);
     }
+
+    public function addProductTransfer() {
+        $TransferProductModel = new TransferProductModel();
+    
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+
+        $eanCode = $requestData['ean_code'];
+        $totalExecutions = $requestData['total_count_to_add_in_stock'];
+
+
+        $responses = [];
+
+        $counter = 0;
+
+        while ($counter < $totalExecutions) {
+            $responses[] = $TransferProductModel->processProduct($eanCode,$requestData['transfer_id']);
+    
+            $counter++;
+        }
+    
+        return $this->respond(['responses' => $responses], 200); 
+
+    }
     
 
 

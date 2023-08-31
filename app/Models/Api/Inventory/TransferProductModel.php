@@ -3,6 +3,9 @@
 namespace App\Models\Api\Inventory;
 
 use CodeIgniter\Model;
+use App\Models\Api\Inventory\ProductsModel;
+use App\Models\Api\Inventory\TransfersModel;
+use App\Models\Api\Inventory\StockModel;
 
 class TransferProductModel extends Model
 {
@@ -33,8 +36,8 @@ class TransferProductModel extends Model
     {
         $transferProducts = $this->where('transfer_id', $transfer_id)->findAll();
 
-        $stockModel = new \App\Models\Api\Inventory\StockModel();
-        $transferModel = new \App\Models\Api\Inventory\TransfersModel();
+        $stockModel = new StockModel();
+        $transferModel = new TransfersModel();
 
         $transfer = $transferModel->where('id', $transfer_id)->first();
         $old_warehouse_id = $transfer['old_warehouse'];
@@ -94,5 +97,80 @@ class TransferProductModel extends Model
     return $products;
 
     }
+
+    public function processProduct($ean_code,$transfer_id){
+        $TransfersModel = new TransfersModel();
+
+        $transfer = $TransfersModel->find($transfer_id);
+        
+
+        if(!$transfer){
+            return ["error" => true, "message" => "This transfer cannot be identified"];
+        }
+        
+        $eanExist = $this->db->table('ci_product_eans')
+            ->where('ean', $ean_code)
+            ->get()
+            ->getRow();
+        
+
+            if(!$eanExist){
+                return ['error' => true, 'ean_status' => 'EAN-ul inserat nu exista in baza de date, te rog sa il adaugi produsului corespondent'];
+            }
+
+            $ProductsModel = new ProductsModel();
+            $product_name = $ProductsModel->findProductNamebyId($eanExist->product_id);
+
+            $stock_row = $this->db->table('stock_copy1')
+                ->where('product_id', $eanExist->product_id)
+                ->where('transfer_id', $transfer_id)
+                ->where('warehouse', 10)
+                ->where('transfer_status', 'new')
+                ->get()
+                ->getRow();
+
+                if(!$stock_row){
+                    return ['already_picked' => 1, 'message' => 'This product was already marked as picked'];
+                }
+
+            if ($eanExist){
+
+                $countBeforeAdd = $this->db->table('stock_copy1')
+                    ->where('product_id', $eanExist->product_id)
+                    ->where('transfer_id', $transfer_id)
+                    ->where('warehouse', 10)
+                    ->where('transfer_status', 'new')
+                    ->countAllResults();
+
+                if($countBeforeAdd <= 0){
+
+                    return ['row_id' => $stock_row->id, 'already_picked' => 1, 'message' => 'This product was already marked as picked'];
+
+                }
+            
+                $insert_data_stock = [
+                    'transfer_status' => 'ready',
+                ];
+
+                $this->db->table('stock_copy1')
+                ->set($insert_data_stock)
+                ->where('id', $stock_row->id)
+                ->update();
+
+
+                $count = $this->db->table('stock_copy1')
+                    ->where('product_id', $eanExist->product_id)
+                    ->where('transfer_id', $transfer_id)
+                    ->where('warehouse', 10)
+                    ->where('transfer_status', 'new')
+                    ->countAllResults();
+                
+                $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as picked', 'remains_to_be_picked' => $count];
+               
+                return $return;
+
+            }
+
+            }
 
 }
