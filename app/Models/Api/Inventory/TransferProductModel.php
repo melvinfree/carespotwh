@@ -61,7 +61,7 @@ class TransferProductModel extends Model
         return $response;
     }
 
-    public function transfersProductsList($invoice_id){
+    public function transfersProductsList($transfer_id){
 
         $query = $this->db->query("
         SELECT 
@@ -73,16 +73,16 @@ class TransferProductModel extends Model
         FROM 
         ci_transfers_products
         JOIN 
-            ci_transfers ON ci_transfers.id = ci_transfers_products.invoice_id
+            ci_transfers ON ci_transfers.id = ci_transfers_products.transfer_id
         JOIN
             stock_copy1 ON stock_copy1.product_transfer_id = ci_transfers_products.id    
         WHERE 
-        ci_transfers_products.invoice_id = ?
+        ci_transfers_products.transfer_id = ?
         GROUP BY 
         ci_transfers_products.id,
         ci_transfers_products.product_id,
         ci_transfers_products.product_name", 
-        [$invoice_id]
+        [$transfer_id]
     );
 
     $products = $query->getResultArray();
