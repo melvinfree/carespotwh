@@ -128,9 +128,7 @@ class ReceptionsModel extends Model
         $query = $this->get();
         $result = $query->getResultArray();
 
-        return $result;
-
-        
+        return $result;    
 
     }
 
@@ -191,6 +189,18 @@ class ReceptionsModel extends Model
             }
 
             if ($eanExist){
+
+                $countBeforeAdd = $this->db->table('stock_copy1')
+                    ->where('product_id', $eanExist->product_id)
+                    ->where('warehouse', 2)
+                    ->where('reception_date IS NULL', null, false)
+                    ->countAllResults();
+
+                if($countBeforeAdd <= 0){
+                    
+                    return ['row_id' => $stock_row->id, 'already_receptioned' => 1, 'message' => 'This product was already marked as receptioned'];
+
+                }
             
                 $insert_data_stock = [
                     'ean' => $ean_code,
@@ -211,6 +221,7 @@ class ReceptionsModel extends Model
                     ->countAllResults();
                 
                 $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as receptioned', 'remains_to_be_receptioned' => $count];
+               
                 return $return;
 
             }
