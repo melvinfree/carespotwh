@@ -109,8 +109,11 @@ class Inventory extends Controller
             return $this->failUnauthorized($e->getMessage());
         }
 
+        return $requestData;
+
         $eanCode = $requestData['ean_code'];
         $totalExecutions = $requestData['total_count_to_add_in_stock'];
+
 
         $responses = [];
 
