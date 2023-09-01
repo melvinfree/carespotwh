@@ -106,4 +106,28 @@ class Pickpack extends Controller
 
     }
 
+    public function deleteBox()
+    {
+        $OrderBoxesModel = new OrderBoxesModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        if (!isset($requestData["box_id"])) {
+            return $this->failValidationError("Missing mandatory field: id");
+        }
+
+        // Delete the order from the database
+        $results = $OrderBoxesModel->deleteBox($requestData["box_id"]);
+
+        $jsonRes = json_encode($results, true);
+
+        // Return a success message
+        return $this->respondDeleted($jsonRes);
+    }
+
 }
