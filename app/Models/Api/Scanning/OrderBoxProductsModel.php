@@ -24,7 +24,7 @@ class OrderBoxProductsModel extends Model
 
         
         // Process products for orders
-        /*if (isset($requestData["order_id"])){
+        if (isset($data["order_id"])){
             $order = $OrderModel->find($data['order_id']);
 
             if(!$order){
@@ -95,12 +95,12 @@ class OrderBoxProductsModel extends Model
                     return $return;
     
                 }    
-        } */
+        } 
         
         
         // Process products for transfers
 
-        if (isset($requestData["transfer_id"])){
+        if (isset($data["transfer_id"])){
             $transfer = $TransfersModel->find($data['transfer_id']);
 
 
@@ -172,19 +172,7 @@ class OrderBoxProductsModel extends Model
                     return $return;
     
                 }    
-        }
-        else{
-            return ["test" => true];
-        }
-        
-        
-    
-
-            
-
-            
-
-            
+        }         
 
             }
 
