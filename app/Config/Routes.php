@@ -31,6 +31,8 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+$routes->post('/Api/Pickpack/scanProduct', '\App\Controllers\Api\Pickpack::scanProduct');
+
 // Orders Api Routes - Endpoints
 $routes->post('/Api/Orders/getAll', '\App\Controllers\Api\Orders::getAll');
 $routes->post('/Api/Orders/getOrder', '\App\Controllers\Api\Orders::getOrder'); 
@@ -96,7 +98,7 @@ $routes->post('/Api/Warehouse/setWarehouseInfo', '\App\Controllers\Api\Warehouse
 
 // PickPack Module
 
-$routes->post('/Api/Pickpack/scanProduct', '\App\Controllers\Api\Pickpack::scanProduct');
+
 
 /*
  * --------------------------------------------------------------------
