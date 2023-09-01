@@ -31,7 +31,7 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
-$routes->post('/Api/Pickpack/scanProduct', '\App\Controllers\Api\Pickpack::scanProduct');
+$routes->post('/Api/Pickpack/scanProductPacking', '\App\Controllers\Api\Pickpack::scanProductPacking');
 $routes->post('/Api/Pickpack/addBox', '\App\Controllers\Api\Pickpack::addBox');
 $routes->post('/Api/Pickpack/getBoxes', '\App\Controllers\Api\Pickpack::getBoxes');
 $routes->post('/Api/Pickpack/deleteBox', '\App\Controllers\Api\Pickpack::deleteBox');

@@ -17,7 +17,7 @@ class OrderBoxProductsModel extends Model
     protected $allowedFields = ["created_at"];
     
     // Fields; order_id || transfer_id && ean_code && box_id
-    public function processProduct($data){
+    public function processProductPacking($data){
         
         $OrderModel = new OrdersModel();
         $TransfersModel = new TransfersModel();
@@ -35,7 +35,7 @@ class OrderBoxProductsModel extends Model
                                  ->where('order_id', $data['order_id'])
                                  ->where('ean', $data['ean_code'])
                                  ->where('box_id', null)
-                                 ->where('picked', 0)
+                                 ->where('packed', 0)
                                  ->get()
                                  ->getRow();
         
@@ -49,12 +49,12 @@ class OrderBoxProductsModel extends Model
                 ->where('ean', $eanExist->ean)
                 ->where('order_id', $data["order_id"])
                 ->where('box_id', null)
-                ->where('picked', 0)
+                ->where('packed', 0)
                 ->get()
                 ->getRow();
 
                 if(!$stock_row){
-                    return ['already_picked' => 1, 'message' => 'This product was already marked as picked'];
+                    return ['already_packed' => 1, 'message' => 'This product was already marked as packed'];
                 }
 
                 if ($eanExist && $stock_row){
@@ -62,7 +62,7 @@ class OrderBoxProductsModel extends Model
                     $update_data_stock = [
                         'transfer_status' => 'ready',
                         'box_id' => $data['box_id'],
-                        'picked' => 1
+                        'packed' => 1
                     ];
                     
                     // Prepare data to be inserted in order_boxes_items
@@ -87,10 +87,10 @@ class OrderBoxProductsModel extends Model
                         ->where('product_id', $eanExist->product_id)
                         ->where('order_id', $data["order_id"])
                         ->where('box_id', null)
-                        ->where('picked', 0)
+                        ->where('packed', 0)
                         ->countAllResults();
                     
-                    $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as picked', 'remains_to_be_picked' => $count];
+                    $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as packed', 'remains_to_be_packed' => $count];
                    
                     return $return;
     
@@ -112,7 +112,7 @@ class OrderBoxProductsModel extends Model
                                  ->where('transfer_id', $data['transfer_id'])
                                  ->where('ean', $data['ean_code'])
                                  ->where('box_id', null)
-                                 ->where('picked', 0)
+                                 ->where('packed', 0)
                                  ->get()
                                  ->getRow();
         
@@ -126,12 +126,12 @@ class OrderBoxProductsModel extends Model
                 ->where('ean', $eanExist->ean)
                 ->where('transfer_id', $data["transfer_id"])
                 ->where('box_id', null)
-                ->where('picked', 0)
+                ->where('packed', 0)
                 ->get()
                 ->getRow();
 
                 if(!$stock_row){
-                    return ['already_picked' => 1, 'message' => 'This product was already marked as picked'];
+                    return ['already_packed' => 1, 'message' => 'This product was already marked as packed'];
                 }
 
                 if ($eanExist){
@@ -139,7 +139,7 @@ class OrderBoxProductsModel extends Model
                     $update_data_stock = [
                         'transfer_status' => 'ready',
                         'box_id' => $data['box_id'],
-                        'picked' => 1,
+                        'packed' => 1,
                     ];
                     
                     // Prepare data to be inserted in order_boxes_items
@@ -167,10 +167,10 @@ class OrderBoxProductsModel extends Model
                         ->where('product_id', $eanExist->product_id)
                         ->where('transfer_id', $data["transfer_id"])
                         ->where('box_id', null)
-                        ->where('picked', 0)
+                        ->where('packed', 0)
                         ->countAllResults();
                     
-                    $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as picked', 'remains_to_be_picked' => $count];
+                    $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as packed', 'remains_to_be_packed' => $count];
                    
                     return $return;
     

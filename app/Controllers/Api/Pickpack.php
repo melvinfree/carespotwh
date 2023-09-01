@@ -26,7 +26,7 @@ class Pickpack extends Controller
     }
 
 
-    public function scanProduct() {
+    public function scanProductPacking() {
 
         $OrderBoxProductsModel = new OrderBoxProductsModel();
     
@@ -46,7 +46,7 @@ class Pickpack extends Controller
         $counter = 0;
 
         while ($counter < $totalExecutions) {
-            $responses[] = $OrderBoxProductsModel->processProduct($requestData);
+            $responses[] = $OrderBoxProductsModel->processProductPacking($requestData);
     
             $counter++;
         }
