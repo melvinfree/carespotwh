@@ -24,7 +24,7 @@ class OrderBoxesModel extends Model
         $OrderModel = new OrdersModel();
         $TransfersModel = new TransfersModel();
         
-    if (isset($requestData["order_id"])){
+    if (isset($data["order_id"])){
         $order = $OrderModel->find($data['order_id']);
 
         if(!$order){
@@ -46,7 +46,8 @@ class OrderBoxesModel extends Model
         
         return ["error" => true, "message" => "Cannot perform insert operation"];
     }
-    if (isset($requestData["transfer_id"])){
+
+    if (isset($data["transfer_id"])){
         $transfer = $TransfersModel->find($data['transfer_id']);
 
         if(!$TransfersModel){
@@ -77,7 +78,7 @@ class OrderBoxesModel extends Model
     {
      
      // Get Boxes based on transfer_id
-     if (isset($requestData["transfer_id"])){ 
+     if (isset($data["transfer_id"])){ 
 
         $box_list = $this->select('id, box_barcode, prods_in_box, weight') 
                 ->where('transfer_id', $data['transfer_id'])
@@ -85,7 +86,7 @@ class OrderBoxesModel extends Model
      }
 
      // Get Boxes based on order_id
-     if (isset($requestData["order_id"])){
+     if (isset($data["order_id"])){
 
         $box_list = $this->select('id, box_barcode, prods_in_box, weight') 
                 ->where('order_id', $data['order_id'])
@@ -93,7 +94,7 @@ class OrderBoxesModel extends Model
      }
     
      // Return error if both was selected.
-     if (isset($requestData["order_id"]) && isset($requestData["transfer_id"])){
+     if (isset($data["order_id"]) && isset($data["transfer_id"])){
 
         $box_list = ["error" => true, "message" => "Please, select order_id or transfer_id, not both"];
      }
