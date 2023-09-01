@@ -152,8 +152,6 @@ class OrderBoxProductsModel extends Model
                         'ean' => $stock_row->ean
                     ];   
 
-                    return $insert_data_items;
-
                     $this->insert($insert_data_items);
     
                     $this->db->table('stock_copy1')
