@@ -31,6 +31,56 @@ class OrderBoxProductsModel extends Model
                 return ["error" => true, "message" => "Order ID ".$data['order_id']." cannot be identified"];
             }
 
+            if(isset($data['product_id'])){
+
+                $stock_row = $this->db->table('stock_copy1')
+                ->where('product_id', $data['product_id'])
+                ->where('order_id', $data["order_id"])
+                ->where('box_id', null)
+                ->where('packed', 0)
+                ->get()
+                ->getRow();
+
+                if(!$stock_row){
+                    return ['already_packed' => 1, 'message' => 'This product was already marked as packed'];
+                }
+
+                $update_data_stock = [
+                    'transfer_status' => 'ready',
+                    'box_id' => $data['box_id'],
+                    'packed' => 1,
+                ];
+
+                $insert_data_items = [
+                    'box_id' => $data['box_id'],
+                    'order_id' => $data['order_id'],
+                    'order_product_id' => $stock_row->order_product_id,
+                    'stock_id' => $stock_row->id,
+                    'product_id' => $stock_row->product_id,
+                    'ean' => $stock_row->ean
+                ];   
+
+                $this->db->table($this->table)->insert($insert_data_items);
+                            
+                $this->db->table('stock_copy1')
+                ->set($update_data_stock)
+                ->where('id', $stock_row->id)
+                ->update();
+
+
+                $count = $this->db->table('stock_copy1')
+                    ->where('product_id', $data['product_id'])
+                    ->where('order_id', $data["order_id"])
+                    ->where('box_id', null)
+                    ->where('picked', 0)
+                    ->countAllResults();
+                
+                $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as packed', 'remains_to_be_packed' => $count];
+               
+                return $return;
+
+            }
+
             $eanExist = $this->db->table('stock_copy1')
                                  ->where('order_id', $data['order_id'])
                                  ->where('ean', $data['ean_code'])
@@ -108,6 +158,58 @@ class OrderBoxProductsModel extends Model
                 return ["error" => true, "message" => "Transfer ID ".$data['transfer_id']." cannot be identified"];
             }
 
+            if(isset($data['product_id'])){
+
+                $stock_row = $this->db->table('stock_copy1')
+                ->where('product_id', $data['product_id'])
+                ->where('transfer_id', $data["transfer_id"])
+                ->where('box_id', null)
+                ->where('packed', 0)
+                ->get()
+                ->getRow();
+
+                if(!$stock_row){
+                    return ['already_packed' => 1, 'message' => 'This product was already marked as packed'];
+                }
+
+                $update_data_stock = [
+                    'transfer_status' => 'ready',
+                    'box_id' => $data['box_id'],
+                    'packed' => 1,
+                ];
+
+                // Prepare data to be inserted in order_boxes_items
+                $insert_data_items = [
+                    'box_id' => $data['box_id'] ?? '',
+                    'transfer_id' => $data['transfer_id'] ?? '',
+                    'transfer_product_id' => $stock_row->product_transfer_id ?? '',
+                    'stock_id' => $stock_row->id ?? '',
+                    'product_id' => $stock_row->product_id ?? '',
+                    'ean' => $stock_row->ean ?? ''
+                ];   
+
+                
+                $this->db->table($this->table)->insert($insert_data_items);
+                            
+                $this->db->table('stock_copy1')
+                ->set($update_data_stock)
+                ->where('id', $stock_row->id)
+                ->update();
+
+
+                $count = $this->db->table('stock_copy1')
+                    ->where('product_id', $data['product_id'])
+                    ->where('transfer_id', $data["transfer_id"])
+                    ->where('box_id', null)
+                    ->where('picked', 0)
+                    ->countAllResults();
+                
+                $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as packed', 'remains_to_be_packed' => $count];
+               
+                return $return;
+
+            }
+
             $eanExist = $this->db->table('stock_copy1')
                                  ->where('transfer_id', $data['transfer_id'])
                                  ->where('ean', $data['ean_code'])
@@ -144,12 +246,12 @@ class OrderBoxProductsModel extends Model
                     
                     // Prepare data to be inserted in order_boxes_items
                     $insert_data_items = [
-                        'box_id' => $data['box_id'],
-                        'transfer_id' => $data['transfer_id'],
-                        'transfer_product_id' => $stock_row->product_transfer_id,
-                        'stock_id' => $stock_row->id,
-                        'product_id' => $stock_row->product_id,
-                        'ean' => $stock_row->ean
+                        'box_id' => $data['box_id'] ?? '',
+                        'transfer_id' => $data['transfer_id'] ?? '',
+                        'transfer_product_id' => $stock_row->product_transfer_id ?? '',
+                        'stock_id' => $stock_row->id ?? '',
+                        'product_id' => $stock_row->product_id ?? '',
+                        'ean' => $stock_row->ean ?? ''
                     ];   
 
                     
