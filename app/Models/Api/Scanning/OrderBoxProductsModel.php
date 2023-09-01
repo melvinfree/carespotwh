@@ -7,7 +7,6 @@ use App\Models\Api\Orders\OrdersModel;
 use App\Models\Api\Orders\OrderProductsModel;
 use App\Models\Api\Inventory\TransfersModel;
 use App\Models\Api\Inventory\TransferProductModel;
-use App\Helpers\StockHelper;
 
 
 class OrderBoxProductsModel extends Model
@@ -18,11 +17,6 @@ class OrderBoxProductsModel extends Model
 
     protected $allowedFields = ["created_at"];
 
-    public function __construct()
-    {
-
-        $this->stockHelper = new StockHelper($this->db);
-    }
     
     // Fields; order_id || transfer_id && ean_code && box_id
     public function processProductPacking($data){
