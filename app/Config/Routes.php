@@ -96,7 +96,7 @@ $routes->post('/Api/Warehouse/setWarehouseInfo', '\App\Controllers\Api\Warehouse
 
 // PickPack Module
 
-$routes->post('/Api/Pickpack/pickProduct', '\App\Controllers\Api\Pickpack::scanProduct');
+$routes->post('/Api/Pickpack/scanProduct', '\App\Controllers\Api\Pickpack::scanProduct');
 
 /*
  * --------------------------------------------------------------------
