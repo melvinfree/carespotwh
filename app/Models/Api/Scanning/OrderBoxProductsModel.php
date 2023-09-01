@@ -30,7 +30,6 @@ class OrderBoxProductsModel extends Model
             if(!$order){
                 return ["error" => true, "message" => "Order ID ".$data['order_id']." cannot be identified"];
             }
-
             if(isset($data['product_id'])){
 
                 $stock_row = $this->db->table('stock_copy1')
