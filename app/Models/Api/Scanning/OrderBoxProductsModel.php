@@ -153,7 +153,7 @@ class OrderBoxProductsModel extends Model
                     ];   
 
                     
-                    $this->db->insert($insert_data_items);
+                    $this->db->table($this->table)->insert($insert_data_items);
                
                     
     
