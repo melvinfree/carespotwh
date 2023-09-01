@@ -35,9 +35,21 @@ class Pickpack extends Controller
             return $this->failUnauthorized($e->getMessage());
         }
 
-        $result = $OrderBoxProductsModel->processProduct($requestData);
 
-        return $this->respond(['responses' => $result], 200); 
+        $totalExecutions = 1;
+
+
+        $responses = [];
+
+        $counter = 0;
+
+        while ($counter < $totalExecutions) {
+            $responses[] = $OrderBoxProductsModel->processProduct($requestData);
+    
+            $counter++;
+        }
+    
+        return $this->respond(['responses' => $responses], 200); 
 
     }
 
