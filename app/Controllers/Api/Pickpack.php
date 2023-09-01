@@ -84,4 +84,26 @@ class Pickpack extends Controller
 
     }
 
+    public function getBoxes()
+    {
+        $OrderBoxesModel = new OrderBoxesModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+        
+        $results = $OrderBoxesModel->getBoxList($requestData);
+
+        if ($results) {
+            $jsonRes = json_encode(succesResponse($results), true);
+            return $this->respond($jsonRes, 200);
+        } else {
+            return $this->failNotFound('No boxes found with ID');
+        }
+
+    }
+
 }

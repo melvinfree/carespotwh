@@ -33,7 +33,7 @@ $routes->get('/', 'Home::index');
 
 $routes->post('/Api/Pickpack/scanProduct', '\App\Controllers\Api\Pickpack::scanProduct');
 $routes->post('/Api/Pickpack/addBox', '\App\Controllers\Api\Pickpack::addBox');
-
+$routes->post('/Api/Pickpack/getBoxes', '\App\Controllers\Api\Pickpack::getBoxes');
 // Orders Api Routes - Endpoints
 $routes->post('/Api/Orders/getAll', '\App\Controllers\Api\Orders::getAll');
 $routes->post('/Api/Orders/getOrder', '\App\Controllers\Api\Orders::getOrder'); 
