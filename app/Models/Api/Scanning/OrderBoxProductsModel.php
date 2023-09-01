@@ -32,7 +32,7 @@ class OrderBoxProductsModel extends Model
             }
 
             $eanExist = $this->db->table('stock_copy1')
-                                 ->where('order_id', $data['transfer_id'])
+                                 ->where('order_id', $data['order_id'])
                                  ->where('ean', $data['ean_code'])
                                  ->where('box_id', null)
                                  ->where('picked', 0)
