@@ -152,10 +152,12 @@ class OrderBoxProductsModel extends Model
                         'ean' => $stock_row->ean
                     ];   
 
-                    $this->insert($insert_data_items);
-
                     $sqlQuery = $this->db->getLastQuery();
                     return $sqlQuery;
+                    
+                    $this->insert($insert_data_items);
+
+                    
     
                     $this->db->table('stock_copy1')
                     ->set($update_data_stock)
