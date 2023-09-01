@@ -140,16 +140,21 @@ class OrderBoxProductsModel extends Model
                         'transfer_status' => 'ready',
                         'box_id' => $data['box_id'],
                         'picked' => 1,
-                    ];  
-
-                    $this->insert([
+                    ];
+                    
+                    // Prepare data to be inserted in order_boxes_items
+                    $insert_data_items = [
                         'box_id' => $data['box_id'],
                         'transfer_id' => $data['transfer_id'],
                         'transfer_product_id' => $stock_row->product_transfer_id,
                         'stock_id' => $stock_row->id,
                         'product_id' => $stock_row->product_id,
                         'ean' => $stock_row->ean
-                    ]);
+                    ];   
+
+                    return $insert_data_items;
+
+                    $this->insert($insert_data_items);
     
                     $this->db->table('stock_copy1')
                     ->set($update_data_stock)
