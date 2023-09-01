@@ -41,7 +41,7 @@ class OrderBoxProductsModel extends Model
         
 
             if(!$eanExist){
-                return ['error' => true, 'ean_status' => 'EAN-ul inserat nu este alocat pe transferul din comanda'];
+                return ['error' => true, 'ean_status' => 'EAN-ul inserat nu este alocat pe produsul din comanda'];
             }
 
             $stock_row = $this->db->table('stock_copy1')
@@ -75,7 +75,7 @@ class OrderBoxProductsModel extends Model
                         'ean' => $stock_row->ean
                     ];   
 
-                    $this->insert($insert_data_items);
+                    $this->db->table($this->table)->insert($insert_data_items);
     
                     $this->db->table('stock_copy1')
                     ->set($update_data_stock)
@@ -118,7 +118,7 @@ class OrderBoxProductsModel extends Model
         
 
             if(!$eanExist){
-                return ['error' => true, 'ean_status' => 'EAN-ul inserat nu este alocat pe transferul din comanda'];
+                return ['error' => true, 'ean_status' => 'EAN-ul inserat nu este alocat pe produsul din transfer'];
             }
 
             $stock_row = $this->db->table('stock_copy1')
