@@ -193,7 +193,42 @@ class OrderBoxProductsModel extends Model
                     if(!$order){
                         return ["error" => true, "message" => "Order ID ".$data['order_id']." cannot be identified"];
                     }
+                    
+                    if(isset($data['product_id'])){
+
+                        $stock_row = $this->db->table('stock_copy1')
+                        ->where('product_id', $data['product_id'])
+                        ->where('order_id', $data["order_id"])
+                        ->where('picked', 0)
+                        ->get()
+                        ->getRow();
         
+                        if(!$stock_row){
+                            return ['already_picked' => 1, 'message' => 'This product was already marked as picked'];
+                        }
+
+                        $update_data_stock = [
+                            'picked' => 1
+                        ];
+                                    
+                        $this->db->table('stock_copy1')
+                        ->set($update_data_stock)
+                        ->where('id', $stock_row->id)
+                        ->update();
+        
+        
+                        $count = $this->db->table('stock_copy1')
+                            ->where('product_id', $data['product_id'])
+                            ->where('order_id', $data["order_id"])
+                            ->where('picked', 0)
+                            ->countAllResults();
+                        
+                        $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as picked', 'remains_to_be_picked' => $count];
+                       
+                        return $return;
+
+                    }
+                    
                     $eanExist = $this->db->table('stock_copy1')
                                          ->where('order_id', $data['order_id'])
                                          ->where('ean', $data['ean_code'])
@@ -252,6 +287,41 @@ class OrderBoxProductsModel extends Model
         
                     if(!$transfer){
                         return ["error" => true, "message" => "Transfer ID ".$data['transfer_id']." cannot be identified"];
+                    }
+
+                    if(isset($data['product_id'])){
+
+                        $stock_row = $this->db->table('stock_copy1')
+                        ->where('product_id', $data['product_id'])
+                        ->where('transfer_id', $data["transfer_id"])
+                        ->where('picked', 0)
+                        ->get()
+                        ->getRow();
+        
+                        if(!$stock_row){
+                            return ['already_picked' => 1, 'message' => 'This product was already marked as picked'];
+                        }
+
+                        $update_data_stock = [
+                            'picked' => 1
+                        ];
+                                    
+                        $this->db->table('stock_copy1')
+                        ->set($update_data_stock)
+                        ->where('id', $stock_row->id)
+                        ->update();
+        
+        
+                        $count = $this->db->table('stock_copy1')
+                            ->where('product_id', $data['product_id'])
+                            ->where('transfer_id', $data["transfer_id"])
+                            ->where('picked', 0)
+                            ->countAllResults();
+                        
+                        $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as picked', 'remains_to_be_picked' => $count];
+                       
+                        return $return;
+
                     }
         
                     $eanExist = $this->db->table('stock_copy1')
