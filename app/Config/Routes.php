@@ -92,6 +92,12 @@ $routes->post('/Api/Warehouse/warehouseList', '\App\Controllers\Api\Warehouse::w
 $routes->post('/Api/Warehouse/getWarehouse', '\App\Controllers\Api\Warehouse::getWarehouse');
 $routes->post('/Api/Warehouse/deleteWarehouse', '\App\Controllers\Api\Warehouse::deleteWarehouse');
 $routes->post('/Api/Warehouse/setWarehouseInfo', '\App\Controllers\Api\Warehouse::setWarehouseInfo');
+
+
+// PickPack Module
+
+$routes->post('/Api/Pickpack/pickProduct', '\App\Controllers\Api\Pickpack::scanProduct');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
