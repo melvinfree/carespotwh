@@ -290,90 +290,199 @@ class OrderBoxProductsModel extends Model
 
 
             public function processProductPicking($data){
+        
                 $OrderModel = new OrdersModel();
                 $TransfersModel = new TransfersModel();
         
-                if (isset($data["order_id"])) {
-            $order = $OrderModel->find($data['order_id']);
+                
+                // Process products for orders
+                if (isset($data["order_id"])){
+                    $order = $OrderModel->find($data['order_id']);
+        
+                    if(!$order){
+                        return ["error" => true, "message" => "Order ID ".$data['order_id']." cannot be identified"];
+                    }
+                    
+                    if(isset($data['product_id'])){
 
-            if (!$order) {
-                return ["error" => true, "message" => "Order ID " . $data['order_id'] . " cannot be identified"];
-            }
+                        $stock_row = $this->db->table('stock_copy1')
+                        ->where('product_id', $data['product_id'])
+                        ->where('order_id', $data["order_id"])
+                        ->where('picked', 0)
+                        ->get()
+                        ->getRow();
+        
+                        if(!$stock_row){
+                            return ['already_picked' => 1, 'message' => 'This product was already marked as picked'];
+                        }
 
-            if (isset($data['product_id'])) {
-                $condition = [
-                    'product_id' => $data['product_id'],
-                    'order_id' => $data["order_id"],
-                ];
+                        $update_data_stock = [
+                            'picked' => 1
+                        ];
+                                    
+                        $this->db->table('stock_copy1')
+                        ->set($update_data_stock)
+                        ->where('id', $stock_row->id)
+                        ->update();
+        
+        
+                        $count = $this->db->table('stock_copy1')
+                            ->where('product_id', $data['product_id'])
+                            ->where('order_id', $data["order_id"])
+                            ->where('picked', 0)
+                            ->countAllResults();
+                        
+                        $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as picked', 'remains_to_be_picked' => $count];
+                       
+                        return $return;
 
-                $message = 'Product successfully marked as picked';
+                    }
+                    
+                    $eanExist = $this->db->table('stock_copy1')
+                                         ->where('order_id', $data['order_id'])
+                                         ->where('ean', $data['ean_code'])
+                                         ->where('picked', 0)
+                                         ->get()
+                                         ->getRow();
+                
+        
+                    if(!$eanExist){
+                        return ['error' => true, 'ean_status' => 'EAN-ul inserat nu este alocat pe produsul din comanda'];
+                    }
+        
+                    $stock_row = $this->db->table('stock_copy1')
+                        ->where('product_id', $eanExist->product_id)
+                        ->where('ean', $eanExist->ean)
+                        ->where('order_id', $data["order_id"])
+                        ->where('picked', 0)
+                        ->get()
+                        ->getRow();
+        
+                        if(!$stock_row){
+                            return ['already_picked' => 1, 'message' => 'This product was already marked as picked'];
+                        }
+        
+                        if ($eanExist && $stock_row){
+                        
+                            $update_data_stock = [
+                                'picked' => 1
+                            ];
+                                        
+                            $this->db->table('stock_copy1')
+                            ->set($update_data_stock)
+                            ->where('id', $stock_row->id)
+                            ->update();
+            
+            
+                            $count = $this->db->table('stock_copy1')
+                                ->where('product_id', $eanExist->product_id)
+                                ->where('order_id', $data["order_id"])
+                                ->where('picked', 0)
+                                ->countAllResults();
+                            
+                            $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as picked', 'remains_to_be_picked' => $count];
+                           
+                            return $return;
+            
+                        }    
+                } 
+                
+                
+                // Process products for transfers
+        
+                if (isset($data["transfer_id"])){
+                    $transfer = $TransfersModel->find($data['transfer_id']);
+        
+        
+                    if(!$transfer){
+                        return ["error" => true, "message" => "Transfer ID ".$data['transfer_id']." cannot be identified"];
+                    }
 
-                return $this->stockHelper->markProductAsPicked('stock_copy1', $data['product_id'], $condition, $message);
-            }
+                    if(isset($data['product_id'])){
 
-            // Process products using EAN
-            $eanExist = $this->db->table('stock_copy1')
-                ->where('order_id', $data['order_id'])
-                ->where('ean', $data['ean_code'])
-                ->where('picked', 0)
-                ->get()
-                ->getRow();
+                        $stock_row = $this->db->table('stock_copy1')
+                        ->where('product_id', $data['product_id'])
+                        ->where('transfer_id', $data["transfer_id"])
+                        ->where('picked', 0)
+                        ->get()
+                        ->getRow();
+        
+                        if(!$stock_row){
+                            return ['already_picked' => 1, 'message' => 'This product was already marked as picked'];
+                        }
 
-            if (!$eanExist) {
-                return ['error' => true, 'ean_status' => 'EAN-ul inserat nu este alocat pe produsul din comanda'];
-            }
+                        $update_data_stock = [
+                            'picked' => 1
+                        ];
+                                    
+                        $this->db->table('stock_copy1')
+                        ->set($update_data_stock)
+                        ->where('id', $stock_row->id)
+                        ->update();
+        
+        
+                        $count = $this->db->table('stock_copy1')
+                            ->where('product_id', $data['product_id'])
+                            ->where('transfer_id', $data["transfer_id"])
+                            ->where('picked', 0)
+                            ->countAllResults();
+                        
+                        $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as picked', 'remains_to_be_picked' => $count];
+                       
+                        return $return;
 
-            $condition = [
-                'product_id' => $eanExist->product_id,
-                'ean' => $eanExist->ean,
-                'order_id' => $data["order_id"],
-            ];
-
-            $message = 'Product successfully marked as picked';
-
-            return $this->stockHelper->markProductAsPicked('stock_copy1', $eanExist->product_id, $condition, $message);
-        }
-
-        if (isset($data["transfer_id"])) {
-            $transfer = $TransfersModel->find($data['transfer_id']);
-
-            if (!$transfer) {
-                return ["error" => true, "message" => "Transfer ID " . $data['transfer_id'] . " cannot be identified"];
-            }
-
-            if (isset($data['product_id'])) {
-                $condition = [
-                    'product_id' => $data['product_id'],
-                    'transfer_id' => $data["transfer_id"],
-                ];
-
-                $message = 'Product successfully marked as picked';
-
-                return $this->stockHelper->markProductAsPicked('stock_copy1', $data['product_id'], $condition, $message);
-            }
-
-            // Process products using EAN
-            $eanExist = $this->db->table('stock_copy1')
-                ->where('transfer_id', $data['transfer_id'])
-                ->where('ean', $data['ean_code'])
-                ->where('picked', 0)
-                ->get()
-                ->getRow();
-
-            if (!$eanExist) {
-                return ['error' => true, 'ean_status' => 'EAN-ul inserat nu este alocat pe produsul din transfer'];
-            }
-
-            $condition = [
-                'product_id' => $eanExist->product_id,
-                'ean' => $eanExist->ean,
-                'transfer_id' => $data["transfer_id"],
-            ];
-
-            $message = 'Product successfully marked as picked';
-
-            return $this->stockHelper->markProductAsPicked('stock_copy1', $eanExist->product_id, $condition, $message);
-        }
-    }
+                    }
+        
+                    $eanExist = $this->db->table('stock_copy1')
+                                         ->where('transfer_id', $data['transfer_id'])
+                                         ->where('ean', $data['ean_code'])
+                                         ->where('picked', 0)
+                                         ->get()
+                                         ->getRow();
+                
+        
+                    if(!$eanExist){
+                        return ['error' => true, 'ean_status' => 'EAN-ul inserat nu este alocat pe produsul din transfer'];
+                    }
+        
+                    $stock_row = $this->db->table('stock_copy1')
+                        ->where('product_id', $eanExist->product_id)
+                        ->where('ean', $eanExist->ean)
+                        ->where('transfer_id', $data["transfer_id"])
+                        ->where('picked', 0)
+                        ->get()
+                        ->getRow();
+        
+                        if(!$stock_row){
+                            return ['already_picked' => 1, 'message' => 'This product was already marked as picked'];
+                        }
+        
+                        if ($eanExist){
+                        
+                            $update_data_stock = [
+                                'picked' => 1,
+                            ];  
+                               
+                                    
+                            $this->db->table('stock_copy1')
+                            ->set($update_data_stock)
+                            ->where('id', $stock_row->id)
+                            ->update();
+            
+            
+                            $count = $this->db->table('stock_copy1')
+                                ->where('product_id', $eanExist->product_id)
+                                ->where('transfer_id', $data["transfer_id"])
+                                ->where('picked', 0)
+                                ->countAllResults();
+                            
+                            $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as picked', 'remains_to_be_picked' => $count];
+                           
+                            return $return;
+            
+                        }    
+                }         
+        
+                    }
 
 }
