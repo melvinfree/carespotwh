@@ -153,6 +153,9 @@ class OrderBoxProductsModel extends Model
                     ];   
 
                     $this->insert($insert_data_items);
+
+                    $sqlQuery = $this->db->getLastQuery();
+                    return $sqlQuery;
     
                     $this->db->table('stock_copy1')
                     ->set($update_data_stock)
