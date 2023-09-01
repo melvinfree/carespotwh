@@ -37,9 +37,7 @@ class Pickpack extends Controller
 
         $result = $OrderBoxProductsModel->processProduct($requestData);
 
-        $jsonRes = json_encode(succesResponse($result), true);
-
-        return $this->respond($jsonRes, 200);
+        return $this->respond(['responses' => $result], 200); 
 
     }
 
