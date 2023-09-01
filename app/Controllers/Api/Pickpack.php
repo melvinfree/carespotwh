@@ -55,6 +55,35 @@ class Pickpack extends Controller
 
     }
 
+    public function scanProductPicking() {
+
+        $OrderBoxProductsModel = new OrderBoxProductsModel();
+    
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+
+        $totalExecutions = 1;
+
+
+        $responses = [];
+
+        $counter = 0;
+
+        while ($counter < $totalExecutions) {
+            $responses[] = $OrderBoxProductsModel->processProductPicking($requestData);
+    
+            $counter++;
+        }
+    
+        return $this->respond(['responses' => $responses], 200); 
+
+    }
+
     public function addBox() {
 
         $OrderBoxesModel = new OrderBoxesModel();
