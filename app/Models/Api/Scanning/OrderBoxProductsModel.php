@@ -22,10 +22,9 @@ class OrderBoxProductsModel extends Model
         $OrderModel = new OrdersModel();
         $TransfersModel = new TransfersModel();
 
-        return $data;
         
         // Process products for orders
-        if (isset($requestData["order_id"])){
+        /*if (isset($requestData["order_id"])){
             $order = $OrderModel->find($data['order_id']);
 
             if(!$order){
@@ -96,7 +95,7 @@ class OrderBoxProductsModel extends Model
                     return $return;
     
                 }    
-        }
+        } */
         
         
         // Process products for transfers
