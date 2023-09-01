@@ -32,9 +32,7 @@ class OrderBoxesModel extends Model
         }
 
         try {
-            $insert = $this->insert([
-                'order_id' => $data['order_id'],
-            ]);
+            $insert = $this->db->table($this->table)->insert(['order_id' => $data['order_id']]); 
         
             if ($insert) {
                 return ["error" => false, "message" => "Box ID " . $this->db->insertID() . " was inserted"];
@@ -55,9 +53,8 @@ class OrderBoxesModel extends Model
         }
 
         try {
-            $insert = $this->insert([
-                'transfer_id' => $data['transfer_id'],
-            ]);
+
+            $insert = $this->db->table($this->table)->insert(['transfer_id' => $data['transfer_id']]);
         
             if ($insert) {
                 return ["error" => false, "message" => "Box ID " . $this->db->insertID() . " was inserted"];
