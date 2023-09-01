@@ -68,8 +68,8 @@ class OrderBoxProductsModel extends Model
                     // Prepare data to be inserted in order_boxes_items
                     $insert_data_items = [
                         'box_id' => $data['box_id'],
-                        'transfer_id' => $data['transfer_id'],
-                        'transfer_product_id' => $stock_row->product_transfer_id,
+                        'order_id' => $data['order_id'],
+                        'order_product_id' => $stock_row->order_product_id,
                         'stock_id' => $stock_row->id,
                         'product_id' => $stock_row->product_id,
                         'ean' => $stock_row->ean
@@ -85,7 +85,7 @@ class OrderBoxProductsModel extends Model
     
                     $count = $this->db->table('stock_copy1')
                         ->where('product_id', $eanExist->product_id)
-                        ->where('transfer_id', $data["transfer_id"])
+                        ->where('order_id', $data["order_id"])
                         ->where('box_id', null)
                         ->where('picked', 0)
                         ->countAllResults();
