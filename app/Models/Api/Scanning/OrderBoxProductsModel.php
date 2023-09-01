@@ -102,6 +102,8 @@ class OrderBoxProductsModel extends Model
         if (isset($requestData["transfer_id"])){
             $transfer = $TransfersModel->find($data['transfer_id']);
 
+            return $transfer;
+
             if(!$transfer){
                 return ["error" => true, "message" => "Transfer ID ".$data['transfer_id']." cannot be identified"];
             }
