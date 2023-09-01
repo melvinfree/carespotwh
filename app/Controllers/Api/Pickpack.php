@@ -49,7 +49,7 @@ class Pickpack extends Controller
             $counter++;
         }
     
-        return $this->respond(['responses' => "test"], 200); 
+        return $this->respond(['responses' => $responses], 200); 
 
     }
 
