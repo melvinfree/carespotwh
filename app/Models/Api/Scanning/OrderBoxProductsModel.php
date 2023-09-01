@@ -21,7 +21,6 @@ class OrderBoxProductsModel extends Model
         
         $OrderModel = new OrdersModel();
         $TransfersModel = new TransfersModel();
-        $ProductsModel = new ProductsModel();
         
         // Process products for orders
         if (isset($requestData["order_id"])){
