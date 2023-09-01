@@ -32,6 +32,7 @@ $routes->set404Override();
 $routes->get('/', 'Home::index');
 
 $routes->post('/Api/Pickpack/scanProduct', '\App\Controllers\Api\Pickpack::scanProduct');
+$routes->post('/Api/Pickpack/addBox', '\App\Controllers\Api\Pickpack::addBox');
 
 // Orders Api Routes - Endpoints
 $routes->post('/Api/Orders/getAll', '\App\Controllers\Api\Orders::getAll');

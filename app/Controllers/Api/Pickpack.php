@@ -11,6 +11,8 @@ use App\Models\Api\Inventory\ReceptionsModel;
 use App\Models\Api\Inventory\TransfersModel;
 use App\Models\Api\Inventory\StockModel;
 use App\Models\Api\Scanning\OrderBoxProductsModel;
+use App\Models\Api\Scanning\OrderBoxesModel;
+
 use DateTime;
 
 class Pickpack extends Controller
@@ -45,6 +47,35 @@ class Pickpack extends Controller
 
         while ($counter < $totalExecutions) {
             $responses[] = $OrderBoxProductsModel->processProduct($requestData);
+    
+            $counter++;
+        }
+    
+        return $this->respond(['responses' => $responses], 200); 
+
+    }
+
+    public function addBox() {
+
+        $OrderBoxesModel = new OrderBoxesModel();
+    
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+
+        $totalExecutions = 1;
+
+
+        $responses = [];
+
+        $counter = 0;
+
+        while ($counter < $totalExecutions) {
+            $responses[] = $OrderBoxesModel->addBox($requestData);
     
             $counter++;
         }
