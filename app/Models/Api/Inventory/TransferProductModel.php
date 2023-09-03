@@ -70,7 +70,7 @@ class TransferProductModel extends Model
             $pickpack = "packed";
         }
         if(isset($requestData['picking'])){
-            $pickpack = "picking";
+            $pickpack = "picked";
         }
         
         $query = $this->db->query("
