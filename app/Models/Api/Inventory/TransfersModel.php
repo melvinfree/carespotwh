@@ -158,9 +158,9 @@ class TransfersModel extends Model
                                        ->get()
                                        ->getRow();
                 
-                    $responses[] = ['record_id' => $updatedRecord->id];
+                    $responses[] = ["error" => false, 'record_id' => $updatedRecord->id];
                 } else {
-                    $responses[] = ['record_id' => "false"];
+                    $responses[] = ["error" => true, 'record_id' => "No record to update, quantity wasn't changed"];
                 }
         }
         else {
