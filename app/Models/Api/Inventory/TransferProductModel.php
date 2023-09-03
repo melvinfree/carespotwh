@@ -66,7 +66,7 @@ class TransferProductModel extends Model
 
     public function transfersProductsList($transfer_id, $requestData){
 
-        if(isset($requestData['picking'])){
+        if(isset($requestData['packing'])){
             $pickpack = "packed";
         }
         if(isset($requestData['picking'])){
