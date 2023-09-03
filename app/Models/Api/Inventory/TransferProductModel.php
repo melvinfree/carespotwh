@@ -64,15 +64,22 @@ class TransferProductModel extends Model
         return $response;
     }
 
-    public function transfersProductsList($transfer_id){
+    public function transfersProductsList($transfer_id, $requestData){
 
+        if(isset($requestData['picking'])){
+            $pickpack = "packed";
+        }
+        if(isset($requestData['picking'])){
+            $pickpack = "picking";
+        }
+        
         $query = $this->db->query("
         SELECT 
             ci_transfers_products.id AS row_id,
             ci_transfers_products.product_id,
             ci_transfers_products.product_name,
             COUNT(stock_copy1.id) as total_quantity,
-            SUM(IF(stock_copy1.transfer_status = 'ready', 1, 0)) as picked_quantity
+            SUM(IF(stock_copy1.".$pickpack." = 1, 1, 0)) as processed_quantity
         FROM 
         ci_transfers_products
         JOIN 
@@ -91,8 +98,9 @@ class TransferProductModel extends Model
     $products = $query->getResultArray();
 
     foreach($products as &$product){
-        $product['not_picked_quantity'] = $product['total_quantity'] - $product['picked_quantity'];
+        $product['not_processed_quantity'] = $product['total_quantity'] - $product['processed_quantity'];
     }
+
 
     return $products;
 

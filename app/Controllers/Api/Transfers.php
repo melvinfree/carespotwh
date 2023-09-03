@@ -228,7 +228,7 @@ class Transfers extends Controller
             return $this->failBadRequest('Missing parameter.');
         }
         
-        $jsonRes = json_encode(succesResponse($TransferProductModel->transfersProductsList($requestData['transfer_id'])), true);
+        $jsonRes = json_encode(succesResponse($TransferProductModel->transfersProductsList($requestData['transfer_id'], $requestData)), true);
 
         return $this->respond($jsonRes, 200);
     }
