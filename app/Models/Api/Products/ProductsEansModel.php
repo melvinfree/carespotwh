@@ -24,6 +24,7 @@ class ProductsEansModel extends Model
         }
         
         $this->select('
+        id as row_id,
         product_id,
         ean');
 
