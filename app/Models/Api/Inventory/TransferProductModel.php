@@ -101,8 +101,14 @@ class TransferProductModel extends Model
         $product['not_processed_quantity'] = $product['total_quantity'] - $product['processed_quantity'];
     }
 
-
-    return $products;
+    
+    $resultCount = count($products);
+    if($resultCount > 0){
+        return $products;
+    }
+    else{
+        return ["products" => 0];
+    }
 
     }
 
