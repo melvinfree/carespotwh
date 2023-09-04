@@ -6,6 +6,7 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Controller;
 use App\Models\Api\Products\ProductsModel;
 use App\Models\Api\Products\ProductsEansModel;
+use App\Models\Api\Inventory\StockModel;
 
 class Products extends Controller
 {
@@ -143,7 +144,7 @@ class Products extends Controller
 
     public function getProductsStockLines()
     {
-        $ProductsModel = new ProductsModel();
+        $StockModel = new StockModel();
 
         // Validate token and get the request body
         try {
@@ -156,7 +157,7 @@ class Products extends Controller
         $expectedKeys = ["product_id"];
         $requestDataKeys = array_keys($requestData);
 
-        $products_stock_lines = $ProductsModel->getStockLinesPerProduct($requestData['product_id']);
+        $products_stock_lines = $StockModel->getStockLinesPerProduct($requestData['product_id']);
 
         
         $jsonRes = json_encode(succesResponse($products_stock_lines), true);
