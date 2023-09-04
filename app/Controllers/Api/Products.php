@@ -141,5 +141,28 @@ class Products extends Controller
         return $this->respond($jsonRes, 200);
     }
 
+    public function getProductsStockLines()
+    {
+        $ProductsModel = new ProductsModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        // Validate the JSON payload
+        $expectedKeys = ["product_id"];
+        $requestDataKeys = array_keys($requestData);
+
+        $products_stock_lines = $ProductsModel->getStockLinesPerProduct($requestData['product_id']);
+
+        
+        $jsonRes = json_encode(succesResponse($products_stock_lines), true);
+
+        return $this->respond($jsonRes, 200);
+    }
+
 
 }

@@ -113,5 +113,47 @@ class StockModel extends Model
             ->countAllResults();
     }
 
+    public function getStockLinesPerProduct($product_id){
+        
+        $this->select('
+        stock_copy1.id,
+        stock_copy1.ean as ean,
+        suppliers.name,
+        warehouses.name as warehouse_name,
+        stock_copy1.acquisition_price,
+        stock_copy1.added as acquired_date,
+        stock_copy1.invoice_in_id as invoice_in,
+        stock_copy1.order_id,
+        stock_copy1.transfer_id,
+        ');
+
+        $this->join(
+            "suppliers",
+            "suppliers.id = stock_copy1.supplier",
+            "left"
+        );
+
+        $this->join(
+            "warehouses",
+            "warehouses.id = stock_copy1.warehouse",
+            "left"
+        );
+
+        $this->where('stock_copy1.product_id', $product_id);
+        $query = $this->get();
+
+        $product = $query->getResultArray();
+
+        $resultCount = count($product);
+
+        if($resultCount > 0){
+            return $product;
+        }
+        else{
+            return ["error" => true, "message" => "No stock lines to be returned"];
+        }
+    }
+    
+
 
 }
