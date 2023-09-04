@@ -165,5 +165,28 @@ class Products extends Controller
         return $this->respond($jsonRes, 200);
     }
 
+    public function updateStockRowEanValue()
+    {
+        $StockModel = new StockModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        // Validate the JSON payload
+        $expectedKeys = ["row_id", "ean"];
+        $requestDataKeys = array_keys($requestData);
+
+        $products_stock_lines = $StockModel->updateRowEanValue($requestData['row_id'],$requestData['ean']);
+
+        
+        $jsonRes = json_encode(succesResponse($products_stock_lines), true);
+
+        return $this->respond($jsonRes, 200);
+    }
+
 
 }

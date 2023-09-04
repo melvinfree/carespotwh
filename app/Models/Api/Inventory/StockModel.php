@@ -154,6 +154,21 @@ class StockModel extends Model
             return ["error" => true, "message" => "No stock lines to be returned"];
         }
     }
+
+    public function updateRowEanValue($row_id, $ean){
+        
+        $update = $this->set(['ean' => $ean])
+        ->where('id', $row_id)
+        ->update();
+
+        if($update){
+            return ['error' => false, "message" => "Ean updated for row_id ".$row_id.""];
+        }
+        else{
+            return ['error' => true, "message" => "Error"];
+        }
+        
+    }
     
 
 

@@ -91,6 +91,7 @@ $routes->post('/Api/Products/getProduct', '\App\Controllers\Api\Products::getPro
 $routes->post('/Api/Products/deleteEan', '\App\Controllers\Api\Products::deleteEan');
 $routes->post('/Api/Products/addEan', '\App\Controllers\Api\Products::addEan');
 $routes->post('/Api/Products/getProductsStockLines', '\App\Controllers\Api\Products::getProductsStockLines');
+$routes->post('/Api/Products/updateStockRowEanValue', '\App\Controllers\Api\Products::updateStockRowEanValue');
 
 // GENERAL
 
