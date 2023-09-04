@@ -121,6 +121,7 @@ class StockModel extends Model
         suppliers.name,
         warehouses.name as warehouse_name,
         stock_copy1.acquisition_price,
+        stock_copy1.status,
         stock_copy1.added as acquired_date,
         stock_copy1.invoice_in_id as invoice_in,
         stock_copy1.order_id,
