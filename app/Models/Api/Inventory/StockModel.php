@@ -118,7 +118,7 @@ class StockModel extends Model
         $this->select('
         stock_copy1.id,
         stock_copy1.ean as ean,
-        suppliers.name,
+        suppliers.name as  supplier_name,
         warehouses.name as warehouse_name,
         stock_copy1.acquisition_price,
         stock_copy1.status,
