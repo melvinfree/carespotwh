@@ -317,7 +317,7 @@ class OrderBoxProductsModel extends Model
                     ->getRow();
             
                 if (!$eanExist) {
-                    return ['error' => true, 'ean_status' => 'EAN-ul inserat nu este alocat pe produsul din ' . $idField];
+                    return ['error' => true, 'ean_status' => 'EAN-ul inserat nu este alocat sau a fost scanata cantitatea commpleta ' . $data[$idField]];
                 }
             
                 $stock_row = $this->db->table('stock_copy1')
