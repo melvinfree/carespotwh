@@ -27,15 +27,15 @@ class OrderBoxProductsModel extends Model
     $TransfersModel = new TransfersModel();
 
     if (isset($data["order_id"])) {
-        return $this->processProductPackingForEntity($data, $OrderModel, 'order_id');
+        return $this->processProductPackingForEntity($data, $OrderModel, 'order_id', 'transfer');
     } elseif (isset($data["transfer_id"])) {
-        return $this->processProductPackingForEntity($data, $TransfersModel, 'transfer_id');
+        return $this->processProductPackingForEntity($data, $TransfersModel, 'transfer_id', 'order');
     }
 
     return ['error' => true, 'message' => 'Invalid data provided'];
 }
 
-private function processProductPackingForEntity($data, $entityModel, $idField)
+private function processProductPackingForEntity($data, $entityModel, $idField, $typeField)
 {
     $entity = $entityModel->find($data[$idField]);
 
@@ -44,7 +44,7 @@ private function processProductPackingForEntity($data, $entityModel, $idField)
     }
 
     if (isset($data['product_id'])) {
-        return $this->processProductPackingByProduct($data, $entityModel, $idField);
+        return $this->processProductPackingByProduct($data, $entityModel, $idField, $typeField);
     }
 
     $eanExist = $this->db->table('stock_copy1')
@@ -82,7 +82,7 @@ private function processProductPackingForEntity($data, $entityModel, $idField)
     $insert_data_items = [
         'box_id' => $data['box_id'] ?? '',
         $idField => $data[$idField] ?? '',
-        $idField . '_product_id' => $stock_row->{$idField . '_product_id'} ?? '',
+        $typeField . '_product_id' => $stock_row->{$idField . '_product_id'} ?? '',
         'stock_id' => $stock_row->id ?? '',
         'product_id' => $stock_row->product_id ?? '',
         'ean' => $stock_row->ean ?? '',
@@ -110,7 +110,7 @@ private function processProductPackingForEntity($data, $entityModel, $idField)
     ];
 }
 
-private function processProductPackingByProduct($data, $entityModel, $idField)
+private function processProductPackingByProduct($data, $entityModel, $idField, $typeField)
 {
     $stock_row = $this->db->table('stock_copy1')
         ->where('product_id', $data['product_id'])
@@ -134,7 +134,7 @@ private function processProductPackingByProduct($data, $entityModel, $idField)
     $insert_data_items = [
         'box_id' => $data['box_id'] ?? '',
         $idField => $data[$idField] ?? '',
-        $idField . '_product_id' => $stock_row->{$idField . '_product_id'} ?? '',
+        $typeField . '_product_id' => $stock_row->{$idField . '_product_id'} ?? '',
         'stock_id' => $stock_row->id ?? '',
         'product_id' => $stock_row->product_id ?? '',
         'ean' => $stock_row->ean ?? '',
