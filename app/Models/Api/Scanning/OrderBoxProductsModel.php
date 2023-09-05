@@ -20,6 +20,7 @@ class OrderBoxProductsModel extends Model
     
     // Fields; order_id || transfer_id && ean_code && box_id
     
+    
     public function processProductPacking($data)
 {
     $OrderModel = new OrdersModel();
@@ -42,24 +43,28 @@ private function processProductPackingForEntity($data, $entityModel, $idField)
         return ["error" => true, "message" => ucfirst($idField) . " ID " . $data[$idField] . " cannot be identified"];
     }
 
-    $commonConditions = [
-        'box_id' => null,
-        'packed' => 0,
-    ];
+    if (isset($data['product_id'])) {
+        return $this->processProductPackingByProduct($data, $entityModel, $idField);
+    }
 
-    $productConditions = [
-        'product_id' => $data['product_id'],
-        $idField => $data[$idField],
-    ];
+    $eanExist = $this->db->table('stock_copy1')
+        ->where($idField, $data[$idField])
+        ->where('ean', $data['ean_code'])
+        ->where('box_id', null)
+        ->where('packed', 0)
+        ->get()
+        ->getRow();
 
-    $eanConditions = [
-        'ean' => $data['ean_code'],
-        $idField => $data[$idField],
-    ];
+    if (!$eanExist) {
+        return ['error' => true, 'ean_status' => 'EAN-ul inserat nu este alocat pe produsul din ' . $idField];
+    }
 
     $stock_row = $this->db->table('stock_copy1')
-        ->where($commonConditions)
-        ->where($productConditions)
+        ->where('product_id', $eanExist->product_id)
+        ->where('ean', $eanExist->ean)
+        ->where($idField, $data[$idField])
+        ->where('box_id', null)
+        ->where('packed', 0)
         ->get()
         ->getRow();
 
@@ -73,6 +78,7 @@ private function processProductPackingForEntity($data, $entityModel, $idField)
         'packed' => 1,
     ];
 
+    // Prepare data to be inserted in order_boxes_items
     $insert_data_items = [
         'box_id' => $data['box_id'] ?? '',
         $idField => $data[$idField] ?? '',
@@ -90,8 +96,10 @@ private function processProductPackingForEntity($data, $entityModel, $idField)
         ->update();
 
     $count = $this->db->table('stock_copy1')
-        ->where($commonConditions)
-        ->where($productConditions)
+        ->where('product_id', $eanExist->product_id)
+        ->where($idField, $data[$idField])
+        ->where('box_id', null)
+        ->where('packed', 0)
         ->countAllResults();
 
     return [
@@ -101,6 +109,59 @@ private function processProductPackingForEntity($data, $entityModel, $idField)
         'remains_to_be_packed' => $count,
     ];
 }
+
+private function processProductPackingByProduct($data, $entityModel, $idField)
+{
+    $stock_row = $this->db->table('stock_copy1')
+        ->where('product_id', $data['product_id'])
+        ->where($idField, $data[$idField])
+        ->where('box_id', null)
+        ->where('packed', 0)
+        ->get()
+        ->getRow();
+
+    if (!$stock_row) {
+        return ['already_packed' => 1, 'message' => 'This product was already marked as packed'];
+    }
+
+    $update_data_stock = [
+        'transfer_status' => 'ready',
+        'box_id' => $data['box_id'],
+        'packed' => 1,
+    ];
+
+    // Prepare data to be inserted in order_boxes_items
+    $insert_data_items = [
+        'box_id' => $data['box_id'] ?? '',
+        $idField => $data[$idField] ?? '',
+        $idField . '_product_id' => $stock_row->{$idField . '_product_id'} ?? '',
+        'stock_id' => $stock_row->id ?? '',
+        'product_id' => $stock_row->product_id ?? '',
+        'ean' => $stock_row->ean ?? '',
+    ];
+
+    $this->db->table($this->table)->insert($insert_data_items);
+
+    $this->db->table('stock_copy1')
+        ->set($update_data_stock)
+        ->where('id', $stock_row->id)
+        ->update();
+
+    $count = $this->db->table('stock_copy1')
+        ->where('product_id', $data['product_id'])
+        ->where($idField, $data[$idField])
+        ->where('box_id', null)
+        ->where('packed', 0)
+        ->countAllResults();
+
+    return [
+        'row_id' => $stock_row->id,
+        'ean_exist' => 1,
+        'message' => 'Product successfully marked as packed',
+        'remains_to_be_packed' => $count,
+    ];
+}
+
 
 
 
