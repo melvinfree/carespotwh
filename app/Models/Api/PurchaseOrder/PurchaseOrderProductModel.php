@@ -86,7 +86,8 @@ class PurchaseOrderProductModel extends Model
                                                 ->where('status', 'instock')
                                                 ->orWhere('status', 'allocated_service')
                                                 ->limit($reversalProduct['quantity'])
-                                                ->findAll();    
+                                                ->get()    
+                                                ->getResultArray();
                                                 
             $old_product_line =  $this->db->table($this->table)
                                  ->where('invoice_id', $initial_invoice_id)
