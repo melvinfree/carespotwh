@@ -64,6 +64,7 @@ $routes->post('/Api/Purchase/getInvoicePList', '\App\Controllers\Api\Purchase::g
 $routes->post('/Api/Purchase/getPurchase', '\App\Controllers\Api\Purchase::getPurchase');
 $routes->post('/Api/Purchase/lockInvoice', '\App\Controllers\Api\Purchase::lockInvoice');
 $routes->post('/Api/Purchase/reversePurchase', '\App\Controllers\Api\Purchase::reversePurchase');
+$routes->post('/Api/Purchase/getInvoicePListReversal', '\App\Controllers\Api\Purchase::getInvoicePListReversal');
 
 
 
