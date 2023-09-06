@@ -161,6 +161,26 @@ invoice_date
 
     }
 
+
+    public function reverseInvoiceProductStock(){
+
+        $PurchaseOrder = new PurchaseOrderModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        $response = $PurchaseOrder->reverseInvoiceProductStock($requestData);
+
+        $jsonRes = json_encode(succesResponse($response), true);
+
+        return $this->respond($jsonRes, 200);
+
+    }
+
     public function getInvoicePListReversal()
     {
     $PurchaseOrderProductModel = new PurchaseOrderProductModel();
