@@ -164,7 +164,7 @@ invoice_date
 
     public function reverseInvoiceProductStock(){
 
-        $PurchaseOrder = new PurchaseOrderModel();
+        $PurchaseOrderProductModel = new PurchaseOrderProductModel();
 
         // Validate token and get the request body
         try {
@@ -173,7 +173,7 @@ invoice_date
             return $this->failUnauthorized($e->getMessage());
         }
 
-        $response = $PurchaseOrder->reverseInvoiceProductStock($requestData);
+        $response = $PurchaseOrderProductModel->reverseInvoiceProductStock($requestData);
 
         $jsonRes = json_encode(succesResponse($response), true);
 
