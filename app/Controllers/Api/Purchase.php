@@ -137,7 +137,7 @@ class Purchase extends Controller
     
     //DATA
     /*
-invoice_id
+initial_invoice_id
 invoice_series
 invoice_number
 invoice_date

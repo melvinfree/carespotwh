@@ -142,7 +142,7 @@ class PurchaseOrderModel extends Model
    // REVERSING PURCHASE ORDER
     public function reverserPurchase($data){
 
-        $initialInvoice = $this->find($data['invoice_id']);
+        $initialInvoice = $this->find($data['initial_invoice_id']);
 
 
         if($initialInvoice['locked'] === 0){
