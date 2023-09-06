@@ -56,7 +56,7 @@ class PurchaseOrderProductModel extends Model
             invoices_in.warehouse_name,
             invoices_in_products.tax,
             invoices_in_products.discount,
-            COUNT(stock_copy1.id) as quantity,
+            invoices_in_products.quantity,
             ROUND(invoices_in_products.acquisition_price * invoices_in.currency_rate,4) as price_ron,
             invoices_in_products.acquisition_price,
             invoices_in.currency,
@@ -65,10 +65,8 @@ class PurchaseOrderProductModel extends Model
             invoices_in_products
         JOIN 
             invoices_in ON invoices_in.id = invoices_in_products.invoice_id
-        JOIN 
-            stock_copy1 ON stock_copy1.invoice_product_id = invoices_in_products.id
         WHERE 
-        stock_copy1.status = 'instock' AND invoices_in_products.invoice_id = ?", [$invoice_id]);
+        invoices_in_products.invoice_id = ?", [$invoice_id]);
 
     return $query->getResult();
     
