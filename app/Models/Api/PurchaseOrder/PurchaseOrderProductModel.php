@@ -98,7 +98,7 @@ class PurchaseOrderProductModel extends Model
             $products = [
                 'invoice_id' => $data['invoice_id'],
                 'product_id' => $reversalProduct['product_id'],
-                'product_name' => findProductNamebyId($reversalProduct['product_id']),
+                'product_name' => $purchaseOrderModel->findProductNamebyId($reversalProduct['product_id']),
                 'acquisition_price' => $old_product_line->acquisition_price,
                 'quantity' => "-".$reversalProduct['quantity'],
                 'tax' => $old_product_line->tax
