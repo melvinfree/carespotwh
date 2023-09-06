@@ -82,12 +82,14 @@ class PurchaseOrderProductModel extends Model
         foreach ($data['products'] as $reversalProduct){
 
             $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id)
-                                                ->where('product_id', $reversalProduct['product_id'])
-                                                ->where('status', 'instock')
-                                                ->orWhere('status', 'allocated_service')
-                                                ->limit($reversalProduct['quantity'])
-                                                ->get()    
-                                                ->getResultArray();
+    ->where('product_id', $reversalProduct['product_id'])
+    ->groupStart() // Start grouping OR conditions
+        ->where('status', 'instock')
+        ->orWhere('status', 'allocated_service')
+    ->groupEnd() // End grouping OR conditions
+    ->limit($reversalProduct['quantity'])
+    ->get()
+    ->getResultArray();
                                                 
             $old_product_line =  $this->db->table($this->table)
                                  ->where('invoice_id', $initial_invoice_id)
