@@ -81,7 +81,7 @@ class PurchaseOrderProductModel extends Model
 
         foreach ($data['products'] as $reversalProduct){
 
-            $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id)
+            $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id['id'])
                                                 ->where('product_id', $reversalProduct['product_id'])
                                                 ->where('status', 'instock')
                                                 ->orWhere('status', 'allocated_service')
@@ -90,7 +90,7 @@ class PurchaseOrderProductModel extends Model
                                                 ->getResultArray();
                                                 
             $old_product_line =  $this->db->table($this->table)
-                                 ->where('invoice_id', $initial_invoice_id)
+                                 ->where('invoice_id', $initial_invoice_id['id'])
                                  ->where('product_id', $reversalProduct['product_id'])
                                  ->get()
                                  ->getRow();
@@ -120,7 +120,7 @@ class PurchaseOrderProductModel extends Model
                 ];
 
                 $this->db->table($this->stockTable)
-                     ->where('invoice_id', $initial_invoice_id)
+                     ->where('invoice_id', $initial_invoice_id['id'])
                      ->where('id', $stock_line['id'])
                      ->update($updateData);
 
