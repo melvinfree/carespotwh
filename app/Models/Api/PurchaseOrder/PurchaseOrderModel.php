@@ -139,6 +139,37 @@ class PurchaseOrderModel extends Model
         return $this->db->insertID(); // returns the ID of the inserted record
     }
 
+   // REVERSING PURCHASE ORDER
+    public function reverserPurchase($data){
+
+        $initialInvoice = $this->find($data['invoice_id']);
+
+
+        if($initialInvoice['locked'] === 0){
+            return ['error' => true, "message" => "This purchase order wasn't finished and you can just adjust the quantity."];
+        }
+
+        // Need to fetch from payload (invoice_series,number,invoice_date)
+                    
+        $insertReversalInvoiceData = [
+                "supplier_id" => $initialInvoice["supplier_id"],
+                "supplier_name" => $initialInvoice["supplier_name"],
+                "invoice_series" => $data["invoice_series"],
+                "number" => $data["invoice_number"],  
+                "invoice_date" => $data["invoice_date"],
+                "transport" => 1, // Courier / just one option
+                "currency" => $initialInvoice["currency"],
+                "warehouse_id" => $initialInvoice['warehouse_id'],
+                "warehouse_name" => $initialInvoice['warehouse_name'],
+                "currency_rate" => $initialInvoice["currency_rate"],
+                "storno_for" => $initialInvoice["id"]
+            ];
+
+        $this->db->table($this->table)->insert($insertReversalInvoiceData);
+        $reversalInvoiceId = $this->db->insertID();
+
+    }
+
     public function modifyInvoice($requestData)
     {
         $invoice = $this->find($requestData["invoice_id"]);

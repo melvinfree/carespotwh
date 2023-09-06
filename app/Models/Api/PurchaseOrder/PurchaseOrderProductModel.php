@@ -3,6 +3,7 @@
 namespace App\Models\Api\PurchaseOrder;
 
 use CodeIgniter\Model;
+use App\Models\Api\Inventory\ProductsModel;
 
 class PurchaseOrderProductModel extends Model
 {
@@ -12,6 +13,7 @@ class PurchaseOrderProductModel extends Model
     ];
 
     protected $table = 'invoices_in_products';
+    protected $stockTable = 'stock_copy1';
     protected $primaryKey = 'id';
 
     public function get_invoice_products($invoice_id)
@@ -38,6 +40,94 @@ class PurchaseOrderProductModel extends Model
             invoices_in_products.invoice_id = ?", [$invoice_id]);
 
     return $query->getResult();
+
+    }
+    
+
+    //USED FOR REVERSED INVOICES ( TO SHOW A PRODUCTS LIST)
+    public function get_products_for_reversal($invoice_id)
+    {
+
+        $query = $this->db->query("
+        SELECT 
+            invoices_in_products.id AS row_id,
+            invoices_in_products.product_id,
+            invoices_in_products.product_name,
+            invoices_in.warehouse_name,
+            invoices_in_products.tax,
+            invoices_in_products.discount,
+            invoices_in_products.quantity,
+            ROUND(invoices_in_products.acquisition_price * invoices_in.currency_rate,4) as price_ron,
+            invoices_in_products.acquisition_price,
+            invoices_in.currency,
+            ROUND(invoices_in_products.acquisition_price * invoices_in.currency_rate * invoices_in_products.quantity, 4) as total_no_vat
+        FROM 
+            invoices_in_products
+        JOIN 
+            invoices_in ON invoices_in.id = invoices_in_products.invoice_id
+        WHERE 
+            status = 'instock' AND invoices_in_products.invoice_id = ?", [$invoice_id]);
+
+    return $query->getResult();
+    
+    }
+
+    public function reverseInvoiceProductStock($data){
+
+        $stockModel = new \App\Models\Api\Inventory\StockModel();
+        $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel();
+
+        $initial_invoice_id = $purchaseOrderModel->find($data['storno_for']);
+
+        foreach ($data['products'] as $reversalProduct){
+
+            $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id)
+                                                ->where('product_id', $reversalProduct['product_id'])
+                                                ->where('status', 'instock')
+                                                ->orWhere('status', 'allocated_service')
+                                                ->limit($reversalProduct['quantity'])
+                                                ->findAll();    
+                                                
+            $old_product_line =  $this->db->table($this->table)
+                                 ->where('invoice_id', $initial_invoice_id)
+                                 ->where('product_id', $reversalProduct['product_id'])
+                                 ->get()
+                                 ->getRow();
+
+            $products = [
+                'invoice_id' => $data['invoice_id'],
+                'product_id' => $reversalProduct['product_id'],
+                'product_name' => findProductNamebyId($reversalProduct['product_id']),
+                'acquisition_price' => $old_product_line->acquisition_price,
+                'quantity' => "-".$reversalProduct['quantity'],
+                'tax' => $old_product_line->tax
+            ];
+            
+            $this->db->table($this->table)->insert($products);
+            $insertId = $this->db->insertID();
+
+            $responses[] = ['record_id' => $insertId];
+
+            foreach ($ProductsToBeReversed as $stock_line){
+                
+                $updateData = [
+                    'order_id' => NULL,
+					'invoice_out_id' => NULL,
+                    'invoice_in_storno_id' => $data['invoice_id'],
+                    'invoice_in_product_storno_id' => $insertId,
+					'status' => 'reversesale_supplier'
+                ];
+
+                $this->db->table($this->stockTable)
+                     ->where('invoice_id', $initial_invoice_id)
+                     ->where('id', $stock_line['id'])
+                     ->update($updateData);
+
+            }
+
+        }
+        
+
     }
 
 

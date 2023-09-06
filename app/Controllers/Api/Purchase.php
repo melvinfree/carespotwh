@@ -134,6 +134,33 @@ class Purchase extends Controller
         return $this->respond($jsonRes, 200);
     }
 
+    
+    //DATA
+    /*
+invoice_id
+invoice_series
+invoice_number
+invoice_date
+    */
+    public function reversePurchase(){
+
+        $PurchaseOrder = new PurchaseOrderModel();
+
+        // Validate token and get the request body
+        try {
+            $requestData = validateTokenAndFetchData();
+        } catch (\Exception $e) {
+            return $this->failUnauthorized($e->getMessage());
+        }
+
+        $insertedId = $PurchaseOrder->reverserPurchase($requestData);
+
+        $jsonRes = json_encode(succesResponse(['id_nir' => $insertedId]), true);
+
+        return $this->respond($jsonRes, 200);
+
+    }
+
 
     public function getProductsList()
     {
