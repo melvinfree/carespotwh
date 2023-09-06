@@ -65,8 +65,10 @@ class PurchaseOrderProductModel extends Model
             invoices_in_products
         JOIN 
             invoices_in ON invoices_in.id = invoices_in_products.invoice_id
+        JOIN 
+            stock_copy1 ON stock_copy1.invoice_product_id = invoices_in_products.id
         WHERE 
-            status = 'instock' AND invoices_in_products.invoice_id = ?", [$invoice_id]);
+        stock_copy1.status = 'instock' AND invoices_in_products.invoice_id = ?", [$invoice_id]);
 
     return $query->getResult();
     
