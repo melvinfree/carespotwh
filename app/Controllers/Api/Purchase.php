@@ -157,7 +157,7 @@ invoice_date
 
         $jsonRes = json_encode(succesResponse(['id_nir' => $insertedId]), true);
 
-        return $this->respond($requestData, 200);
+        return $this->respond($jsonRes, 200);
 
     }
 
