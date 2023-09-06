@@ -81,9 +81,10 @@ class PurchaseOrderProductModel extends Model
 
         foreach ($data['products'] as $reversalProduct){
 
-            $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id)
+            $ProductsToBeReversed = $stockModel->where('invoice_id', $initial_invoice_id)
                                                 ->where('product_id', $reversalProduct['product_id'])
                                                 ->where('status', 'instock')
+                                                ->orWhere('status', 'allocated_service')
                                                 ->limit($reversalProduct['quantity'])
                                                 ->get()    
                                                 ->getResultArray();
