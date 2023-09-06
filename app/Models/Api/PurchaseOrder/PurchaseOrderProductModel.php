@@ -56,7 +56,7 @@ class PurchaseOrderProductModel extends Model
             invoices_in.warehouse_name,
             invoices_in_products.tax,
             invoices_in_products.discount,
-            invoices_in_products.quantity,
+            COUNT(stock_copy1.id) as quantity,
             ROUND(invoices_in_products.acquisition_price * invoices_in.currency_rate,4) as price_ron,
             invoices_in_products.acquisition_price,
             invoices_in.currency,
