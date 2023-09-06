@@ -121,7 +121,7 @@ class PurchaseOrderProductModel extends Model
                 ];
 
                 $this->db->table($this->stockTable)
-                     ->where('invoice_id', $initial_invoice_id['id'])
+                     ->where('invoice_in_id', $initial_invoice_id['id'])
                      ->where('id', $stock_line['id'])
                      ->update($updateData);
 
