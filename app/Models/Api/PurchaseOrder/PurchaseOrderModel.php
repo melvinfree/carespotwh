@@ -166,7 +166,10 @@ class PurchaseOrderModel extends Model
             ];
 
         $this->db->table($this->table)->insert($insertReversalInvoiceData);
+        
         $reversalInvoiceId = $this->db->insertID();
+
+        return $reversalInvoiceId;
 
     }
 
