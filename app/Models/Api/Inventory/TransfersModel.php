@@ -94,7 +94,7 @@ class TransfersModel extends Model
         AND (product.id LIKE ?
         OR product.model LIKE ?
         OR product.name LIKE ?)
-        GROUP BY product.id
+        GROUP BY product.id, stock.ean
         ORDER BY 
             CASE 
                 WHEN product.id LIKE ? THEN 1
