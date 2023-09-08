@@ -232,8 +232,8 @@ class PurchaseOrderProductModel extends Model
                 $initialData = $purchaseOrderTrack->getInfoUndo($stock_line['id']);
                 
                 $updateData = [
-                    'order_id' => $initialData['order_id'],
-					'invoice_out_id' => $initialData['invoice_out_id'],
+                    'order_id' => $initialData['order_id'] ?? NULL,
+					'invoice_out_id' => $initialData['invoice_out_id'] ?? NULL,
                     'invoice_in_storno_id' => NULL,
                     'invoice_in_product_storno_id' => NULL,
 					'status' => 'instock'
