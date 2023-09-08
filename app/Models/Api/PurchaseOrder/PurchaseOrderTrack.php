@@ -56,14 +56,19 @@ class PurchaseOrderTrack extends Model
                             ->get()
                             ->getRow();
 
-        if(!$dbRecord){
-            return ["error" => true, "not_identified" => 1];
-        }
+        
 
         $returnData = [
             "order_id" => $dbRecord->order_id,
-            "invoice_out_id" -> $dbRecord->order_id
+            "invoice_out_id" => $dbRecord->order_id
         ];
+
+        if(!$dbRecord){
+            $returnData = [
+                "order_id" => NULL,
+                "invoice_out_id" => NULL
+            ];
+        }
 
         return $returnData;
     }
