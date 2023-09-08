@@ -189,22 +189,21 @@ class PurchaseOrderProductModel extends Model
 
         elseif(count($count_already_reversed_product) > $reversalProduct['quantity'])
         
-        return ['cant' => count($count_already_reversed_product) - $reversalProduct['quantity']];
 
-        // need to stable the limit for prods to be put back in stock.
+        $limit = count($count_already_reversed_product) - $reversalProduct['quantity'];
 
-       // $limit = count($count_already_reversed_product) - $reversalProduct['quantity'];
+        if($limit === 0){
+            return ['limit' => 0];
+        }
 
-        
-
-        /*$ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id['id'])
+       $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id['id'])
                                                 ->where('invoice_in_storno_id' , $data['invoice_id'])
                                                 ->where('invoice_in_product_storno_id', $insertId)
                                                 ->where('product_id', $reversalProduct['product_id'])
                                                 ->where('status', 'reversesale_supplier')
                                                 ->limit($limit)
                                                 ->get()    
-                                                ->getResultArray();      */                          
+                                                ->getResultArray();                              
                                                 
                         
 
