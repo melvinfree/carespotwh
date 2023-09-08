@@ -187,7 +187,7 @@ class PurchaseOrderProductModel extends Model
 
         }
 
-        elseif(count($count_already_reversed_product) > $reversalProduct['quantity'])
+        elseif(count($count_already_reversed_product) >= $reversalProduct['quantity']){
         
 
         $numaratoare = count($count_already_reversed_product) - $reversalProduct['quantity'];
@@ -223,6 +223,8 @@ class PurchaseOrderProductModel extends Model
                      ->update($updateData);
 
             }
+
+        }
 
 
 
