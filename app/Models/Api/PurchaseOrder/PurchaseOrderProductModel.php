@@ -154,7 +154,10 @@ class PurchaseOrderProductModel extends Model
 
             $limit = $reversalProduct['quantity'] - $count_already_reversed_product;
 
-            return ["limit" => $limit];
+            if($limit === 0){
+                // SKIP
+            }
+            elseif($limit > 0){
         
             
             $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id['id'])
@@ -184,13 +187,14 @@ class PurchaseOrderProductModel extends Model
                      ->update($updateData);
 
             }
+        }
 
         }
 
-        elseif(count($count_already_reversed_product) >= $reversalProduct['quantity']){
+        elseif($count_already_reversed_product >= $reversalProduct['quantity']){
         
 
-        $limit = (float)count($count_already_reversed_product) - (float)$reversalProduct['quantity'];
+        $limit = $count_already_reversed_product - $reversalProduct['quantity'];
 
         if($limit === 0){
             // SKIP
