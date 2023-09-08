@@ -59,8 +59,8 @@ class PurchaseOrderTrack extends Model
         
 
         $returnData = [
-            "order_id" => $dbRecord->order_id,
-            "invoice_out_id" => $dbRecord->order_id
+            "order_id" => $dbRecord->order_id ?? "",
+            "invoice_out_id" => $dbRecord->order_id ?? ""
         ];
 
         if(!$dbRecord){
