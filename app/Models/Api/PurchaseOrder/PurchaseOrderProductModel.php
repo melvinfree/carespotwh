@@ -191,9 +191,9 @@ class PurchaseOrderProductModel extends Model
 
         // need to stable the limit for prods to be put back in stock.
 
-        $limit = count($count_already_reversed_product) - $reversalProduct['quantity'];
+       // $limit = count($count_already_reversed_product) - $reversalProduct['quantity'];
 
-        return ["limit" => $limit];
+        return ["count_already_reversed_product" => count($count_already_reversed_product), "r_q" => $reversalProduct['quantity']];
 
         $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id['id'])
                                                 ->where('invoice_in_storno_id' , $data['invoice_id'])
