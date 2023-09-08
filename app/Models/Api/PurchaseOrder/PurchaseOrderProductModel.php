@@ -147,8 +147,7 @@ class PurchaseOrderProductModel extends Model
                                                 ->get()    
                                                 ->getResultArray();
 
-                                                return ["count_already_reversed_product" => count($count_already_reversed_product), "r_q" => $reversalProduct['quantity']];
-        
+        return ['cant' => count($count_already_reversed_product) - $reversalProduct['quantity']];
         // WHAT HAPPEND IF Already reversed products from table stock is lower than quantity which should be reversed
        
         if(count($count_already_reversed_product) < $reversalProduct['quantity']){
