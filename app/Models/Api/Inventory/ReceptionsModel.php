@@ -183,7 +183,7 @@ class ReceptionsModel extends Model
                 ->getRow();
 
                 if(!$stock_row){
-                    return ['already_receptioned' => 1, 'message' => 'This product was already marked as receptioned'];
+                    return ["error" => true, 'ean_exist' => 0, 'message' => "This ean ".$ean_code." is not allocated for any product on invoice ".$invoice_in_id.""];
                 }
 
             if ($eanExist){
