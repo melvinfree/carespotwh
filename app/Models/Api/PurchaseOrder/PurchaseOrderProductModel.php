@@ -86,7 +86,6 @@ class PurchaseOrderProductModel extends Model
             $old_product_line =  $this->db->table($this->table)
                                  ->where('invoice_id', $initial_invoice_id['id'])
                                  ->where('product_id', $reversalProduct['product_id'])
-                                 ->where('id', $reversalProduct['row_id'])
                                  ->get()
                                  ->getRow();
             
@@ -94,7 +93,6 @@ class PurchaseOrderProductModel extends Model
             $dbRecord = $this->db->table($this->table)
                                  ->where('invoice_id', $data['invoice_id'])
                                  ->where('product_id', $reversalProduct['product_id'])
-                                 ->where('id', $reversalProduct['row_id'])
                                  ->get()
                                  ->getRow();
 
@@ -108,10 +106,10 @@ class PurchaseOrderProductModel extends Model
                 $this->db->table($this->table)
                     ->where('invoice_id', $data['invoice_id'])
                     ->where('product_id', $reversalProduct['product_id'])
-                    ->where('id', $reversalProduct['row_id'])
+                    ->where('id', $dbRecord['row_id'])
                     ->update($products);
 
-                    $insertId = $reversalProduct['row_id'];
+                    $insertId = $dbRecord['row_id'];
 
             } 
             else{
