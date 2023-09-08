@@ -197,14 +197,14 @@ class PurchaseOrderProductModel extends Model
 
         
 
-        $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id['id'])
+        /*$ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id['id'])
                                                 ->where('invoice_in_storno_id' , $data['invoice_id'])
                                                 ->where('invoice_in_product_storno_id', $insertId)
                                                 ->where('product_id', $reversalProduct['product_id'])
                                                 ->where('status', 'reversesale_supplier')
                                                 ->limit($limit)
                                                 ->get()    
-                                                ->getResultArray();                                
+                                                ->getResultArray();      */                          
                                                 
                         
 
