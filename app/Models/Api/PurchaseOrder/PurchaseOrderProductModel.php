@@ -190,9 +190,9 @@ class PurchaseOrderProductModel extends Model
         elseif(count($count_already_reversed_product) > $reversalProduct['quantity'])
         
 
-        $limit = count($count_already_reversed_product) - $reversalProduct['quantity'];
+        $numaratoare = count($count_already_reversed_product) - $reversalProduct['quantity'];
 
-        if($limit === 0){
+        if($numaratoare === 0){
             return ['limit' => 0];
         }
 
@@ -201,7 +201,7 @@ class PurchaseOrderProductModel extends Model
                                                 ->where('invoice_in_product_storno_id', $insertId)
                                                 ->where('product_id', $reversalProduct['product_id'])
                                                 ->where('status', 'reversesale_supplier')
-                                                ->limit($limit)
+                                                ->limit($numaratoare)
                                                 ->get()    
                                                 ->getResultArray();                              
                                                 
