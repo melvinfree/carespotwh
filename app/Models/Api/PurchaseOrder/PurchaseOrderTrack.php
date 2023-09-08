@@ -20,7 +20,6 @@ class PurchaseOrderTrack extends Model
         
         $dbRecord = $this->db->table($this->table)
                             ->where('stock_id', $stock_id)
-                            ->where('status', $actionType)
                             ->get()
                             ->getRow();
 
