@@ -149,7 +149,7 @@ class PurchaseOrderProductModel extends Model
 
         // WHAT HAPPEND IF Already reversed products from table stock is lower than quantity which should be reversed
        
-        if(count($count_already_reversed_product) < $reversalProduct['quantity']){
+        if(count($count_already_reversed_product) < (float)$reversalProduct['quantity']){
 
             $limit = $reversalProduct['quantity'] - $count_already_reversed_product;
         
@@ -187,10 +187,10 @@ class PurchaseOrderProductModel extends Model
 
         }
 
-        elseif(count($count_already_reversed_product) >= $reversalProduct['quantity']){
+        elseif(count($count_already_reversed_product) >= (float)$reversalProduct['quantity']){
         
 
-        $limit = count($count_already_reversed_product) - $reversalProduct['quantity'];
+        $limit = count($count_already_reversed_product) - (float)$reversalProduct['quantity'];
 
         if($limit === 0){
             // SKIP
