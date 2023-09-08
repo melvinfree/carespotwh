@@ -66,6 +66,7 @@ class StockModel extends Model
 
         $query = $this->select('*')
             ->where('product_id', $data['product_id'])
+            ->where('ean', $data['ean'])
             ->where('status', 'instock')
             ->where('warehouse', $data['old_warehouse'])
             ->limit($rowsToSelect)

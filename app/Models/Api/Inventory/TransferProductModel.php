@@ -52,6 +52,7 @@ class TransferProductModel extends Model
                 'transfer_id' => $transfer_id,
                 'quantity' => $product['quantity'],
                 'old_warehouse' => $old_warehouse_id,
+                'ean' => $product['ean'],
                 'new_warehouse' => $new_warehouse_id,
                 'status' => 'allocated_transfer',
                 'transfer_status' => 'new'

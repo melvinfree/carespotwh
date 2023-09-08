@@ -135,6 +135,7 @@ class TransfersModel extends Model
         $dbRecord = $this->db->table($this->transfers_products_table)
              ->where('transfer_id', $transfer_id)
              ->where('product_id', $product['product_id'])
+             ->where('ean', $product['ean'])
              ->get()
              ->getRow();
 
@@ -149,12 +150,14 @@ class TransfersModel extends Model
             $this->db->table($this->transfers_products_table)
                 ->where('transfer_id', $transfer_id)
                 ->where('product_id', $product['product_id'])
+                ->where('ean', $product['ean'])
                 ->update($products);
 
                 if ($this->db->affectedRows() > 0) {
                     $updatedRecord = $this->db->table($this->transfers_products_table)
                                        ->where('transfer_id', $transfer_id)
                                        ->where('product_id', $product['product_id'])
+                                       ->where('ean', $product['ean'])
                                        ->get()
                                        ->getRow();
                 
@@ -171,6 +174,7 @@ class TransfersModel extends Model
             $products = [
                 'transfer_id' => $transfer_id,
                 'product_id' => $product['product_id'],
+                'ean' => $product['ean'],
                 'product_name' => $product['product_name'],
                 'quantity' => $product['quantity']
             ];
