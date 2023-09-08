@@ -163,7 +163,7 @@ class PurchaseOrderProductModel extends Model
                                                 ->getResultArray();
 
             if(count($ProductsToBeReversed) < $reversalProduct['quantity'])  {
-                return ["error" => true, "message" => "You cannot reversed maximum products count($ProductsToBeReversed) pcs for this product"];
+                return ["error" => true, "message" => "You cannot reversed maximum products ".count($ProductsToBeReversed)." pcs for this product"];
             }                                  
                                                 
             
