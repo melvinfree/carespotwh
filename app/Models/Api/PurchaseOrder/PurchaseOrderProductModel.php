@@ -152,10 +152,7 @@ class PurchaseOrderProductModel extends Model
        
         if($count_already_reversed_product < $reversalProduct['quantity']){
 
-            $quantity = $reversalProduct['quantity'];
-            $count = $count_already_reversed_product;
-
-            $limit = $quantity - $count;
+            $limit = $reversalProduct['quantity'] - $count_already_reversed_product;
 
             return ["limit" => $limit];
         
