@@ -37,10 +37,10 @@ class PurchaseOrderTrack extends Model
         else{
 
             $log_information = [
-                'stock_id' => $stock_id ?? "",
-                'status' => $actionType ?? "",
-                'order_id' => $order_id ?? "",
-                'invoice_out_id' => $invoice_out_id ?? "",
+                'stock_id' => $stock_id,
+                'status' => $actionType,
+                'order_id' => $order_id,
+                'invoice_out_id' => $invoice_out_id,
             ];
             
             $this->db->table($this->table)->insert($log_information);
