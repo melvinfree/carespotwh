@@ -5,6 +5,7 @@ namespace App\Models\Api\PurchaseOrder;
 use CodeIgniter\Model;
 use App\Models\Api\Inventory\ProductsModel;
 use App\Models\Api\Inventory\StockModel;
+use App\Models\Api\PurchaseOrder\PurchaseOrderTrack;
 
 class PurchaseOrderProductModel extends Model
 {
@@ -78,6 +79,7 @@ class PurchaseOrderProductModel extends Model
         $stockModel = new StockModel();
         $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel();
         $ProductsModel = new ProductsModel();
+        $purchaseOrderTrack = new PurchaseOrderTrack();
 
         $initial_invoice_id = $purchaseOrderModel->find($data['storno_for']);
 
@@ -190,6 +192,9 @@ class PurchaseOrderProductModel extends Model
                      ->where('id', $stock_line['id'])
                      ->update($updateData);
 
+                     // Log Reverse Action
+                     $purchaseOrderTrack->logReverseAction($stock_line['id'],'reversed',$stock_line['order_id'],$stock_line['invoice_out_id']);
+
             }
         }
 
@@ -221,10 +226,14 @@ class PurchaseOrderProductModel extends Model
                         
 
             foreach ($ProductsToBeReversed as $stock_line){
+
+                //Get information to be able to restore
+
+                $initialData = $purchaseOrderTrack->getInfoUndo($stock_line['id']);
                 
                 $updateData = [
-                    'order_id' => NULL,
-					'invoice_out_id' => NULL,
+                    'order_id' => $initialData['order_id'],
+					'invoice_out_id' => $initialData['invoice_out_id'],
                     'invoice_in_storno_id' => NULL,
                     'invoice_in_product_storno_id' => NULL,
 					'status' => 'instock'
@@ -234,6 +243,9 @@ class PurchaseOrderProductModel extends Model
                      ->where('invoice_in_id', $initial_invoice_id['id'])
                      ->where('id', $stock_line['id'])
                      ->update($updateData);
+
+                     // Log Reverse Action
+                     $purchaseOrderTrack->logReverseAction($stock_line['id'],'not_reversed',$stock_line['order_id'],$stock_line['invoice_out_id']);
 
             }
         }
