@@ -107,7 +107,7 @@ class PurchaseOrderProductModel extends Model
                     ->where('invoice_id', $data['invoice_id'])
                     ->where('product_id', $reversalProduct['product_id'])
                     ->where('id', $dbRecord->id)
-                    ->update($products);
+                    ->update($updateData);
 
                     $insertId = $dbRecord->id;
 
