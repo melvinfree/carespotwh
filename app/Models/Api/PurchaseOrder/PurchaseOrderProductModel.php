@@ -144,14 +144,13 @@ class PurchaseOrderProductModel extends Model
         $count_already_reversed_product = $stockModel->where('invoice_in_storno_id', $data['invoice_id'])
                                                 ->where('invoice_in_product_storno_id', $insertId)
                                                 ->where('status', 'reversesale_supplier')
-                                                ->get()    
-                                                ->getResultArray();
+                                                ->countAllResults();
 
                                                  
 
         // WHAT HAPPEND IF Already reversed products from table stock is lower than quantity which should be reversed
        
-        if(count($count_already_reversed_product) < $reversalProduct['quantity']){
+        if($count_already_reversed_product < $reversalProduct['quantity']){
 
             $quantity = $reversalProduct['quantity'];
             $count = $count_already_reversed_product;
