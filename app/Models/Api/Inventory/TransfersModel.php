@@ -116,6 +116,8 @@ class TransfersModel extends Model
     public function insertProducts($data)
     {
 
+        return $data;
+
         $transfer_row = $this->db->table($this->table)
         ->where('id', $data['transfer_id'])
         ->get()
