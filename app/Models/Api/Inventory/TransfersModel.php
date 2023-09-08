@@ -81,6 +81,7 @@ class TransfersModel extends Model
             product.id, 
             product.name, 
             product.model, 
+            stock.ean as ean_code, 
             COUNT(stock.id) as available_quantity,
             warehouse.name as warehouse_name
         FROM " . $this->productTable . " AS product
