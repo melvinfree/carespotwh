@@ -167,6 +167,10 @@ class PurchaseOrderProductModel extends Model
                                                 ->limit($limit)
                                                 ->get()    
                                                 ->getResultArray();
+
+            if(count($ProductsToBeReversed) < $limit){
+                return ["error" => true, "message" => "You try to reverse more products than you have in stock"];
+            }
                                 
                                                 
             
@@ -208,7 +212,11 @@ class PurchaseOrderProductModel extends Model
                                                 ->where('status', 'reversesale_supplier')
                                                 ->limit($limit)
                                                 ->get()    
-                                                ->getResultArray();                              
+                                                ->getResultArray();      
+                                                
+            if(count($ProductsToBeReversed) < $limit){
+                return ["error" => true, "message" => "You try to reverse more products than you have in stock"];
+            }
                                                 
                         
 
