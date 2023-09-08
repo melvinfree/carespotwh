@@ -65,8 +65,8 @@ class PurchaseOrderTrack extends Model
 
         if(!$dbRecord){
             $returnData = [
-                "order_id" => NULL,
-                "invoice_out_id" => NULL
+                "order_id" => 'empty',
+                "invoice_out_id" => 'empty'
             ];
         }
 
