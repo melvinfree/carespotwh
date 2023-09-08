@@ -147,11 +147,15 @@ class PurchaseOrderProductModel extends Model
                                                 ->get()    
                                                 ->getResultArray();
 
+                                                 
+
         // WHAT HAPPEND IF Already reversed products from table stock is lower than quantity which should be reversed
        
         if(count($count_already_reversed_product) < $reversalProduct['quantity']){
 
             $limit = (float)$reversalProduct['quantity'] - (float)$count_already_reversed_product;
+
+            return $limit;
         
             
             $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id['id'])
