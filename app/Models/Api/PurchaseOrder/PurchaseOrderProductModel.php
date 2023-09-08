@@ -147,7 +147,6 @@ class PurchaseOrderProductModel extends Model
                                                 ->get()    
                                                 ->getResultArray();
 
-        return ['cant' => count($count_already_reversed_product) - $reversalProduct['quantity']];
         // WHAT HAPPEND IF Already reversed products from table stock is lower than quantity which should be reversed
        
         if(count($count_already_reversed_product) < $reversalProduct['quantity']){
@@ -189,6 +188,8 @@ class PurchaseOrderProductModel extends Model
         }
 
         elseif(count($count_already_reversed_product) > $reversalProduct['quantity'])
+        
+        return ['cant' => count($count_already_reversed_product) - $reversalProduct['quantity']];
 
         // need to stable the limit for prods to be put back in stock.
 
