@@ -4,6 +4,7 @@ namespace App\Models\Api\PurchaseOrder;
 
 use CodeIgniter\Model;
 use App\Models\Api\Inventory\ProductsModel;
+use App\Models\Api\Inventory\StockModel;
 
 class PurchaseOrderProductModel extends Model
 {
@@ -74,7 +75,7 @@ class PurchaseOrderProductModel extends Model
 
     public function reverseInvoiceProductStock($data){
 
-        $stockModel = new \App\Models\Api\Inventory\StockModel();
+        $stockModel = new StockModel();
         $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel();
         $ProductsModel = new ProductsModel();
 
@@ -82,19 +83,39 @@ class PurchaseOrderProductModel extends Model
 
         foreach ($data['products'] as $reversalProduct){
 
-            $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id['id'])
-                                                ->where('product_id', $reversalProduct['product_id'])
-                                                ->where('status', 'instock')
-                                                ->orWhere('status', 'allocated_service')
-                                                ->limit($reversalProduct['quantity'])
-                                                ->get()    
-                                                ->getResultArray();
-                                                
             $old_product_line =  $this->db->table($this->table)
                                  ->where('invoice_id', $initial_invoice_id['id'])
                                  ->where('product_id', $reversalProduct['product_id'])
+                                 ->where('id', $reversalProduct['row_id'])
                                  ->get()
                                  ->getRow();
+            
+            
+            $dbRecord = $this->db->table($this->table)
+                                 ->where('invoice_id', $data['invoice_id'])
+                                 ->where('product_id', $reversalProduct['product_id'])
+                                 ->where('id', $reversalProduct['row_id'])
+                                 ->get()
+                                 ->getRow();
+
+
+            if($dbRecord) {
+
+                $updateData = [
+                    'quantity' => "-".$reversalProduct['quantity'],
+                ];
+    
+                $this->db->table($this->table)
+                    ->where('invoice_id', $data['invoice_id'])
+                    ->where('product_id', $reversalProduct['product_id'])
+                    ->where('id', $reversalProduct['row_id'])
+                    ->update($products);
+
+                    $insertId = $reversalProduct['row_id'];
+
+            } 
+            else{
+
 
             $products = [
                 'invoice_id' => $data['invoice_id'],
@@ -109,6 +130,45 @@ class PurchaseOrderProductModel extends Model
             $insertId = $this->db->insertID();
 
             $responses[] = ['record_id' => $insertId];
+
+        }
+
+        // Start operations for stock.
+
+        $updateData = [
+            'order_id' => NULL,
+            'invoice_out_id' => NULL,
+            'invoice_in_storno_id' => $data['invoice_id'],
+            'invoice_in_product_storno_id' => $insertId,
+            'status' => 'reversesale_supplier'
+        ];
+
+        $count_already_reversed_product = $stockModel->where('invoice_in_storno_id', $data['invoice_id'])
+                                                ->where('invoice_in_product_storno_id', $insertId)
+                                                ->where('status', 'reversesale_supplier')
+                                                ->get()    
+                                                ->getResultArray();
+        
+        // WHAT HAPPEND IF Already reversed products from table stock is lower than quantity which should be reversed
+       
+        if(count($count_already_reversed_product) < $reversalProduct['quantity']){
+
+            $limit = $reversalProduct['quantity'] - $count_already_reversed_product;
+        
+            
+            $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id['id'])
+                                                ->where('product_id', $reversalProduct['product_id'])
+                                                ->where('status', 'instock')
+                                                ->orWhere('status', 'allocated_service')
+                                                ->limit($limit)
+                                                ->get()    
+                                                ->getResultArray();
+
+            if(count($ProductsToBeReversed) < $reversalProduct['quantity'])  {
+                return ["error" => true, "message" => "You cannot reversed maximum products count($ProductsToBeReversed) pcs for this product"];
+            }                                  
+                                                
+            
 
             foreach ($ProductsToBeReversed as $stock_line){
                 
@@ -126,6 +186,45 @@ class PurchaseOrderProductModel extends Model
                      ->update($updateData);
 
             }
+
+        }
+
+        elseif(count($count_already_reversed_product) > $reversalProduct['quantity'])
+
+        // need to stable the limit for prods to be put back in stock.
+
+        $limit = count($count_already_reversed_product) - $reversalProduct['quantity'];
+
+        $ProductsToBeReversed = $stockModel->where('invoice_in_id', $initial_invoice_id['id'])
+                                                ->where('invoice_in_storno_id' , $data['invoice_id'])
+                                                ->where('invoice_in_product_storno_id', $insertId)
+                                                ->where('product_id', $reversalProduct['product_id'])
+                                                ->where('status', 'reversesale_supplier')
+                                                ->orWhere('status', 'allocated_service')
+                                                ->limit($limit)
+                                                ->get()    
+                                                ->getResultArray();                                
+                                                
+                        
+
+            foreach ($ProductsToBeReversed as $stock_line){
+                
+                $updateData = [
+                    'order_id' => NULL,
+					'invoice_out_id' => NULL,
+                    'invoice_in_storno_id' => NULL,
+                    'invoice_in_product_storno_id' => NULL,
+					'status' => 'instock'
+                ];
+
+                $this->db->table($this->stockTable)
+                     ->where('invoice_in_id', $initial_invoice_id['id'])
+                     ->where('id', $stock_line['id'])
+                     ->update($updateData);
+
+            }
+
+
 
         }
 
@@ -235,7 +334,7 @@ class PurchaseOrderProductModel extends Model
     {
         $invoiceProducts = $this->where('invoice_id', $invoiceId)->findAll();
 
-        $stockModel = new \App\Models\Api\Inventory\StockModel();
+        $stockModel = new StockModel();
         $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel();
 
         $invoice = $purchaseOrderModel->where('id', $invoiceId)->first();
@@ -276,7 +375,7 @@ class PurchaseOrderProductModel extends Model
     public function updateInvoiceId($currentInvoiceId, $newInvoiceId, $rowId)
     {
         // Get all products associated with the current invoice from the stock table
-        $stockModel = new \App\Models\Api\Inventory\StockModel();
+        $stockModel = new StockModel();
         $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel(); 
 
         $row = $this->find($rowId);
@@ -339,7 +438,7 @@ class PurchaseOrderProductModel extends Model
     public function deleteProduct($rowId,$InvoiceId)
     {
         // Get all products associated with the current invoice from the stock table
-        $stockModel = new \App\Models\Api\Inventory\StockModel();
+        $stockModel = new StockModel();
         $purchaseOrderModel = new \App\Models\Api\PurchaseOrder\PurchaseOrderModel(); 
 
         $row = $this->find($rowId);
