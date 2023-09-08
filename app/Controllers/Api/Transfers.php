@@ -154,6 +154,8 @@ class Transfers extends Controller
 
     $responses = $TransfersModel->insertProducts($requestData);
 
+    return $requestData;
+
     $jsonRes = json_encode(succesResponse($responses), true);
 
     return $this->respond($jsonRes, 200);
