@@ -193,7 +193,7 @@ class PurchaseOrderProductModel extends Model
                      ->update($updateData);
 
                      // Log Reverse Action (need to fix this)
-                     $purchaseOrderTrack->logReverseAction($stock_line['id'],'reversed',$stock_line['order_id'] ?? "",$stock_line['invoice_out_id'] ?? "");
+                     $purchaseOrderTrack->logReverseAction($stock_line['id'],'reversed',$stock_line['order_id'] ?? null,$stock_line['invoice_out_id'] ?? null);
 
             }
         }
@@ -245,7 +245,7 @@ class PurchaseOrderProductModel extends Model
                      ->update($updateData);
 
                      // Log Reverse Action
-                     $purchaseOrderTrack->logReverseAction($stock_line['id'],'not_reversed',$stock_line['order_id'],$stock_line['invoice_out_id']);
+                     $purchaseOrderTrack->logReverseAction($stock_line['id'],'not_reversed',$stock_line['order_id'] ?? null,$stock_line['invoice_out_id'] ?? null);
 
             }
         }
