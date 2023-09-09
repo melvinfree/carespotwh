@@ -216,6 +216,7 @@ class ReceptionsModel extends Model
                 $count = $this->db->table('stock_copy1')
                     ->where('product_id', $eanExist->product_id)
                     ->where('warehouse', 2)
+                    ->where('invoice_in_id', $invoice_in_id)
                     ->where('reception_date IS NULL', null, false)
                     ->countAllResults();
                 
