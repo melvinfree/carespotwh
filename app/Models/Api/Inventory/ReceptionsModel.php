@@ -93,6 +93,7 @@ class ReceptionsModel extends Model
         GROUP BY 
             invoices_in_products.id,
             invoices_in_products.product_id,
+            stock_copy1.id,
             invoices_in_products.product_name", 
         [$invoice_id]
     );
@@ -100,6 +101,7 @@ class ReceptionsModel extends Model
     $products = $query->getResultArray();
 
     foreach($products as &$product){
+
         $product['not_confirmed_quantity'] = $product['total_quantity'] - $product['receptioned_quantity'];
     }
 
