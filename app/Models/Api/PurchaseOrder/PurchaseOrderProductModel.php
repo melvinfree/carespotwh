@@ -192,7 +192,7 @@ class PurchaseOrderProductModel extends Model
                      ->where('id', $stock_line['id'])
                      ->update($updateData);
 
-                     // Log Reverse Action
+                     // Log Reverse Action (need to fix this)
                      $purchaseOrderTrack->logReverseAction($stock_line['id'],'reversed',$stock_line['order_id'] ?? "",$stock_line['invoice_out_id'] ?? "");
 
             }
