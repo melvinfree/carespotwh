@@ -216,7 +216,7 @@ class ReceptionsModel extends Model
                 $count = $this->db->table('stock_copy1')
                     ->where('product_id', $eanExist->product_id)
                     ->where('warehouse', 2)
-                    ->where('reception_date IS NULL', null)
+                    ->where('reception_date', null)
                     ->countAllResults();
                 
                 $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as receptioned', 'remains_to_be_receptioned' => $count];
