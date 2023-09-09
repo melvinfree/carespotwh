@@ -93,7 +93,6 @@ class ReceptionsModel extends Model
         GROUP BY 
             invoices_in_products.id,
             invoices_in_products.product_id,
-            stock_copy1.id,
             invoices_in_products.product_name", 
         [$invoice_id]
     );
@@ -217,7 +216,7 @@ class ReceptionsModel extends Model
                 $count = $this->db->table('stock_copy1')
                     ->where('product_id', $eanExist->product_id)
                     ->where('warehouse', 2)
-                    ->where('reception_date IS NULL', null, false)
+                    ->where('reception_date IS NULL', null)
                     ->countAllResults();
                 
                 $return = ['row_id' => $stock_row->id, 'ean_exist' => 1, 'message' => 'Product succesfully marked as receptioned', 'remains_to_be_receptioned' => $count];
