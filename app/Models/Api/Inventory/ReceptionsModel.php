@@ -81,7 +81,7 @@ class ReceptionsModel extends Model
             invoices_in_products.product_id,
             invoices_in_products.product_name,
             COUNT(stock_copy1.id) as total_quantity,
-            SUM(IF(stock_copy1.reception_date IS NOT NULL, 1, 0)) as receptioned_quantity
+            SUM(IF(stock_copy1.reception_date IS NOT NULL AND warehouse = 1, 1, 0)) as receptioned_quantity
         FROM 
             invoices_in_products
         JOIN 
