@@ -38,8 +38,8 @@ class PurchaseOrderTrack extends Model
             $log_information = [
                 'stock_id' => $stock_id,
                 'status' => $actionType,
-                'order_id' => $order_id,
-                'invoice_out_id' => $invoice_out_id,
+                'order_id' => $order_id ?? NULL,
+                'invoice_out_id' => $invoice_out_id ?? NULL,
             ];
             
             $this->db->table($this->table)->insert($log_information);
@@ -64,8 +64,8 @@ class PurchaseOrderTrack extends Model
 
         if(!$dbRecord){
             $returnData = [
-                "order_id" => 'empty',
-                "invoice_out_id" => 'empty'
+                "order_id" => null,
+                "invoice_out_id" => null
             ];
         }
 
