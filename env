@@ -27,7 +27,7 @@ CI_ENVIRONMENT = development
 # app.CSPEnabled = false
 
 #--------------------------------------------------------------------
-# DATABASE
+# DATABASE TIT
 #--------------------------------------------------------------------
 
 # database.default.hostname = localhost
